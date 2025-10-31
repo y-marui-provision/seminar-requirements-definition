@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>セミナー資料 (4. 副操縦士 / 5. 訓練術 / 6. 最後)</title>
+    <!-- Tailwind CSS を読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Interフォントファミリーを適用（Tailwindのデフォルト） */
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            scroll-behavior: smooth; /* スムーズスクロール */
+        }
+        /* 各スライド（セクション）の基本スタイル */
+        .slide {
+            min-height: 100vh; /* 画面の高さいっぱい */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            scroll-snap-align: start; /* スクロールスナップ（あれば） */
+        }
+        /* コンテンツ幅を制限 */
+        .slide-content {
+            max-width: 1000px;
+            width: 100%;
+        }
+        /* 訓練術のカード */
+        .training-card {
+            background-color: white;
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 2rem; /* p-8 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-lg */
+        }
+        .training-card h4 {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            margin-bottom: 0.75rem; /* mb-3 */
+        }
+        .training-card .label-why {
+            color: #d946ef; /* text-fuchsia-600 */
+            background-color: #fae8ff; /* bg-fuchsia-50 */
+            border-color: #f0abfc; /* border-fuchsia-200 */
+        }
+        .training-card .label-how {
+            color: #059669; /* text-emerald-600 */
+            background-color: #ecfdf5; /* bg-emerald-50 */
+            border-color: #a7f3d0; /* border-emerald-200 */
+        }
+        .training-card .label {
+            display: inline-block;
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+            padding: 0.25rem 0.75rem; /* px-3 py-1 */
+            border-radius: 9999px; /* rounded-full */
+            border-width: 1px;
+            margin-bottom: 0.5rem; /* mb-2 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 antialiased">
+
+    <!-- スライド 16: (セクションタイトル) 4. AIはあくまで副操縦士と考える -->
+    <section class="slide bg-gradient-to-br from-gray-700 to-gray-900 text-white">
+        <div class="slide-content text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">4. AIはあくまで副操縦士と考える</h1>
+            <p class="text-lg md:text-xl text-gray-300">AIを「使う」のであって、「使われて」はいけない</p>
+        </div>
+    </section>
+
+    <!-- スライド 17: パイロットと副操縦士（コパイロット）の役割 -->
+    <section class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">AI（副操縦士）と人間（機長）の役割</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <!-- AI = 副操縦士 -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 shadow-sm text-center">
+                    <img src="https://placehold.co/100x100/DBEAFE/1D4ED8?text=Icon%0A(AI+/+Copilot)" alt="" class="mx-auto rounded-full mb-4">
+                    <h3 class="text-2xl font-semibold text-blue-800 mb-4">AI（副操縦士）</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2 text-left">
+                        <li>膨大な知識（パターン）の学習</li>
+                        <li>高速なデータ処理・計算</li>
+                        <li>定型的なタスクの実行</li>
+                        <li>進路（選択肢）の提案</li>
+                    </ul>
+                </div>
+                
+                <!-- 人間 = 機長 -->
+                <div class="bg-green-50 border border-green-200 rounded-lg p-6 shadow-sm text-center">
+                    <img src="https://placehold.co/100x100/D1FAE5/065F46?text=Icon%0A(Human+/+Pilot)" alt="" class="mx-auto rounded-full mb-4">
+                    <h3 class="text-2xl font-semibold text-green-800 mb-4">人間（機長）</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2 text-left">
+                        <li>顧客の「真意」の理解（暗黙知）</li>
+                        <li>予期せぬ事態への対応（倫理観）</li>
+                        <li>複数の選択肢からの「最終判断」</li>
+                        <li>プロジェクト全体への「責任」</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 18: AIの限界（注意点） -->
+    <section class="slide bg-red-50">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-red-800 mb-8">AIの限界とリスクを理解する</h2>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 1. ハルシネーション -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-red-200">
+                    <h3 class="text-2xl font-semibold text-red-700 mb-3">1. 平気でウソをつく</h3>
+                    <p class="text-gray-600">（ハルシネーション）<br>
+                    AIは「それらしい答え」を生成する。それが事実かどうかは別問題。鵜呑みは危険。</p>
+                </div>
+
+                <!-- 2. 文脈が読めない -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-red-200">
+                    <h3 class="text-2xl font-semibold text-red-700 mb-3">2. 「真意」は読めない</h3>
+                    <p class="text-gray-600">顧客の表情、声のトーン、会議の雰囲気といった「暗黙の文脈」は理解できない。</p>
+                </div>
+
+                <!-- 3. 機密情報 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-red-200">
+                    <h3 class="text-2xl font-semibold text-red-700 mb-3">3. 情報漏洩リスク</h3>
+                    <p class="text-gray-600">会社の機密情報や顧客の個人情報をAIに入力してはいけない。（※社内ルール確認）</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- スライド 19: 若手（機長）の心構え -->
+    <section class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">AI時代の若手（機長）の心構え</h2>
+            <div class="grid md:grid-cols-3 gap-6 text-center">
+                <!-- 1. 疑う -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                    <img src="https://placehold.co/100x100/FEE2E2/B91C1C?text=Icon%0A(Verify)" alt="" class="mx-auto rounded-full mb-4">
+                    <h3 class="text-3xl font-bold text-gray-800">1. 疑う</h3>
+                    <p class="text-lg text-gray-600 mt-2">AIの出力を鵜呑みにしない。<br>必ずファクトチェック（裏付け調査）を行う。</p>
+                </div>
+                <!-- 2. 選ぶ -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                    <img src="https://placehold.co/100x100/DBEAFE/1D4ED8?text=Icon%0A(Choose)" alt="" class="mx-auto rounded-full mb-4">
+                    <h3 class="text-3xl font-bold text-gray-800">2. 選ぶ</h3>
+                    <p class="text-lg text-gray-600 mt-2">AIが提示した10の選択肢から、顧客にとって最適な「1」を選び抜く。</p>
+                </div>
+                <!-- 3. 責任を持つ -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                    <img src="https://placehold.co/100x100/D1FAE5/065F46?text=Icon%0A(Accountability)" alt="" class="mx-auto rounded-full mb-4">
+                    <h3 class="text-3xl font-bold text-gray-800">3. 責任を持つ</h3>
+                    <p class="text-lg text-gray-600 mt-2">AIが書いた要件定義書でも、<br>最終的な成果物の責任は「あなた」にある。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 20: (セクションタイトル) 5. 日常生活でできる訓練術 -->
+    <section class="slide bg-gradient-to-br from-fuchsia-500 to-pink-600 text-white">
+        <div class="slide-content text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">5. 日常生活でできる<br>要件定義 ⇔ 設計の訓練術</h1>
+            <p class="text-lg md:text-xl text-fuchsia-100">「考えるクセ」をつけよう</p>
+        </div>
+    </section>
+
+    <!-- スライド 21: 要件定義脳とは？ -->
+    <section class="slide bg-gray-50">
+        <div class="slide-content text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">要件定義の思考 ＝「Why-How」の往復運動</h2>
+            <p class="text-xl text-gray-600 mb-8">日常生活のあらゆる「行動」は、「要件」と「設計」に分解できる。</p>
+            
+            <img src="https://placehold.co/800x300/E9D5FF/7E22CE?text=Illustration%0A(Why%3F+<-->+How%3F)" 
+                 alt="" 
+                 class="mx-auto rounded-lg shadow-md w-full max-w-4xl">
+            
+            <div class="grid md:grid-cols-2 gap-8 mt-8 text-left">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-2xl font-semibold text-fuchsia-700 mb-3">要件 (Why / What)</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>なぜやるのか？ (目的・背景)</li>
+                        <li>何が欲しいのか？ (要求)</li>
+                        <li>制約は何か？ (予算・時間)</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-2xl font-semibold text-emerald-700 mb-3">設計 (How)</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>どうやって実現する？ (手段)</li>
+                        <li>何を・どの順番で？ (タスク)</li>
+                        <li>リスクは？ (もし～なら？)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 22: 訓練術 (例) -->
+    <section class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">訓練例：「今夜の夕食」を定義する</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 例1: 晩ごはん -->
+                <div class="training-card">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">訓練①：晩ごはん</h3>
+                    
+                    <span class="label label-why">要件 (Why / What)</span>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2 mb-6">
+                        <li><strong>目的:</strong> 健康的に、お腹いっぱいになりたい。</li>
+                        <li><strong>要求:</strong> 野菜とタンパク質を摂りたい。</li>
+                        <li><strong>制約:</strong> 予算500円。調理時間15分以内。</li>
+                    </ul>
+
+                    <span class="label label-how">設計 (How)</span>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li><strong>手段:</strong> スーパーでカット野菜と鶏むね肉を買う。</li>
+                        <li><strong>タスク:</strong> レンジで蒸し鶏にし、野菜と和える。</li>
+                        <li><strong>リスク:</strong> ポン酢を切らしているかも？
+                            <span class="text-sm text-gray-500">→ 先に確認する。</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 例2: 旅行の計画 -->
+                <div class="training-card">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">訓練②：週末の旅行計画</h3>
+                    
+                    <span class="label label-why">要件 (Why / What)</span>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2 mb-6">
+                        <li><strong>目的:</strong> 日頃の疲れを癒やしたい。</li>
+                        <li><strong>要求:</strong> 温泉に入りたい。美味しいものが食べたい。</li>
+                        <li><strong>制約:</strong> 予算3万円。土日の1泊2日。移動は2時間以内。</li>
+                    </ul>
+
+                    <span class="label label-how">設計 (How)</span>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li><strong>手段:</strong> 特急で箱根湯本へ行く。</li>
+                        <li><strong>タスク:</strong> 13時発のロマンスカー予約。駅近の旅館を確保。</li>
+                        <li><strong>リスク:</strong> 天気が悪いかも？
+                            <span class="text-sm text-gray-500">→ 室内で楽しめる美術館も調べておく。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 23: (セクションタイトル) 6. 最後に -->
+    <section class="slide bg-gradient-to-br from-indigo-600 to-blue-800 text-white">
+        <div class="slide-content text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">6. 最後に</h1>
+            <p class="text-lg md:text-xl text-indigo-100">AI時代の「上流エンジニア」とは</p>
+        </div>
+    </section>
+    
+    <!-- スライド 24: まとめ -->
+    <section class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">本日のまとめ</h2>
+            
+            <div class="space-y-4">
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-indigo-700 mb-2">1. 要件定義はプロジェクトの「北極星」</h3>
+                    <p class="text-gray-600">炎上の源流。お客様と開発者の「ゴール」を合意する最重要工程。</p>
+                </div>
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-indigo-700 mb-2">2. AIは「壁打ち・整理・文書化」の相棒</h3>
+                    <p class="text-gray-600">アイデア発散、議事録整理、たたき台作成など、若手の訓練と実務を強力にサポート。</p>
+                </div>
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-indigo-700 mb-2">3. ただし、あなたは「機長」である</h3>
+                    <p class="text-gray-600">AIは副操縦士。「疑い」「選び」「責任を持つ」のは人間の仕事。</p>
+                </div>
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-indigo-700 mb-2">4. 「Why-How」の思考を日常から鍛えよう</h3>
+                    <p class="text-gray-600">要件定義の思考は、日常生活（料理、旅行...）で訓練できる。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 25: 最後のメッセージ -->
+    <section class="slide bg-gray-900 text-white">
+        <div class="slide-content text-center">
+            <img src="https://placehold.co/800x400/1F2937/FFFFFF?text=Illustration%0A(AI+and+Human+Collaboration)" 
+                 alt="" 
+                 class="mx-auto rounded-lg shadow-xl w-full max-w-4xl mb-12">
+                 
+            <h2 class="text-3xl md:text-5xl font-bold mb-6">AIは「思考しないエンジニア」を代替する</h2>
+            <p class="text-2xl md:text-3xl text-indigo-300 font-medium">AIを使いこなし、顧客の「Why」に寄り添えるエンジニアになろう。</p>
+            
+            <h1 class="text-4xl md:text-5xl font-bold mt-16">上流工程デビューを成功させよう！</h1>
+        </div>
+    </section>
+    
+    <!-- スライド 26: Q&A -->
+    <section class="slide bg-white">
+        <div class="slide-content text-center">
+            <h1 class="text-5xl md:text-7xl font-bold text-indigo-600 mb-8">ご清聴ありがとうございました</h1>
+            <h2 class="text-4xl md:text-6xl font-bold text-gray-700">Q & A</h2>
+        </div>
+    </section>
+
+</body>
+</html>
