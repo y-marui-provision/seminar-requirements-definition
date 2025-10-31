@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>セミナー資料 (4. 副操縦士 / 5. 訓練術 / 6. 最後)</title>
+    <title>セミナー資料 (全スライド統合版)</title>
     <!-- Tailwind CSS を読み込み -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -27,7 +27,31 @@
             max-width: 1000px;
             width: 100%;
         }
-        /* 訓練術のカード */
+
+        /* 活用例の比較ボックス (seminar_slide_02.html から) */
+        .prompt-box {
+            background-color: #f3f4f6; /* bg-gray-100 */
+            border: 1px solid #d1d5db; /* border-gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 1.5rem; /* p-6 */
+            height: 100%;
+        }
+        .output-box {
+            background-color: #fefce8; /* bg-yellow-50 */
+            border: 1px solid #fde68a; /* border-yellow-200 */
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 1.5rem; /* p-6 */
+            height: 100%;
+        }
+        .prompt-box h4, .output-box h4 {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            margin-bottom: 0.75rem; /* mb-3 */
+        }
+        .prompt-box h4 { color: #1f2937; /* text-gray-800 */ }
+        .output-box h4 { color: #92400e; /* text-yellow-800 */ }
+        
+        /* 訓練術のカード (seminar_slide_03.html から) */
         .training-card {
             background-color: white;
             border: 1px solid #e5e7eb; /* border-gray-200 */
@@ -62,6 +86,465 @@
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800 antialiased">
+
+    <!-- 
+    ========================================
+    スライド A: 表紙 (新規追加)
+    ========================================
+    -->
+    <section class="slide bg-gradient-to-br from-indigo-600 to-purple-700 text-white text-center">
+        <div class="slide-content">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">上流工程デビューを成功させる！</h1>
+            <p class="text-2xl md:text-4xl text-indigo-100 mb-12">～若手のための「要件抽出～文書化」AI活用術～</p>
+            
+            <div class="text-left max-w-md mx-auto md:mx-0 md:ml-auto md:mr-12">
+                <p class="text-xl md:text-2xl text-gray-200">[登壇者名]</p>
+                <p class="text-lg md:text-xl text-gray-300">[所属・会社名]</p>
+                <p class="text-lg md:text-xl text-gray-300 mt-2">[2025年10月31日]</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 
+    ========================================
+    スライド B: 登壇者プロフィール (新規追加)
+    ========================================
+    -->
+    <section class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">登壇者プロフィール</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 items-center">
+                <!-- プロフィール写真 -->
+                <div class="md:col-span-1 text-center">
+                    <img src="https://placehold.co/250x250/E0E7FF/4338CA?text=Profile%0APhoto" 
+                         alt="プロフィール写真" 
+                         class="mx-auto rounded-full shadow-lg w-48 h-48 md:w-64 md:h-64 object-cover">
+                </div>
+                
+                <!-- プロフィール詳細 -->
+                <div class="md:col-span-2 text-lg text-gray-700 space-y-4">
+                    <div>
+                        <h3 class="text-3xl font-bold text-indigo-600">[登壇者名]</h3>
+                        <p class="text-xl text-gray-500">[所属・役職]</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-semibold text-gray-800 mb-1">経歴・得意分野:</h4>
+                        <p class="text-base">ここに経歴や得意分野を記載します。（例：20XX年に入社後、主に〇〇業界のシステム開発に従事。特にクラウドアーキテクチャの設計や、アジャイル開発の導入支援を得意とする。）</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-semibold text-gray-800 mb-1">本日のひとこと:</h4>
+                        <p class="text-base">ここにひとことメッセージを記載します。（例：AIは強力な「副操縦士」です。今日は皆様が「機長」としてAIを使いこなすヒントをお届けします。）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 
+    ========================================
+    セクション 1: 1. 上流工程の第一歩は要件定義である。
+    (ここから元々のスライド)
+    ========================================
+    -->
+
+    <!-- スライド 1->3: タイトル -->
+    <section class="slide bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-center">
+        <div class="slide-content">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 animate-pulse">1. 上流工程の第一歩は<br>要件定義である。</h1>
+            <p class="text-lg md:text-xl text-indigo-100">上流工程デビューを成功させる！<br>～若手のための「要件抽出～文書化」AI活用術～</p>
+        </div>
+    </section>
+
+    <!-- スライド 2: 要件定義とは？ (難しい定義) -->
+    <section class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">そもそも要件定義とは？</h2>
+            
+            <!-- あえて小さく表示する定義文 -->
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-xs text-gray-500 opacity-80 max-w-4xl mx-auto">
+                <h3 class="font-bold text-gray-700 mb-2">【要件定義の定義（例：IPA 共通フレーム2013準拠）】</h3>
+                <p class="mb-2">システム化の対象となる業務（あるいは対象となる世界）の在るべき姿と、その中で計算機システム（ソフトウェア、ハードウェア、手作業、その他の形態の組合せ）が果たすべき役割及び機能、実現すべき制約条件等を明らかにし、それらに対する利害関係者（ステークホルダ）間の合意を形成するプロセスである。</p>
+                <p>これには、以下の活動が含まれる。</p>
+                <ol class="list-decimal list-inside mt-2 space-y-1">
+                    <li><strong>利害関係者の識別とニーズの抽出:</strong> ...（ニーズ）をヒアリングや調査を通じて収集する。</li>
+                    <li><strong>ニーズの分析と整理:</strong> ...「要求事項（要件）」へと具体化・体系化する。</li>
+                    <li><strong>要件の定義:</strong> ...（機能要件・非機能要件）に分類し、明確な仕様として定義する。</li>
+                    <li><strong>合意形成と文書化:</strong> ...公式な文書（要件定義書）として記録する。</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 3: わからない -->
+    <section class="slide bg-gray-50">
+        <div class="slide-content text-center">
+            <h2 class="text-3xl md:text-5xl font-bold mb-8">ちょっとなに言ってるかわからないですね</h2>
+            <img src="https://placehold.co/400x300/E0E7FF/4338CA?text=Illustration%0A(Confused+Engineer)" 
+                 alt="" 
+                 class="mx-auto rounded-lg shadow-md w-full max-w-md">
+        </div>
+    </section>
+
+    <!-- スライド 4: 一言でいうと -->
+    <section class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">要件定義とは（一言でいうと）<br>
+                <span class="text-indigo-600 text-4xl md:text-5xl">プロジェクトの「北極星（ゴール）」</span>
+                を決めること
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- お客様に向けて -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-blue-800 mb-4">お客様に向けては</h3>
+                    <p class="text-xl md:text-2xl font-medium">**「なぜ、何が欲しいのか」**<br>を明確にすること</p>
+                    <p class="text-gray-600 mt-3">（例：売上を上げたいから、顧客分析機能が欲しい）</p>
+                </div>
+                
+                <!-- 開発者に向けて -->
+                <div class="bg-green-50 border border-green-200 rounded-lg p-6 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-green-800 mb-4">開発者に向けては</h3>
+                    <p class="text-xl md:text-2xl font-medium">**「何を作るべきか」**<br>のゴールを明確にすること</p>
+                    <p class="text-gray-600 mt-3">（例：〇〇のデータを使い、✕✕の形式で分析結果を表示する機能を作る）</p>
+                </div>
+            </div>
+            
+            <img src="https://placehold.co/600x200/DBEAFE/1D4ED8?text=Illustration%0A(Bridging+the+Gap)" 
+                 alt="" 
+                 class="mx-auto rounded-lg mt-8 w-full max-w-2xl hidden md:block">
+        </div>
+    </section>
+
+    <!-- スライド 5: なぜ重要か (炎上) -->
+    <section class="slide bg-red-50">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-red-800 mb-8">なぜ要件定義が「最も」重要なのか？</h2>
+
+            <div class="md:flex items-center gap-8">
+                <div class="flex-shrink-0 text-center md:w-1/3">
+                    <img src="https://placehold.co/300x300/FEE2E2/B91C1C?text=Illustration%0A(Project+on+Fire)" 
+                         alt="" 
+                         class="mx-auto rounded-lg shadow-lg mb-4">
+                    <p class="text-xl font-semibold text-red-700">炎上理由の多くは<br>「要件定義の失敗」</p>
+                </div>
+                
+                <div class="mt-8 md:mt-0 md:w-2/3">
+                    <ul class="space-y-4 text-lg text-gray-700">
+                        <li class="bg-white p-4 rounded-lg shadow-sm border border-red-100">「言った、言わない」が発生した</li>
+                        <li class="bg-white p-4 rounded-lg shadow-sm border border-red-100">お客様の「欲しいもの」と違った</li>
+                        <li class="bg-white p-4 rounded-lg shadow-sm border border-red-100">後から「あれも必要だった」と追加が多発した</li>
+                        <li class="bg-white p-4 rounded-lg shadow-sm border border-red-100">開発のゴールが曖昧で、手戻りが大量発生した</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 6: なぜ重要か (土台) -->
+    <section class="slide bg-white">
+        <div class="slide-content text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">要件定義は、プロジェクトの土台（基礎）です。</h2>
+            <p class="text-xl mb-8">土台がグラグラだと、その上に立派な家は建ちません。</p>
+            
+            <img src="https://placehold.co/600x300/FEF3C7/B45309?text=Illustration%0A(Weak+Foundation)" 
+                 alt="" 
+                 class="mx-auto rounded-lg shadow-md w-full max-w-2xl">
+        </div>
+    </section>
+
+    <!-- スライド 7: 難しさ -->
+    <section class="slide bg-gray-50">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">要件定義の「難しさ」</h2>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 1. 100点満点が存在しない -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-indigo-700 mb-4">1. 100点満点が存在しない</h3>
+                    <p class="text-gray-600 mb-3">ベテランの皆様、ご共感いただけますよね？</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>いっぱい失敗しましたよね？</li>
+                        <li>いっぱい怒られましたよね？</li>
+                        <li>「今回は完璧だった！」と思ったこと、ないですよね？</li>
+                    </ul>
+                </div>
+
+                <!-- 2. ノウハウ化しづらい -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-indigo-700 mb-4">2. ノウハウ化しづらい</h3>
+                    <p class="text-gray-600 mb-3">（属人化しやすい）</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>お客様やプロジェクトはまさに**千差万別**。</li>
+                        <li>「慣れ」が逆効果になることも（思い込み）。</li>
+                    </ul>
+                </div>
+
+                <!-- 3. 実践の場が少ない -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-indigo-700 mb-4">3. 実践の場が少ない</h3>
+                    <p class="text-gray-600 mb-3">（特に若手）</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>いきなり「要件定義してきて」とは、なかなかならない。</li>
+                        <li>実践訓練を積む機会が不足しがち。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <img src="https://placehold.co/600x200/E0E7FF/4338CA?text=Illustration%0A(Everyone+is+Puzzled)" 
+                 alt="" 
+                 class="mx-auto rounded-lg mt-10 w-full max-w-2xl">
+        </div>
+    </section>
+
+    <!-- 
+    ========================================
+    セクション 2: 2. AIを活用した要件定義
+    セクション 3: 3. 活用例
+    (seminar_slide_02.html から)
+    ========================================
+    -->
+
+    <!-- スライド 8: (セクションタイトル) 2. AIを活用した要件定義 -->
+    <section class="slide bg-gradient-to-br from-indigo-500 to-purple-600 text-white">
+        <div class="slide-content text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">2. AIを活用した要件定義</h1>
+            <p class="text-lg md:text-xl text-indigo-100">難易度の高い要件定義を、AIでどうサポートするか？</p>
+        </div>
+    </section>
+
+    <!-- スライド 9: なぜ今、AIなのか？ -->
+    <section class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">なぜ今、AI（特に生成AI）なのか？</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-4">要件定義の「難しさ」（おさらい）</h3>
+                    <ul class="space-y-3 text-lg">
+                        <li class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <span class="font-semibold text-indigo-600">100点満点がない</span> (多様な解釈・暗黙知)
+                        </li>
+                        <li class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <span class="font-semibold text-indigo-600">ノウハウ化しづらい</span> (属人化しやすい)
+                        </li>
+                        <li class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <span class="font-semibold text-indigo-600">実践の場が少ない</span> (訓練コストが高い)
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="text-center">
+                    <img src="https://placehold.co/400x300/E0E7FF/4338CA?text=Illustration%0A(AI+helps+organize)" 
+                         alt="" 
+                         class="mx-auto rounded-lg shadow-md">
+                    <p class="text-2xl font-bold text-indigo-600 mt-6">これ、AIが得意なことでは？</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 10: AIが要件定義で得意なこと -->
+    <section class="slide bg-gray-50">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">AIが要件定義で得意なこと</h2>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 1. 発散 (ブレスト) -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center">
+                    <img src="https://placehold.co/100x100/FEF3C7/D97706?text=Icon%0A(Lightbulb)" alt="" class="mx-auto rounded-full mb-4">
+                    <h3 class="text-2xl font-semibold text-yellow-700 mb-3">1. 発散 (ブレスト)</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-left">
+                        <li>大量のアイデア出し</li>
+                        <li>多様な視点の提供</li>
+                        <li>要求の深掘り (壁打ち相手)</li>
+                    </ul>
+                </div>
+
+                <!-- 2. 整理・構造化 (パターン化) -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center">
+                    <img src="https://placehold.co/100x100/DBEAFE/1D4ED8?text=Icon%0A(Grouping)" alt="" class="mx-auto rounded-full mb-4">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-3">2. 整理・構造化</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-left">
+                        <li>膨大な議事録やメモの要約</li>
+                        <li>要求のグルーピング・分類</li>
+                        <li>要求間の矛盾点の指摘</li>
+                    </ul>
+                </div>
+
+                <!-- 3. 文書化 (たたき台作成) -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center">
+                    <img src="https://placehold.co/100x100/D1FAE5/065F46?text=Icon%0A(Document)" alt="" class="mx-auto rounded-full mb-4">
+                    <h3 class="text-2xl font-semibold text-green-700 mb-3">3. 文書化 (たたき台)</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-left">
+                        <li>要件定義書のフォーマット作成</li>
+                        <li>専門用語の平易な言い換え</li>
+                        <li>インタビュー内容の清書</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 11: (セクションタイトル) 3. 活用例 -->
+    <section class="slide bg-gradient-to-br from-green-500 to-emerald-600 text-white">
+        <div class="slide-content text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">3. 活用例</h1>
+            <p class="text-lg md:text-xl text-green-100">具体的なプロンプト（指示）とアウトプットを見てみよう</p>
+        </div>
+    </section>
+
+    <!-- スライド 12: 活用例1: 「フワッとした要望」を深掘りする -->
+    <section class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">活用例① 顧客の「フワッとした要望」を深掘りする</h2>
+            <p class="text-center text-lg text-gray-600 mb-6">
+                <strong>顧客の要望:</strong> 「なんかウチのECサイト、最近売上が伸び悩んでて、もっと使いやすくしたいんだよね」
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- プロンプト -->
+                <div class="prompt-box">
+                    <h4><span class="text-indigo-600">AIへの役割＆プロンプト</span></h4>
+                    <p class="mb-3"><strong>役割:</strong> あなたは一流のコンサルタントです。</p>
+                    <code class="block bg-gray-200 p-3 rounded text-sm text-gray-800">
+                        この要望に対し、要件を深掘りするための「5W1H」に基づいた質問を10個、具体的な例を交えて作成してください。
+                    </code>
+                </div>
+                
+                <!-- アウトプット -->
+                <div class="output-box">
+                    <h4><span class="text-yellow-800">AIのアウトプット (例)</span></h4>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700">
+                        <li><strong>(Why) なぜ</strong>「使いやすくしたい」のですか？ (例：カゴ落ち率が高い？ 直帰率が高い？)</li>
+                        <li><strong>(Who)</strong> 「<strong>誰</strong>」にとっての使いやすさですか？ (例：新規顧客？ リピーター？)</li>
+                        <li><strong>(What)</strong> 「使いやすい」とは<strong>何</strong>がどうなる状態ですか？ (例：読み込みが速い？ ボタンが押しやすい？)</li>
+                        <li><strong>(Where)</strong> 特に「<strong>どこ</strong>」の使い勝手が悪いですか？ (例：商品検索？ 決済ページ？)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 13: 活用例2: 議事録から「要求」を抽出・分類する -->
+    <section class="slide bg-gray-50">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">活用例② 議事録から「要求」を抽出・分類する</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- プロンプト -->
+                <div class="prompt-box">
+                    <h4><span class="text-indigo-600">AIへの役割＆プロンプト</span></h4>
+                    <p class="mb-3"><strong>役割:</strong> あなたは経験豊富なシステムアナリストです。</p>
+                    <p class="mb-3"><strong>インプット (議事録抜粋):</strong><br>
+                        <span class="text-sm text-gray-600">A部長「とにかく顧客満足度を上げたい。それにはレスポンスが重要だ。今のシステムは検索が遅すぎる。」<br>
+                        B担当「現場からは、スマホでも在庫確認できるようにしてほしいって声が多いですね。外回り中に使いたいと。」<br>
+                        A部長「あ、あとセキュリティも大事だ。役員承認がないとデータは見れないように。」</span>
+                    </p>
+                    <code class="block bg-gray-200 p-3 rounded text-sm text-gray-800">
+                        以下の議事録から、「機能要件」「非機能要件」を抽出し、分類・整理してください。
+                    </code>
+                </div>
+                
+                <!-- アウトプット -->
+                <div class="output-box">
+                    <h4><span class="text-yellow-800">AIのアウトプット (例)</span></h4>
+                    <h5 class="font-semibold text-gray-700 mt-4">【機能要件】</h5>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700 ml-4">
+                        <li>在庫確認機能（スマートフォン対応）</li>
+                    </ul>
+                    
+                    <h5 class="font-semibold text-gray-700 mt-4">【非機能要件】</h5>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700 ml-4">
+                        <li><strong>性能:</strong> 検索レスポンスの改善</li>
+                        <li><strong>セキュリティ:</strong> 役員承認によるアクセス制御</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 14: 活用例3: 要件定義書の「たたき台」を作成する -->
+    <section class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">活用例③ 要件定義書の「たたき台」を作成する</h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- プロンプト -->
+                <div class="prompt-box">
+                    <h4><span class="text-indigo-600">AIへの役割＆プロンプト</span></h4>
+                    <p class="mb-3"><strong>役割:</strong> あなたはPMO（プロジェクトマネジメントオフィス）のメンバーです。</p>
+                    <code class="block bg-gray-200 p-3 rounded text-sm text-gray-800">
+                        新しい「勤怠管理システム」を開発します。<br><br>
+                        要件定義書に含めるべき「一般的な項目（目次）」と、「非機能要件」として考慮すべき品質特性（例：ISO/IEC 25010に基づく）をリストアップしてください。
+                    </code>
+                </div>
+                
+                <!-- アウトプット -->
+                <div class="output-box">
+                    <h4><span class="text-yellow-800">AIのアウトプット (例)</span></h4>
+                    <h5 class="font-semibold text-gray-700">【要件定義書 目次案】</h5>
+                    <ul class="list-disc list-inside text-sm space-y-1 text-gray-700 ml-4">
+                        <li>1. 概要 (1.1 背景, 1.2 目的...)</li>
+                        <li>2. 機能要件 (3.1 打刻機能, 3.2 申請機能...)</li>
+                        <li>3. 非機能要件</li>
+                    </ul>
+                    
+                    <h5 class="font-semibold text-gray-700 mt-4">【非機能要件 考慮点】</h5>
+                    <ul class="list-disc list-inside text-sm space-y-1 text-gray-700 ml-4">
+                        <li><strong>性能効率性</strong> (例：1000人同時打刻)</li>
+                        <li><strong>使用性</strong> (例：ITに不慣れでも使えるか)</li>
+                        <li><strong>信頼性</strong> (例：システムが停止しないか)</li>
+                        <li><strong>セキュリティ</strong> (例：個人情報漏洩防止)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- スライド 15: 活用例4: ユーザーシナリオ（ユースケース）の作成 -->
+    <section class="slide bg-gray-50">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">活用例④ ユーザーシナリオ（ユースケース）の作成</h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- プロンプト -->
+                <div class="prompt-box">
+                    <h4><span class="text-indigo-600">AIへの役割＆プロンプト</span></h4>
+                    <p class="mb-3"><strong>役割:</strong> あなたはUXデザイナーです。</p>
+                    <code class="block bg-gray-200 p-3 rounded text-sm text-gray-800">
+                        ECサイトの「新規ユーザー登録」機能について、
+                        ペルソナ「30代女性、ITはあまり得意ではない、スマホで登録」
+                        のユーザーシナリオと、考えられる例外（異常系）シナリオを3つ作成してください。
+                    </code>
+                </div>
+                
+                <!-- アウトプット -->
+                <div class="output-box">
+                    <h4><span class="text-yellow-800">AIのアウトプット (例)</span></h4>
+                    <h5 class="font-semibold text-gray-700">【正常系シナリオ（ハッピーパス）】</h5>
+                    <p class="text-sm text-gray-700 ml-4 mb-2">1. 〇〇さんはSNS広告を見てアプリをインストール...</p>
+                    
+                    <h5 class="font-semibold text-gray-700 mt-4">【異常系シナリオ】</h5>
+                    <ul class="list-disc list-inside text-sm space-y-1 text-gray-700 ml-4">
+                        <li>パスワードの形式が間違っている (エラー表示)</li>
+                        <li>確認メールのリンクが時間切れになる</li>
+                        <li>登録中にスマートフォンの通信が途切れる</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 
+    ========================================
+    セクション 4: 4. AIはあくまで副操縦士と考える
+    セクション 5: 5. 日常生活でできる訓練術
+    セクション 6: 6. 最後に
+    (seminar_slide_03.html から)
+    ========================================
+    -->
 
     <!-- スライド 16: (セクションタイトル) 4. AIはあくまで副操縦士と考える -->
     <section class="slide bg-gradient-to-br from-gray-700 to-gray-900 text-white">
@@ -307,3 +790,4 @@
 
 </body>
 </html>
+
