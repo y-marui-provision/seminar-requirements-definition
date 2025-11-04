@@ -5,16 +5,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AIを活用した要件定義ワークショップ</title>
-<!-- 外部フォントとアイコンを読み込み -->
-<link rel="preconnect" href="https://www.google.com/search?q=https://fonts.googleapis.com">
-<link rel="preconnect" href="https://www.google.com/search?q=https://fonts.gstatic.com" crossorigin>
-<link href="https://www.google.com/search?q=https://fonts.googleapis.com/css2%3Ffamily%3DPoppins:wght%40400%3B700%26family%3DLato:wght%40400%3B700%26display%3Dswap" rel="stylesheet">
-<link rel="stylesheet" href="https://www.google.com/search?q=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- 外部フォントとアイコンを読み込み (URLを修正) -->
+<link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+<link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+<link href="[https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Lato:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Lato:wght@400;700&display=swap)" rel="stylesheet">
+<link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css)">
+
 <style>
-/* 1. 基本設定 */
-* {
-box-sizing: border-box;
-}
+    /* 1. 基本設定 */
+    * {
+        box-sizing: border-box;
+    }
 
     /* bodyをフルスクリーンにし、スクロールバーを非表示 */
     html, body {
@@ -674,10 +676,8 @@ box-sizing: border-box;
 <body>
 
 <div id="slide-deck">
-<!-- スライド 1: タイトル -->
-<div class="slide-container active" id="slide1" style="background-image: url('
-
-');">
+<!-- スライド 1: タイトル (画像URLの改行を修正) -->
+<div class="slide-container active" id="slide1" style="background-image: url('');">
 <div class="content-overlay">
 <h1>AIを活用した要件定義ワークショップ</h1>
 <p class="subtitle">架空プロジェクト「社内ナレッジ共有ポータル」編</p>
@@ -944,6 +944,8 @@ box-sizing: border-box;
 
 <div id="slide-counter">1 / 12</div>
 
+<!-- JavaScript (エスケープを全て解除) -->
+
 <script>
 // 必要なDOM要素を取得
 const slides = document.querySelectorAll('.slide-container');
@@ -960,29 +962,29 @@ const totalSlides = slides.length;
  * @param {number} slideIndex - 表示したいスライドのインデックス
  */
 function showSlide(slideIndex) {
-    // すべてのスライドから &#39;active&#39; クラスを削除
-    slides.forEach(slide =&gt; {
-        slide.classList.remove(&#39;active&#39;);
+    // すべてのスライドから 'active' クラスを削除
+    slides.forEach(slide => {
+        slide.classList.remove('active');
     });
 
-    // 対象のスライドに &#39;active&#39; クラスを追加
-    slides[slideIndex].classList.add(&#39;active&#39;);
+    // 対象のスライドに 'active' クラスを追加
+    slides[slideIndex].classList.add('active');
     
     // スライドカウンターを更新
     slideCounter.textContent = `${slideIndex + 1} / ${totalSlides}`;
     
     // ボタンの表示/非表示を制御
     // 最初のスライドなら「前へ」を非表示
-    prevButton.style.display = (slideIndex === 0) ? &#39;none&#39; : &#39;flex&#39;;
+    prevButton.style.display = (slideIndex === 0) ? 'none' : 'flex';
     // 最後のスライドなら「次へ」を非表示
-    nextButton.style.display = (slideIndex === totalSlides - 1) ? &#39;none&#39; : &#39;flex&#39;;
+    nextButton.style.display = (slideIndex === totalSlides - 1) ? 'none' : 'flex';
 }
 
 /**
  * 次のスライドへ移動する関数
  */
 function goToNextSlide() {
-    if (currentSlide &lt; totalSlides - 1) {
+    if (currentSlide < totalSlides - 1) {
         currentSlide++;
         showSlide(currentSlide);
     }
@@ -992,7 +994,7 @@ function goToNextSlide() {
  * 前のスライドへ移動する関数
  */
 function goToPrevSlide() {
-    if (currentSlide &gt; 0) {
+    if (currentSlide > 0) {
         currentSlide--;
         showSlide(currentSlide);
     }
@@ -1001,16 +1003,16 @@ function goToPrevSlide() {
 // --- イベントリスナーの設定 ---
 
 // 「次へ」ボタンのクリックイベント
-nextButton.addEventListener(&#39;click&#39;, goToNextSlide);
+nextButton.addEventListener('click', goToNextSlide);
 
 // 「前へ」ボタンのクリックイベント
-prevButton.addEventListener(&#39;click&#39;, goToPrevSlide);
+prevButton.addEventListener('click', goToPrevSlide);
 
 // キーボードの矢印キーによる操作
-document.addEventListener(&#39;keydown&#39;, (event) =&gt; {
-    if (event.key === &#39;ArrowRight&#39; || event.key === &#39; &#39;) { // 右矢印キーまたはスペースキー
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight' || event.key === ' ') { // 右矢印キーまたはスペースキー
         goToNextSlide();
-    } else if (event.key === &#39;ArrowLeft&#39;) { // 左矢印キー
+    } else if (event.key === 'ArrowLeft') { // 左矢印キー
         goToPrevSlide();
     }
 });
