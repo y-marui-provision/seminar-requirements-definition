@@ -91,23 +91,29 @@
         }
 
         /* --- ナビゲーションUI --- */
-        #navigation {
+        /* ページ番号コンテナ (中央下) - 削除 */
+        /*
+        #pagination-container {
             position: fixed;
-            bottom: 2rem;
+            bottom: 1.5rem; 
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
             z-index: 50;
-            background-color: rgba(30, 41, 59, 0.7); /* slate-800 + transparency */
+            background-color: rgba(30, 41, 59, 0.7); 
             backdrop-filter: blur(5px);
             padding: 0.5rem 1rem;
             border-radius: 9999px;
-            border: 1px solid #334155; /* slate-700 */
+            border: 1px solid #334155; 
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
+        */
+
+        /* 左右の矢印ボタン */
         .nav-button {
+            position: fixed; /* ページに対して固定 */
+            bottom: 1.5rem; /* フッターやページ番号と高さを合わせる */
+            z-index: 50;
+
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
             border: none;
@@ -121,6 +127,16 @@
             align-items: center;
             justify-content: center;
         }
+        
+        /* 前へボタン (左下) */
+        #prev-button {
+            left: 5rem; /* スライドフッターの左端に合わせる */
+        }
+        /* 次へボタン (右下) */
+        #next-button {
+            right: 5rem; /* スライドページ番号の右端に合わせる */
+        }
+        
         .nav-button:hover:not(:disabled) {
             background-color: rgba(255, 255, 255, 0.3);
         }
@@ -128,12 +144,14 @@
             opacity: 0.3;
             cursor: not-allowed;
         }
+        /* ページ番号スタイル - 削除 */
+        /*
         #pagination {
-            color: #e2e8f0; /* slate-200 */
+            color: #e2e8f0; 
             font-size: 1rem;
             font-weight: 600;
-            padding: 0.25rem 0.75rem;
         }
+        */
 
         /* --- 各スライドの個別スタイル --- */
 
@@ -757,19 +775,27 @@
     </main>
 
     <!-- ナビゲーション UI -->
-    <div id="navigation">
-        <button id="prev-button" class="nav-button" aria-label="前のスライドへ">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-        </button>
+    
+    <!-- ページ番号 (中央下) - 削除 -->
+    <!--
+    <div id="pagination-container">
         <span id="pagination">1 / 16</span>
-        <button id="next-button" class="nav-button" aria-label="次のスライドへ">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
-        </button>
     </div>
+    -->
+
+    <!-- 前へボタン (左下) -->
+    <button id="prev-button" class="nav-button" aria-label="前のスライドへ">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+    </button>
+    
+    <!-- 次へボタン (右下) -->
+    <button id="next-button" class="nav-button" aria-label="次のスライドへ">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+    </button>
 
     <script>
         // スクリプトは変更ありません
@@ -777,16 +803,18 @@
             const container = document.getElementById('slide-container');
             const prevButton = document.getElementById('prev-button');
             const nextButton = document.getElementById('next-button');
-            const pagination = document.getElementById('pagination');
+            // const pagination = document.getElementById('pagination'); // ページ番号の参照を削除
             
             const slides = document.querySelectorAll('.slide');
             const totalSlides = slides.length;
             
             let currentSlide = 1;
 
+            /* ページ番号更新関数 - 削除
             function updatePaginationText() {
                 pagination.textContent = `${currentSlide} / ${totalSlides}`;
             }
+            */
 
             function goToSlide(slideNumber) {
                 if (slideNumber < 1 || slideNumber > totalSlides) return;
@@ -801,7 +829,7 @@
             }
 
             function updatePaginationAndButtons() {
-                updatePaginationText();
+                // updatePaginationText(); // ページ番号更新処理を削除
                 prevButton.disabled = currentSlide === 1;
                 nextButton.disabled = currentSlide === totalSlides;
             }
