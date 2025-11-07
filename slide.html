@@ -1,1028 +1,177 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AIを活用した要件定義ワークショップ</title>
-
-<!-- 外部フォントとアイコンを読み込み (URLを修正) -->
-<link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
-<link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-<link href="[https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Lato:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Lato:wght@400;700&display=swap)" rel="stylesheet">
-<link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css)">
-
-<style>
-    /* 1. 基本設定 */
-    * {
-        box-sizing: border-box;
-    }
-
-    /* bodyをフルスクリーンにし、スクロールバーを非表示 */
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        overflow: hidden; /* 縦スクロールを禁止 */
-        font-family: 'Lato', sans-serif;
-        background-color: #111827; /* 背景色: ダークグレー */
-    }
-    
-    /* スライドデッキ: 全スライドを保持するコンテナ */
-    #slide-deck {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* スライドコンテナの基本スタイル */
-    .slide-container {
-        align-items: center;
-        background-color: #0F172A; /* 背景色: ディープインディゴブルー */
-        border-radius: 8px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        display: flex; /* デフォルトをflexに変更 */
-        flex-direction: column;
-        height: 90vh; /* 高さをビューポートの90%に */
-        justify-content: flex-start; /* 上から配置 */
-        overflow: hidden;
-        padding: 60px;
-        position: absolute; /* スライドを重ねるためにabsoluteに変更 */
-        width: 90vw; /* 幅をビューポートの90%に */
-        max-width: 1280px; /* 最大幅 */
-        max-height: 720px; /* 最大高さ (16:9) */
-        aspect-ratio: 16 / 9; /* アスペクト比を16:9に固定 */
-
-        /* スライド切り替えアニメーション */
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.5s ease-in-out, visibility 0.5s;
-        z-index: 1;
-    }
-    
-    /* アクティブなスライドのスタイル */
-    .slide-container.active {
-        opacity: 1;
-        visibility: visible;
-        z-index: 2;
-    }
-
-
-    /* 1.1 背景のグリッドパターン */
-    .slide-container::before {
-        content: '';
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-        z-index: 0;
-        opacity: 0.05;
-        background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-                          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-        background-size: 50px 50px;
-    }
-
-    .slide-container>* {
-        position: relative;
-        z-index: 1; /* コンテンツが背景パターンより上に来るように */
-    }
-
-    /* 2. タイポグラフィ（フォント設定） */
-    .slide-container h1,
-    .slide-container h2,
-    .slide-container h3 {
-        color: #E2E8F0; /* 見出し色: ライトスレート */
-        font-weight: 700;
-        font-family: 'Poppins', sans-serif;
-        margin: 0;
-    }
-
-    .slide-container p,
-    .slide-container li,
-    .slide-container .subtitle,
-    .slide-container .prompt-text,
-    .slide-container th,
-    .slide-container td {
-        color: #CBD5E1; /* 本文色: スレートグレー */
-        font-family: 'Lato', sans-serif;
-    }
-
-    /* スケール対応のためのフォントサイズ調整 (vw/vh) */
-    .slide-container h1 {
-        font-size: clamp(24px, 4.5vw, 64px); /* 最小, 推奨, 最大 */
-    }
-
-    /* 各スライドの共通タイトル */
-    .slide-container .slide-title {
-        font-size: clamp(20px, 2.8vw, 40px);
-        font-weight: 700;
-        margin-bottom: clamp(15px, 3vh, 40px); /* 調整 */
-        text-align: left;
-        width: 100%;
-        color: #E2E8F0;
-    }
-
-    .slide-container h3 {
-        font-size: clamp(18px, 2vw, 28px);
-        font-weight: 700;
-        margin-bottom: clamp(10px, 1.5vh, 15px); /* 調整 */
-        color: #38BDF8; /* 強調色: スカイブルー */
-    }
-
-    .slide-container p,
-    .slide-container li,
-    .slide-container .subtitle,
-    .slide-container th,
-    .slide-container td {
-        font-size: clamp(14px, 1.4vw, 20px);
-        line-height: 1.6;
-    }
-
-    .slide-container .subtitle {
-        font-size: clamp(16px, 1.8vw, 24px);
-        font-weight: 400;
-        margin: 20px auto;
-        color: #CBD5E1;
-    }
-
-    /* スライド内のコンテンツエリア */
-    .slide-container .content-area {
-        align-items: center;
-        display: flex;
-        flex-grow: 1;
-        justify-content: center;
-        width: 100%;
-        overflow-y: auto; /* コンテンツが多い場合はスクロール */
-        padding-right: 10px; /* スクロールバー用 */
-    }
-    
-    /* Webkitブラウザ用スクロールバー */
-    .content-area::-webkit-scrollbar {
-        width: 8px;
-    }
-    .content-area::-webkit-scrollbar-thumb {
-        background: #334155;
-        border-radius: 4px;
-    }
-    .content-area::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-
-    /* 3. レイアウト定義 */
-
-    /* タイトルスライド (Full_Background_Image) */
-    .full-bg-image {
-        background-position: center;
-        background-size: cover;
-        padding: 0;
-        justify-content: center; /* タイトルスライドは中央寄せ */
-    }
-
-    .full-bg-image .content-overlay {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 60px;
-        /* 暗いオーバーレイでテキストの可読性を確保 */
-        background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9));
-    }
-
-    .full-bg-image h1 {
-        color: #FFFFFF;
-        font-size: clamp(32px, 5vw, 72px);
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-
-    .full-bg-image .subtitle {
-        color: #E2E8F0;
-        font-size: clamp(18px, 2vw, 28px);
-        max-width: 900px;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    }
-
-    /* セクションタイトルスライド (Section_Title) */
-    .section-title-layout {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        justify-content: center;
-        text-align: center;
-        width: 100%;
-    }
-
-    .section-title-layout h2 {
-        font-size: clamp(30px, 4.2vw, 60px);
-        margin-bottom: 20px;
-        color: #FFFFFF;
-    }
-
-    .section-title-layout p {
-        font-size: clamp(16px, 1.5vw, 22px);
-        margin: 0 auto;
-        max-width: 900px;
-        line-height: 1.7;
-    }
-
-    .section-title-layout hr {
-        background-color: #38BDF8; /* スカイブルー */
-        border: none;
-        height: 5px;
-        margin: 30px auto;
-        width: 100px;
-    }
-
-    /* 2カラムレイアウト (Two_Column_Tiled_Text) */
-    .two-column {
-        align-items: flex-start;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: clamp(20px, 3vw, 50px);
-        width: 100%;
-    }
-
-    .two-column.tiled {
-        align-items: stretch; /* カラムの高さを揃える */
-    }
-
-    .two-column.tiled>div {
-        background-color: #1E293B; /* ダークブルーグレー */
-        border-radius: 12px;
-        border: 1px solid #334155; /* スレート */
-        padding: clamp(20px, 2.5vw, 40px);
-    }
-
-    .two-column.tiled h3 {
-        color: #38BDF8; /* スカイブルー */
-        font-size: clamp(18px, 1.7vw, 24px);
-        border-bottom: 2px solid #334155;
-        padding-bottom: 10px;
-    }
-
-    .two-column.tiled p, .two-column.tiled li {
-        font-size: clamp(14px, 1.25vw, 18px);
-        line-height: 1.6;
-        color: #CBD5E1;
-    }
-     .two-column.tiled ul {
-        list-style-type: disc;
-        padding-left: 25px;
-        margin-top: 15px;
-     }
-     .two-column.tiled li {
-         margin-bottom: 10px;
-     }
-
-
-    /* 箇条書きリスト (Styled_Bullet_Points) */
-    .bullet-list {
-        max-width: 1000px;
-        width: 100%;
-    }
-
-    .bullet-list ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .bullet-list li {
-        gap: 20px;
-        margin-bottom: clamp(15px, 2vh, 25px);
-        padding-left: 50px; /* アイコンのためのスペース */
-        position: relative;
-        font-size: clamp(14px, 1.4vw, 20px);
-        line-height: 1.6;
-    }
-
-    .bullet-list i {
-        color: #38BDF8; /* スカイブルー */
-        font-size: clamp(20px, 2vw, 28px);
-        left: 0;
-        position: absolute;
-        text-align: center;
-        top: 4px;
-        width: 35px;
-    }
-
-    .bullet-list li strong {
-        color: #E2E8F0; /* ライトスレート */
-        font-weight: 700;
-        font-size: clamp(16px, 1.5vw, 22px);
-    }
-
-    /* プロンプトテキスト用のスタイル */
-    .prompt-text {
-        background-color: #1E293B;
-        border-left: 4px solid #38BDF8;
-        padding: 15px 20px;
-        margin: 20px 0;
-        border-radius: 4px;
-        color: #E2E8F0;
-        font-family: 'Lato', sans-serif;
-        font-style: italic;
-        font-size: clamp(13px, 1.25vw, 18px);
-        line-height: 1.5;
-    }
-
-
-    /* 3カラム タイルレイアウト (Tiled_Text_With_Icons) */
-    .tiled-content {
-        align-items: stretch;
-        display: flex;
-        gap: clamp(15px, 2.5vw, 40px);
-        justify-content: center;
-        width: 100%;
-    }
-
-    .tile {
-        align-items: flex-start;
-        background-color: #1E293B; /* ダークブルーグレー */
-        border-radius: 12px;
-        border: 1px solid #334155;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        justify-content: flex-start;
-        padding: clamp(15px, 2vw, 30px);
-        text-align: left;
-    }
-
-    .tile .icon {
-        color: #38BDF8; /* スカイブルー */
-        font-size: clamp(24px, 2.5vw, 40px);
-        margin-bottom: 20px;
-        /* アイコン用の背景円 */
-        background-color: #334155;
-        width: clamp(50px, 5vw, 70px);
-        height: clamp(50px, 5vw, 70px);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .tile h3 {
-        font-size: clamp(18px, 1.7vw, 24px);
-        color: #E2E8F0;
-    }
-    .tile p {
-        font-size: clamp(14px, 1.25vw, 18px);
-        line-height: 1.6;
-        color: #CBD5E1;
-    }
-    /* AI回答用のスタイル */
-    .tile .ai-response {
-        font-size: clamp(14px, 1.25vw, 18px);
-        line-height: 1.6;
-        color: #CBD5E1;
-    }
-    .tile .ai-response strong {
-        color: #F59E0B; /* アンバー (目標強調色) */
-        font-weight: 700;
-    }
-    .tile .ai-response .metric-title {
-         color: #E2E8F0;
-         font-weight: 700;
-         display: block;
-         margin-top: 10px;
-    }
-
-    /* 3カラム 画像タイルレイアウト (Tiled_Images) */
-    .image-tile {
-        flex: 1;
-        text-align: center;
-    }
-
-    .image-tile .image-wrapper {
-        height: clamp(150px, 20vh, 300px);
-        width: 100%;
-        margin-bottom: 20px;
-        border-radius: 12px;
-        overflow: hidden;
-        border: 2px solid #334155;
-    }
-
-    .image-tile .image-wrapper img {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-    }
-    .image-tile p {
-        font-size: clamp(14px, 1.25vw, 18px);
-        font-weight: 700;
-        color: #E2E8F0;
-        margin-top: 10px;
-    }
-     .image-tile .persona-details {
-         font-size: clamp(12px, 1.1vw, 16px);
-         font-weight: 400;
-         color: #CBD5E1;
-         margin-top: 5px;
-         line-height: 1.5;
-     }
-
-
-    /* ハイライト付き箇条書きリスト (Highlighted_Numbers) */
-    .bullet-list.highlight-style li {
-        background-color: #1E293B;
-        border: 1px solid #334155;
-        border-radius: 12px;
-        padding: clamp(15px, 2vw, 25px) 30px clamp(15px, 2vw, 25px) 80px;
-        margin-bottom: 20px;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .bullet-list.highlight-style li:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    }
-    .bullet-list.highlight-style i {
-        font-size: clamp(24px, 2.2vw, 32px);
-        top: 50%;
-        transform: translateY(-50%);
-        left: 20px;
-        background-color: #334155;
-        width: clamp(40px, 3.5vw, 50px);
-        height: clamp(40px, 3.5vw, 50px);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-     .bullet-list.highlight-style li strong {
-         font-size: clamp(16px, 1.5vw, 22px);
-         color: #E2E8F0;
-         margin-bottom: 5px;
-         display: inline-block;
-     }
-     .bullet-list.highlight-style li p {
-         font-size: clamp(13px, 1.25vw, 18px);
-         color: #CBD5E1;
-         line-height: 1.5;
-         margin: 0;
-     }
-
-
-    /* テキストと画像の2カラム (Image_Right_Text_Left) */
-    .image-wrapper {
-        border-radius: 12px;
-        height: clamp(200px, 40vh, 450px);
-        overflow: hidden;
-        width: 100%;
-        border: 1px solid #334155;
-    }
-
-    .image-wrapper img {
-        height: 100%;
-        object-fit: cover;
-        width: 100%;
-    }
-
-    .two-column ul {
-        list-style: none;
-        margin: 0;
-        padding-left: 0;
-    }
-
-    .two-column li {
-        margin-bottom: 15px;
-        position: relative;
-        padding-left: 30px;
-        font-size: clamp(13px, 1.25vw, 18px);
-        line-height: 1.6;
-    }
-    /* セキュリティスライド用の緑チェック */
-    .two-column li::before {
-        content: '\f058'; /* Font Awesome Check Circle */
-        font-family: 'Font Awesome 6 Free';
-        font-weight: 900;
-        color: #22C55E; /* グリーン */
-        position: absolute;
-        left: 0;
-        top: 4px;
-        font-size: clamp(14px, 1.4vw, 20px);
-    }
-    .two-column li strong {
-        color: #E2E8F0;
-        font-weight: 700;
-    }
-    .two-column .merit {
-        color: #22C55E; /* グリーン */
-        font-weight: 700;
-    }
-    .two-column .demerit {
-        color: #F59E0B; /* アンバー */
-        font-weight: 700;
-    }
-
-
-    /* リスクと対策用リスト */
-    .bullet-list.risk-list li {
-        background-color: #1E293B;
-        border-left: 5px solid #F59E0B; /* リスク（アンバー） */
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-
-    .bullet-list.risk-list i {
-        color: #F59E0B; /* アンバー */
-        font-size: clamp(18px, 1.7vw, 24px);
-        top: 24px;
-    }
-    .bullet-list.risk-list li strong {
-        font-size: clamp(16px, 1.5vw, 22px);
-    }
-     .bullet-list.risk-list li p {
-         font-size: clamp(13px, 1.25vw, 18px);
-     }
-
-
-    .bullet-list.risk-list .tackle {
-        background-color: #1E293B;
-        border-left: 5px solid #22C55E; /* 対策（グリーン） */
-        padding: 15px 20px 15px 50px;
-        margin-top: 15px;
-        border-radius: 4px;
-        position: relative;
-        font-size: clamp(13px, 1.25vw, 18px);
-        color: #CBD5E1;
-    }
-
-    .bullet-list.risk-list .tackle::before {
-        content: '\f0a9'; /* Font Awesome Arrow Right */
-        font-family: 'Font Awesome 6 Free';
-        font-weight: 900;
-        color: #22C55E;
-        position: absolute;
-        left: 20px;
-        top: 18px;
-        font-size: clamp(14px, 1.4vw, 20px);
-    }
-
-
-    /* Q&Aスライド (Q&A Layout) */
-    .qa-layout {
-        text-align: center;
-        width: 100%;
-        align-self: center;
-        justify-content: center;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .qa-layout h2 {
-        font-size: clamp(40px, 5.5vw, 80px);
-        margin-bottom: 20px;
-        color: #FFFFFF;
-    }
-
-    .qa-layout p {
-        font-size: clamp(16px, 1.5vw, 22px);
-        color: #CBD5E1;
-    }
-
-    .qa-layout .contact-info {
-        color: #E2E8F0;
-        font-size: clamp(18px, 1.7vw, 24px);
-        margin-top: 40px;
-        font-weight: 700;
-    }
-
-    /* Q&Aスライドのまとめリスト */
-    .qa-layout ul {
-        list-style: none;
-        padding: 0;
-        margin: 40px auto;
-        max-width: 800px;
-        text-align: left;
-    }
-    .qa-layout li {
-        font-size: clamp(14px, 1.4vw, 20px);
-        color: #CBD5E1;
-        padding-left: 35px;
-        position: relative;
-        margin-bottom: 20px;
-        line-height: 1.6;
-    }
-    .qa-layout li::before {
-        content: '\f005'; /* Font Awesome Star */
-        font-family: 'Font Awesome 6 Free';
-        font-weight: 900;
-        color: #38BDF8;
-        position: absolute;
-        left: 0;
-        top: 4px;
-        font-size: clamp(14px, 1.4vw, 20px);
-    }
-    
-    /* 4. ナビゲーションボタン */
-    .navigation {
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 20px;
-        z-index: 100;
-    }
-
-    .nav-button {
-        background-color: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        cursor: pointer;
-        font-size: 24px;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.2s;
-    }
-
-    .nav-button:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-    
-    /* スライド番号 */
-    #slide-counter {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        color: white;
-        font-size: 18px;
-        font-weight: 700;
-        background-color: rgba(0, 0, 0, 0.3);
-        padding: 5px 15px;
-        border-radius: 15px;
-        z-index: 100;
-    }
-
-</style>
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理画面モック（たたき台）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* アイコン用 (Font Awesome) */
+        @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
+    </style>
 </head>
-<body>
+<body class="bg-gray-100 font-sans">
 
-<div id="slide-deck">
-<!-- スライド 1: タイトル (画像URLの改行を修正) -->
-<div class="slide-container active" id="slide1" style="background-image: url('');">
-<div class="content-overlay">
-<h1>AIを活用した要件定義ワークショップ</h1>
-<p class="subtitle">架空プロジェクト「社内ナレッジ共有ポータル」編</p>
-</div>
-</div>
-
-<!-- スライド 2: 本日のゴール -->
-<div class="slide-container" id="slide2">
-    <div class="section-title-layout">
-        <hr>
-        <h2>本日のゴール</h2>
-        <p>AIを「優秀なアシスタント」として活用し、プロジェクト初期の「要件定義」を効率的に進めるデモを行います。架空の案件を通し、AIへの具体的な「質問の仕方」や「回答の整理方法」を学びます。</p>
+    <!-- モックアップ（たたき台）であることの注釈 -->
+    <div class="p-3 bg-yellow-500 text-yellow-900 text-center font-bold">
+        【注】これはAIが即時作成した「たたき台（モックアップ）」です。この画面を見ながら仕様を議論します。
     </div>
-</div>
 
-<!-- スライド 3: 架空プロジェクト概要 -->
-<div class="slide-container" id="slide3">
-    <h2 class="slide-title">架空プロジェクト概要</h2>
-    <div class="content-area">
-        <div class="two-column tiled">
-            <div>
-                <h3><i class="fa-solid fa-folder-open"></i> プロジェクト基本情報</h3>
-                <ul>
-                    <li><strong>プロジェクト名:</strong> 社内ナレッジ共有ポータル「Knowledge Hub（仮）」</li>
-                    <li><strong>背景:</strong> 情報の属人化、オンボーディング非効率、過去事例の検索不可。</li>
-                    <li><strong>目的:</strong> ナレッジの蓄積・共有・検索の容易化、業務効率化。</li>
-                </ul>
+    <div class="flex h-screen">
+        <!-- 左帯メニュー (サイドバー) -->
+        <aside class="w-64 bg-gray-800 text-gray-200 flex-shrink-0">
+            <div class="p-6 text-white text-2xl font-bold border-b border-gray-700">
+                繁華街デリバリー
             </div>
-            <div>
-                <h3><i class="fa-solid fa-compass-drafting"></i> スコープと進め方</h3>
-                <ul>
-                    <li><strong>スコープ（仮）:</strong> PC/スマホ対応WEBアプリ。</li>
-                    <li><strong>Phase 1:</strong> 主要機能（投稿・検索・閲覧）をまずリリース。</li>
-                    <li><strong>デモの前提:</strong> 私たち（発表者とAI）が、このプロジェクトの担当者として要件を詰めていきます。</li>
-                </ul>
+            <nav class="mt-4">
+                <!-- メニュー項目 -->
+                <a href="#" class="flex items-center px-6 py-3 bg-gray-700 text-white font-bold">
+                    <i class="fas fa-tachometer-alt w-6 mr-3"></i>
+                    ダッシュボード
+                </a>
+                
+                <!-- 注文管理 -->
+                <div class="px-6 py-3">
+                    <span class="text-gray-500 text-xs uppercase font-semibold">注文管理</span>
+                    <a href="#" class="flex items-center mt-2 py-2 px-4 rounded hover:bg-gray-700">
+                        <i class="fas fa-receipt w-6 mr-3"></i>
+                        注文一覧（リアルタイム）
+                        <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
+                    </a>
+                    <a href="#" class="flex items-center mt-1 py-2 px-4 rounded hover:bg-gray-700">
+                        <i class="fas fa-history w-6 mr-3"></i>
+                        過去の注文履歴
+                    </a>
+                </div>
+
+                <!-- 商品管理 -->
+                <div class="px-6 py-3">
+                    <span class="text-gray-500 text-xs uppercase font-semibold">商品管理</span>
+                    <a href="#" class="flex items-center mt-2 py-2 px-4 rounded hover:bg-gray-700">
+                        <i class="fas fa-utensils w-6 mr-3"></i>
+                        メニュー一覧
+                    </a>
+                    <a href="#" class="flex items-center mt-1 py-2 px-4 rounded hover:bg-gray-700">
+                        <i class="fas fa-tags w-6 mr-3"></i>
+                        カテゴリ管理
+                    </a>
+                </div>
+
+                <!-- 顧客管理 (夜のお店) -->
+                <div class="px-6 py-3">
+                    <span class="text-gray-500 text-xs uppercase font-semibold">顧客管理</span>
+                    <a href="#" class="flex items-center mt-2 py-2 px-4 rounded hover:bg-gray-700">
+                        <i class="fas fa-store w-6 mr-3"></i>
+                        登録店一覧
+                    </a>
+                </div>
+
+                <!-- 売上・分析 -->
+                <div class="px-6 py-3">
+                    <span class="text-gray-500 text-xs uppercase font-semibold">売上・分析</span>
+                    <a href="#" class="flex items-center mt-2 py-2 px-4 rounded hover:bg-gray-700">
+                        <i class="fas fa-chart-line w-6 mr-3"></i>
+                        売上レポート
+                    </a>
+                </div>
+
+                <!-- 設定 -->
+                <div class="px-6 py-3 border-t border-gray-700 mt-4">
+                    <span class="text-gray-500 text-xs uppercase font-semibold">設定</span>
+                    <a href="#" class="flex items-center mt-2 py-2 px-4 rounded hover:bg-gray-700">
+                        <i class="fas fa-cog w-6 mr-3"></i>
+                        店舗基本設定
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- メインコンテンツ -->
+        <main class="flex-1 p-8 overflow-y-auto">
+            <h1 class="text-3xl font-bold text-gray-800">ダッシュボード（たたき台）</h1>
+            
+            <!-- スライド15で議論する「目安時間」などの設定エリア -->
+            <div class="mt-6 p-6 bg-white rounded-lg shadow-md border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-700">現在の営業状況</h2>
+                <p class="text-sm text-gray-500">（スライド15の議論「ダッシュボードに置きたい」を反映するイメージ）</p>
+                
+                <div class="flex flex-wrap gap-4 mt-4">
+                    <!-- 一時停止ボタン -->
+                    <div>
+                        <label for="status-toggle" class="text-gray-600 font-medium">受付状況（一時停止）</label>
+                        <div class="mt-1 relative inline-block w-40">
+                            <button class="w-full bg-green-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-green-600">
+                                <i class="fas fa-check-circle"></i> 営業中
+                            </button>
+                            <!-- (クリックで「準備中」に切り替わるイメージ) -->
+                        </div>
+                    </div>
+                    
+                    <!-- 目安時間 -->
+                    <div>
+                        <label for="wait-time" class="text-gray-600 font-medium">現在のお届け目安時間</label>
+                        <div class="mt-1 flex items-center">
+                            <input type="number" id="wait-time" value="30" class="w-24 p-2 border border-gray-300 rounded-lg text-lg text-center">
+                            <span class="ml-2 text-gray-700 text-lg">分</span>
+                            <button class="ml-3 bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600">更新</button>
+                        </div>
+                    </div>
+
+                    <!-- 定休日設定 -->
+                     <div>
+                        <label class="text-gray-600 font-medium">定休日</label>
+                        <div class="mt-1">
+                            <button class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg shadow-sm hover:bg-gray-300">
+                                <i class="fas fa-calendar-alt"></i> 定休日カレンダー設定
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+
+            <!-- 最近の注文 (ダミー) -->
+            <div class="mt-8">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">最近の注文（リアルタイム）</h2>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-100 border-b border-gray-200">
+                            <tr>
+                                <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">注文ID</th>
+                                <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">顧客（夜のお店）</th>
+                                <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">金額</th>
+                                <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">決済</th>
+                                <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">ステータス</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="p-4 text-gray-700">#1205</td>
+                                <td class="p-4 text-gray-700 font-medium">Club Royal</td>
+                                <td class="p-4 text-gray-700">¥12,500</td>
+                                <td class="p-4 text-gray-700"><span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">掛け払い</span></td>
+                                <td class="p-4 text-gray-700"><span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">新規</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 text-gray-700">#1204</td>
+                                <td class="p-4 text-gray-700 font-medium">Lounge Jewel</td>
+                                <td class="p-4 text-gray-700">¥8,000</td>
+                                <td class="p-4 text-gray-700"><span class="px-2 py-1 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">都度払い</span></td>
+                                <td class="p-4 text-gray-700"><span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">調理中</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 text-gray-700">#1203</td>
+                                <td class="p-4 text-gray-700 font-medium">Club Royal</td>
+                                <td class="p-4 text-gray-700">¥5,200</td>
+                                <td class="p-4 text-gray-700"><span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">掛け払い</span></td>
+                                <td class="p-4 text-gray-700"><span class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-300 rounded-full">配達済</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
     </div>
-</div>
-
-<!-- スライド 4: アジェンダ -->
-<div class="slide-container" id="slide4">
-    <h2 class="slide-title">AIと決めるべきこと (アジェンダ)</h2>
-    <div class="content-area">
-        <div class="bullet-list">
-            <p class="prompt-text"><i class="fa-solid fa-terminal"></i> プロンプト例: 「このプロジェクトで決めるべき主要な要件項目をリストアップして」</p>
-            <ul>
-                <li><i class="fa-solid fa-bullseye"></i><strong>目的とゴール（KGI/KPI）</strong>
-                    <p>このプロジェクトの「成功」をどう定義するか。</p>
-                </li>
-                <li><i class="fa-solid fa-users"></i><strong>利用者（ペルソナ）</strong>
-                    <p>誰が、いつ、何のために使うのか。</p>
-                </li>
-                <li><i class="fa-solid fa-cogs"></i><strong>主要機能（機能要件）</strong>
-                    <p>ユーザーが具体的に何を行えるか。（投稿、検索、閲覧など）</p>
-                </li>
-                <li><i class="fa-solid fa-shield-alt"></i><strong>非機能要件</strong>
-                    <p>品質や制約に関する要件。（セキュリティ、UI/UX、パフォーマンス）</p>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<!-- スライド 5: KPI -->
-<div class="slide-container" id="slide5">
-    <h2 class="slide-title">STEP 1: 目的とゴール (KPI)</h2>
-    <div class="content-area">
-        <div class="tiled-content">
-            <div class="tile">
-                <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
-                <h3>AIの回答例 1</h3>
-                <p class="ai-response">
-                    <span class="metric-title">ナレッジ蓄積数（投稿率）</span>
-                    月間の新規投稿記事数。<br>
-                    <strong>(目標: 1部署あたり月10件)</strong>
-                </p>
-            </div>
-            <div class="tile">
-                <div class="icon"><i class="fa-solid fa-users-cog"></i></div>
-                <h3>AIの回答例 2</h3>
-                 <p class="ai-response">
-                    <span class="metric-title">検索利用率（アクティブ率）</span>
-                    週1回以上検索したユーザーの割合(WAU)。<br>
-                    <strong>(目標: リリース半年後 50%)</strong>
-                </p>
-            </div>
-            <div class="tile">
-                <div class="icon"><i class="fa-solid fa-check-circle"></i></div>
-                <h3>AIの回答例 3</h3>
-                 <p class="ai-response">
-                    <span class="metric-title">問題解決貢献度（自己解決率）</span>
-                    「解決した」ボタンクリック数 or 情シスへの問合せ減少率。<br>
-                    <strong>(目標: 関連問合せ 20%削減)</strong>
-                </p>
-            </div>
-        </div>
-    </div>
-     <p class="prompt-text" style="width: 100%; margin-top: 15px;"><i class="fa-solid fa-terminal"></i> プロンプト例: 「このポータルの成功を測るためのKPIとして、測定可能な指標を3つ提案してください。」</p>
-</div>
-
-<!-- スライド 6: ペルソナ -->
-<div class="slide-container" id="slide6">
-    <h2 class="slide-title">STEP 2: 利用者 (ペルソナ)</h2>
-    <div class="content-area">
-        <div class="tiled-content">
-            <div class="image-tile">
-                <div class="image-wrapper"><img src="http://googleusercontent.com/image_collection/image_retrieval/16163291448900179937" alt="新入社員のイメージ"></div>
-                <p>ペルソナA: 新入社員</p>
-                <p class="persona-details">ニーズ: 研修資料、社内用語、申請手順を知りたい。</p>
-            </div>
-            <div class="image-tile">
-                <div class="image-wrapper"><img src="http://googleusercontent.com/image_collection/image_retrieval/16163291448900179937" alt="中堅エンジニアのイメージ"></div>
-                <p>ペルソナB: 中堅エンジニア</p>
-                 <p class="persona-details">ニーズ: 過去のトラブルシューティング事例、設計書を探したい。</p>
-            </div>
-            <div class="image-tile">
-                <div class="image-wrapper"><img src="http://googleusercontent.com/image_collection/image_retrieval/16163291448900179937" alt="営業担当のイメージ"></div>
-                <p>ペルソナC: 営業担当</p>
-                 <p class="persona-details">ニーズ: 競合情報、他部署の成功事例、提案書テンプレートを探したい。</p>
-            </div>
-        </div>
-    </div>
-    <p class="prompt-text" style="width: 100%; margin-top: 15px;"><i class="fa-solid fa-terminal"></i> プロンプト例: 「主要なユーザーペルソナを3パターン（新入社員、中堅エンジニア、営業担当）作成し、それぞれのニーズと利用シーンを定義して。」</p>
-</div>
-
-<!-- スライド 7: 投稿機能 -->
-<div class="slide-container" id="slide7">
-    <h2 class="slide-title">STEP 3: 投稿機能の深掘り</h2>
-    <div class="content-area">
-        <div class="bullet-list highlight-style">
-            <p class="prompt-text" style="margin-top: 0;"><i class="fa-solid fa-terminal"></i> プロンプト例: 「『投稿されない』失敗を防ぐため、投稿ハードルを下げる機能やUIの工夫を5つ挙げてください。」</p>
-            <ul>
-                <li><i class="fa-solid fa-file-alt"></i><div><strong>テンプレート機能</strong><p>議事録、日報、トラブル報告書など、雛形を用意。</p></div></li>
-                <li><i class="fa-solid fa-magic"></i><div><strong>AIによるタグ自動推薦</strong><p>記事内容をAIが解析し、関連タグの候補を表示。</p></div></li>
-                <li><i class="fa-solid fa-edit"></i><div><strong>リッチテキストエディタ</strong><p>MarkdownやWYSIWYGなど、直感的な操作で文書作成。</p></div></li>
-                <li><i class="fa-solid fa-save"></i><div><strong>下書き自動保存</strong><p>作成途中の記事が消えるのを防ぎ、安心感を提供。</p></div></li>
-                <li><i class="fa-solid fa-upload"></i><div><strong>ファイル添付の簡易化</strong><p>ドラッグ＆ドロップで画像やPDFを簡単に追加。</p></div></li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<!-- スライド 8: 検索機能 -->
-<div class="slide-container" id="slide8">
-    <h2 class="slide-title">STEP 3: 検索機能の深掘り</h2>
-    <div class="content-area">
-        <div class="two-column tiled">
-            <div>
-                <h3><i class="fa-solid fa-search"></i> 検索方式 (AIの回答例)</h3>
-                <ul>
-                    <li><strong>全文検索:</strong> 本文だけでなく、添付ファイル（PDF, Word）内のテキストも検索対象にする。</li>
-                    <li><strong>タグ検索:</strong> 記事に付与されたタグ（例: #Python, #AWS）で絞り込む。</li>
-                    <li><strong>フィルタ:</strong> 部署や投稿者、更新日などで検索結果を絞り込む。</li>
-                </ul>
-            </div>
-            <div>
-                <h3><i class="fa-solid fa-puzzle-piece"></i> 補助機能 (AIの回答例)</h3>
-                <ul>
-                    <li><strong>サジェスト機能:</strong> 検索窓への入力中に、関連キーワードの候補を表示する。</li>
-                    <li><strong>ソート機能:</strong> 検索結果を「新着順」「閲覧数順」「関連度順」で並び替える。</li>
-                    <li><strong>AIによる関連推薦:</strong> 閲覧中の記事に関連する別のナレッジをAIが推薦する。</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-     <p class="prompt-text" style="width: 100%; margin-top: 15px;"><i class="fa-solid fa-terminal"></i> プロンプト例: 「『欲しい情報が見つからない』事態を避けるため、強力な検索機能のアイデアを提案して。」</p>
-</div>
-
-<!-- スライド 9: セキュリティ -->
-<div class="slide-container" id="slide9">
-    <h2 class="slide-title">STEP 4: 非機能要件 (セキュリティ)</h2>
-    <div class="content-area">
-        <div class="two-column">
-            <div>
-                <p class="prompt-text" style="margin-top:0;"><i class="fa-solid fa-terminal"></i> プロンプト例: 「社内ポータルとして最低限必要なセキュリティ要件は？特に認証方式（SSO等）のメリット・デメリットを比較して。」</p>
-                <h3>AIの回答例</h3>
-                <ul>
-                    <li><strong>認証:</strong> <strong>シングルサインオン(SSO)</strong> が望ましい。
-                        <ul>
-                            <li style="padding-left: 0;" class="merit">メリット: 利便性向上、パスワード管理の負担減。</li>
-                            <li style="padding-left: 0;" class="demerit">デメリット: 導入コスト、SSO基盤障害時の影響大。</li>
-                        </ul>
-                    </li>
-                    <li><strong>アクセス制御:</strong> 部署単位や役職単位での閲覧・編集権限の制御。</li>
-                    <li><strong>その他:</strong> 通信の暗号化(SSL)、操作ログ（誰がいつ何をしたか）の取得。</li>
-                </ul>
-            </div>
-            <div>
-                <div class="image-wrapper"><img src="http://googleusercontent.com/image_collection/image_retrieval/4389644371171725809" alt="サイバーセキュリティの概念図"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- スライド 10: AI活用のリスク -->
-<div class="slide-container" id="slide10">
-    <h2 class="slide-title">想定リスク① (AI活用の課題)</h2>
-    <div class="content-area">
-        <div class="bullet-list risk-list">
-            <ul>
-                <li><i class="fa-solid fa-exclamation-triangle"></i>
-                    <strong>リスク: AIの回答が一般的・表面的</strong>
-                    <p>自社固有の課題や文化に即した要件に落とし込めない。</p>
-                    <div class="tackle"><strong>対策:</strong> より具体的な「前提条件」を与える。（例：「当社は300名規模のIT企業でSlackがメイン」）。「なぜ」を深掘りし、トレードオフを問いかける。</div>
-                </li>
-                <li><i class="fa-solid fa-exclamation-triangle"></i>
-                    <strong>リスク: AIの提案がオーバースペック</strong>
-                    <p>技術的に困難であったり、コストに見合わない（高コスト）可能性がある。</p>
-                    <div class="tackle"><strong>対策:</strong> 「Phase 1で実装すべき最小限の機能に絞って」と制約を加える。AIの回答を鵜呑みにせず、開発チームと実現性を議論する。</div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<!-- スライド 11: プロジェクトのリスク -->
-<div class="slide-container" id="slide11">
-    <h2 class="slide-title">想定リスク② (プロジェクトの課題)</h2>
-    <div class="content-area">
-        <div class="bullet-list risk-list">
-            <ul>
-                <li><i class="fa-solid fa-ghost"></i>
-                    <strong>リスク: 誰も投稿せず「形骸化」する</strong>
-                    <p>サイトは完成したが、ナレッジが蓄積されず利用されなくなる。</p>
-                    <div class="tackle"><strong>対策:</strong> 投稿を評価・奨励する仕組み（いいね, ランキング, バッジ付与）を導入する。投稿・更新を業務プロセスに組み込む（例：週報や完了報告はポータルで行う）。</div>
-                </li>
-                <li><i class="fa-solid fa-recycle"></i>
-                    <strong>リスク: 情報が古くなり「陳腐化」する</strong>
-                    <p>古い情報が放置され、サイトの信頼性が失われる。</p>
-                    <div class="tackle"><strong>対策:</strong> 記事に「オーナー（担当者）」と「最終更新日」を明記する。一定期間更新されていない記事にアラートを出す仕組みや、レビュー期限を設ける。</div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<!-- スライド 12: まとめ / Q&A -->
-<div class="slide-container" id="slide12">
-    <div class="qa-layout">
-        <h2>まとめ</h2>
-        <ul>
-            <li>AIは要件定義の「壁打ち相手」として非常に強力です。</li>
-            <li>重要なのは、AIの能力を引き出す「良い質問（プロンプト）」を設計することです。</li>
-            <li>AIの回答はあくまで「たたき台」であり、最終的な判断と決定は人間（プロジェクトチーム）が行います。</li>
-        </ul>
-        <div class="contact-info">
-            ご清聴ありがとうございました
-        </div>
-    </div>
-</div>
-
-
-</div> <!-- #slide-deck の終わり -->
-
-<!-- ナビゲーションボタン -->
-
-<div class="navigation">
-<div class="nav-button" id="prev-slide"><i class="fa-solid fa-arrow-left"></i></div>
-<div class="nav-button" id="next-slide"><i class="fa-solid fa-arrow-right"></i></div>
-</div>
-
-<!-- スライドカウンター -->
-
-<div id="slide-counter">1 / 12</div>
-
-<!-- JavaScript (エスケープを全て解除) -->
-
-<script>
-// 必要なDOM要素を取得
-const slides = document.querySelectorAll('.slide-container');
-const prevButton = document.getElementById('prev-slide');
-const nextButton = document.getElementById('next-slide');
-const slideCounter = document.getElementById('slide-counter');
-
-// 現在のスライド番号を管理（0から始まるインデックス）
-let currentSlide = 0;
-const totalSlides = slides.length;
-
-/**
- * 指定された番号のスライドを表示する関数
- * @param {number} slideIndex - 表示したいスライドのインデックス
- */
-function showSlide(slideIndex) {
-    // すべてのスライドから 'active' クラスを削除
-    slides.forEach(slide => {
-        slide.classList.remove('active');
-    });
-
-    // 対象のスライドに 'active' クラスを追加
-    slides[slideIndex].classList.add('active');
-    
-    // スライドカウンターを更新
-    slideCounter.textContent = `${slideIndex + 1} / ${totalSlides}`;
-    
-    // ボタンの表示/非表示を制御
-    // 最初のスライドなら「前へ」を非表示
-    prevButton.style.display = (slideIndex === 0) ? 'none' : 'flex';
-    // 最後のスライドなら「次へ」を非表示
-    nextButton.style.display = (slideIndex === totalSlides - 1) ? 'none' : 'flex';
-}
-
-/**
- * 次のスライドへ移動する関数
- */
-function goToNextSlide() {
-    if (currentSlide < totalSlides - 1) {
-        currentSlide++;
-        showSlide(currentSlide);
-    }
-}
-
-/**
- * 前のスライドへ移動する関数
- */
-function goToPrevSlide() {
-    if (currentSlide > 0) {
-        currentSlide--;
-        showSlide(currentSlide);
-    }
-}
-
-// --- イベントリスナーの設定 ---
-
-// 「次へ」ボタンのクリックイベント
-nextButton.addEventListener('click', goToNextSlide);
-
-// 「前へ」ボタンのクリックイベント
-prevButton.addEventListener('click', goToPrevSlide);
-
-// キーボードの矢印キーによる操作
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowRight' || event.key === ' ') { // 右矢印キーまたはスペースキー
-        goToNextSlide();
-    } else if (event.key === 'ArrowLeft') { // 左矢印キー
-        goToPrevSlide();
-    }
-});
-
-// --- 初期化 ---
-// 最初のスライドを表示
-showSlide(currentSlide);
-
-
-</script>
 
 </body>
 </html>

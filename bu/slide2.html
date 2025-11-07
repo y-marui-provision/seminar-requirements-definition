@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIを活用した要件定義の実践セミナー</title>
+    <!-- Tailwind CSSを読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* スライドの基本スタイル */
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+            color: #D1D5DB; /* text-gray-300 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            overflow: hidden; /* スライドショーのコンテナ用 */
+        }
+        #slide-container {
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+        }
+        .slide {
+            width: 100%;
+            min-height: 600px; /* 高さを可変に */
+            height: auto;
+            margin: 0 auto;
+            background-color: #1F2937; /* bg-gray-800 */
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            padding: 2.5rem 3.5rem;
+            display: none; /* JSで制御 */
+            flex-direction: column;
+            transition: all 0.3s ease;
+            border-top: 4px solid #3B82F6; /* border-blue-500 */
+        }
+        .slide.active {
+            display: flex; /* アクティブなスライドだけ表示 */
+        }
+        .slide-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #FFFFFF; /* text-white */
+            border-bottom: 3px solid #3B82F6; /* border-blue-500 */
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .slide-subtitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #60A5FA; /* text-blue-400 */
+            margin-bottom: 1rem;
+        }
+        .content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #D1D5DB; /* text-gray-300 */
+            flex-grow: 1;
+        }
+        .content ul {
+            list-style-type: disc;
+            padding-left: 2rem;
+            margin-top: 1rem;
+        }
+        .content li {
+            margin-bottom: 0.75rem;
+        }
+        .content ol {
+            list-style-type: decimal;
+            padding-left: 2rem;
+            margin-top: 1rem;
+            space-y: 1rem; /* ol内のスペース */
+        }
+        .highlight {
+            background-color: #B45309; /* bg-yellow-700 */
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            color: #FDE68A; /* text-yellow-100 */
+        }
+        .arrow {
+            font-size: 2rem;
+            color: #60A5FA; /* text-blue-400 */
+            margin: 0 1rem;
+            font-weight: 900;
+        }
+        .footer {
+            text-align: right;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #9CA3AF; /* text-gray-400 */
+            border-top: 1px solid #374151; /* border-gray-700 */
+            padding-top: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        /* ナビゲーションボタン */
+        .nav-button {
+            position: absolute;
+            bottom: 2.5rem;
+            right: 12rem; /* フッターの左側に配置 */
+            background-color: #374151; /* bg-gray-700 */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 3rem;
+            height: 3rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            z-index: 10;
+        }
+        .nav-button:hover {
+            background-color: #4B5563; /* bg-gray-600 */
+        }
+        .nav-button#prev {
+            right: 16rem; /* 'next'の左に */
+        }
+        .nav-button#next {
+            right: 12rem;
+        }
+        #slide-counter {
+            position: absolute;
+            bottom: 3.25rem;
+            left: 3.5rem;
+            color: #9CA3AF; /* text-gray-400 */
+            font-size: 1rem;
+            font-weight: 500;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div id="slide-container">
+
+        <!-- スライド 1: タイトル -->
+        <section class="slide active">
+            <div class="flex-grow flex flex-col justify-center items-center text-center">
+                <h1 class="text-5xl font-extrabold text-white mb-4">AIを活用した要件定義の実践</h1>
+                <p class="text-3xl font-semibold text-blue-400">対話による「あいまい」から「具体」へのプロセス</p>
+                <p class="text-xl text-gray-300 mt-8">クライアントの「発狂しない」ヒアリング実例</p>
+            </div>
+            <div class="footer">
+                繁華街デリバリーアプリ 案件
+            </div>
+        </section>
+
+        <!-- スライド 2: 最初の要望 -->
+        <section class="slide">
+            <h2 class="slide-title">1. クライアントの最初の要望</h2>
+            <h3 class="slide-subtitle">「こんなの欲しいんだけど（フワッ）」</h3>
+            <div class="content">
+                <div class="p-6 bg-gray-900 border border-gray-700 rounded-lg">
+                    <p class="text-lg font-medium text-gray-100">「繁華街のレストラン経営者です。</p>
+                    <p class="mt-4">うちのアイドルタイム（夜のお店のピーク中）を活用したい。</p>
+                    <p class="mt-2">近隣の夜のお店のキャストさんが、うちの料理をお客様に気軽に出前注文できる<span class="highlight">スマホアプリ</span>を作りたいんだよね。」</p>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold text-red-400">よくある失敗（AIがやらないこと）</h3>
+                    <p class="text-lg text-gray-400">「はい！承知しました！では機能一覧と見積もりです！」<span class="arrow">→</span> <span class="font-bold">まだ早い！</span></p>
+                    <p class="text-lg text-gray-400">「決済方法は？ログイン方式は？サーバーは？DBは？」<span class="arrow">→</span> <span class="font-bold text-red-400">クライアントが発狂する！</span></p>
+                </div>
+            </div>
+            <div class="footer">スライド 2 / 8</div>
+        </section>
+
+        <!-- スライド 3: AIの役割 -->
+        <section class="slide">
+            <h2 class="slide-title">2. AIの役割：質問による深掘り</h2>
+            <h3 class="slide-subtitle">AIは「推測」せず「大枠から質問」する</h3>
+            <div class="content">
+                <p class="text-lg">クライアントが混乱しないよう、利用シーンを想像しながら、具体的な質問を一つずつ投げかける。</p>
+                
+                <div class="flex justify-around items-center mt-8 p-4 bg-gray-700 rounded-lg">
+                    <div class="text-center">
+                        <p class="text-xl font-bold text-white">クライアント</p>
+                        <p class="text-4xl">🤔</p>
+                        <p class="mt-2 text-gray-300">「どうやって注文受けるかな…」</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xl font-bold text-white">AI（要件定義者）</p>
+                        <p class="text-4xl">🤖</p>
+                        <p class="mt-2 text-blue-300">「注文は<span class="highlight">タブレット</span>で受けますか？<br>それとも<span class="highlight">スマホ</span>に通知ですか？」</p>
+                    </div>
+                </div>
+
+                <p class="text-lg mt-8">クライアントは「答える」か「選択肢を求める」だけ。</p>
+                <ul>
+                    <li>クライアントが「タブレットが良いね」と答える。</li>
+                    <li><span class="arrow">→</span> AIが「では配達は誰がしますか？」と次の質問に進む。</li>
+                    <li><span class="arrow">→</span> これを繰り返し、徐々に解像度を上げていく。</li>
+                </ul>
+            </div>
+            <div class="footer">スライド 3 / 8</div>
+        </section>
+
+        <!-- スライド 4: 【追加】具体例 (ログイン) -->
+        <section class="slide">
+            <h2 class="slide-title">3. 実例①：利用者（キャスト）の特定</h2>
+            <h3 class="slide-subtitle">「手間」と「セキュリティ」のバランス</h3>
+            <div class="content">
+                <ol class="list-decimal pl-6 space-y-4">
+                    <li>
+                        <span class="font-bold">AI:</span> 「キャストさんのログイン方法は？ <span class="highlight">A: お店ごとの合言葉</span>、<span class="highlight">B: キャスト個人が登録して承認</span>、どちらが良いですか？」
+                    </li>
+                    <li>
+                        <span class="font-bold">クライアント:</span> 「うーん… <span class="font-bold text-red-400">キャストさんに煩わしいことさせるのはダメだ。</span>お店（オーナー）には手間かけさせても良い。」
+                    </li>
+                    <li>
+                        <span class="font-bold">AI:</span> 「なるほど。では、<span class="font-bold text-blue-300">Aの『お店ごとの合言葉』</span>にしましょう。キャストさんはそれを入力するだけで、すぐに注文を開始できます。」
+                    </li>
+                    <li>
+                        <span class="font-bold">クライアント:</span> 「それが良い。」
+                    </li>
+                </ol>
+                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
+                    クライアントが「誰に手間をかけたくないか」という<span class="text-white">優先順位</span>を明確にし、シンプルな認証方式を即決。
+                </p>
+            </div>
+            <div class="footer">スライド 4 / 8</div>
+        </section>
+
+        <!-- スライド 5: 具体例1（決済） -->
+        <section class="slide">
+            <h2 class="slide-title">4. 実例②：決済方法の決定プロセス</h2>
+            <h3 class="slide-subtitle">クライアントの「わがまま」を仕様に落とし込む</h3>
+            <div class="content">
+                <ol class="list-decimal pl-6 space-y-4">
+                    <li>
+                        <span class="font-bold">AI:</span> 「お会計は<span class="highlight">『都度払い』</span>ですか？<span class="highlight">『掛け払い』</span>ですか？」
+                    </li>
+                    <li>
+                        <span class="font-bold">クライアント:</span> 「うーん… <span class="font-bold text-red-400">どっちも</span>やりたい。信頼できる店は掛け、新規は都度。」
+                    </li>
+                    <li>
+                        <span class="font-bold">AI:</span> （失敗例：「両方対応は開発費が倍です！」）
+                    </li>
+                    <li>
+                        <span class="font-bold">AI（実践）:</span> 「なるほど！では、オーナー（あなた）が使う<span class="highlight">『管理Webサイト』</span>で、お店ごとに『都度』か『掛け』かを<span class="font-bold text-blue-300">設定・変更できる</span>ようにしましょう。現場も混乱しません。」
+                    </li>
+                    <li>
+                        <span class="font-bold">クライアント:</span> 「それだ！最高！」
+                    </li>
+                </ol>
+                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
+                    クライアントの「現実的な要望」を引き出し、それを実現する「具体的なシステム機能」に翻訳する。
+                </p>
+            </div>
+            <div class="footer">スライド 5 / 8</div>
+        </section>
+        
+        <!-- スライド 6: 具体例2（待ち時間） -->
+        <section class="slide">
+            <h2 class="slide-title">5. 実例③：現場オペレーションの考慮</h2>
+            <h3 class="slide-subtitle">クライアントが「言い忘れていた」重要機能の発見</h3>
+            <div class="content">
+                <ol class="list-decimal pl-6 space-y-4">
+                    <li>
+                        <span class="font-bold">AI:</span> 「注文を受けたら『注文確認ボタン』を押してキャストさんを安心させるのはどうですか？」
+                    </li>
+                    <li>
+                        <span class="font-bold">クライアント:</span> 「良いね！ あ、そうだ！<span class="font-bold text-red-400">目安の待ち時間</span>もこっちで設定したい！」
+                    </li>
+                    <li>
+                        <span class="font-bold">AI:</span> 「素晴らしい。では、あの<span class="highlight">『管理Webサイト』</span>から<span class="font-bold text-blue-300">『現在の目安時間』を一括設定</span>できるようにしましょう。」
+                    </li>
+                    <li>
+                        <span class="font-bold">クライアント:</span> 「それも欲しい！ あと<span class="font-bold text-red-400">一時停止ボタン</span>と<span class="font-bold text-red-400">定休日設定</span>も！」
+                    </li>
+                    <li>
+                        <span class="font-bold">AI:</span> 「承知しました。管理サイトに『営業中／準備中』のスイッチと、『定休日カレンダー』を追加します。」
+                    </li>
+                </ol>
+                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
+                    一つの質問が、クライアントの「現場のリアルな悩み」を引き出し、システムが格段に実用的になる。
+                </p>
+            </div>
+            <div class="footer">スライド 6 / 8</div>
+        </section>
+
+        <!-- スライド 7: 具体例3（拡張性） -->
+        <section class="slide">
+            <h2 class="slide-title">6. 実例④：将来の構想（拡張性）</h2>
+            <h3 class="slide-subtitle">クライアントの「夢」を現実的な仕様に</h3>
+            <div class="content">
+                <ol class="list-decimal pl-6 space-y-4">
+                    <li>
+                        <span class="font-bold">クライアント:</span> 「言い忘れた。将来、<span class="font-bold text-red-400">他の飲食店</span>も参加させて手数料ビジネスしたい。」
+                    </li>
+                    <li>
+                        <span class="font-bold">AI:</span> 「素晴らしい構想です。では、最初から【B案：拡張前提】で作りましょうか？（ただし...と懸念も提示）」
+                    </li>
+                    <li>
+                        <span class="font-bold">クライアント:</span> 「B案が良いけど、キャストは<span class="font-bold text-red-400">『店』じゃなくて『メニュー』で選びたい</span>はず。」
+                    </li>
+                    <li>
+                        <span class="font-bold">AI:</span> 「なるほど！【B案（改）】ですね。トップに<span class="font-bold text-blue-300">全店の全メニューを一覧表示</span>し、店名を小さく併記しましょう。当面は1店舗だけでも違和感がなく、将来の拡張もスムーズです。」
+                    </li>
+                </ol>
+                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
+                    クライアントの「鋭い視点」をAIが即座に仕様に反映し、当初の設計案より優れた設計に進化。
+                </p>
+            </div>
+            <div class="footer">スライド 7 / 8</div>
+        </section>
+
+        <!-- スライド 8: 結論 -->
+        <section class="slide">
+            <h2 class="slide-title">7. 結論：AIとの対話型要件定義</h2>
+            <h3 class="slide-subtitle">AIは「答え」を出すのではなく「答えに導く」</h3>
+            <div class="content">
+                <p class="text-lg">今回の対話（ヒアリング）により、わずか数十分で「フワッとした要望」が「具体的な仕様」になりました。</p>
+                
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold text-blue-300">AI活用のポイント</h3>
+                    <ul class="text-gray-300">
+                        <li><span class="font-bold text-white">大枠からの質問:</span> クライアントを混乱させない。</li>
+                        <li><span class="font-bold text-white">選択肢の提示:</span> クライアントの思考をサポートする。</li>
+                        <li><span class="font-bold text-white">即時フィードバック:</span> 「どっちも欲しい」を「管理画面で切り替え」に翻訳する。</li>
+                        <li><span class="font-bold text-white">仕様の進化:</span> 「メニュー基点」のような優れたアイディアを即座に仕様に組み込む。</li>
+                    </ul>
+                </div>
+                
+                <p class="mt-8 text-xl font-bold text-center p-4 bg-gray-900 text-gray-100 rounded-lg">
+                    AIは「完璧な要件定義書を自動作成する」ものではなく、<br>クライアントと「一緒に考える」優秀な壁打ち相手（ファシリテーター）である。
+                </p>
+            </div>
+            <div class="footer">スライド 8 / 8</div>
+        </section>
+
+        <!-- ナビゲーション -->
+        <span id="slide-counter">1 / 8</span>
+        <button id="prev" class="nav-button" onclick="changeSlide(-1)">＜</button>
+        <button id="next" class="nav-button" onclick="changeSlide(1)">＞</button>
+    </div>
+
+    <script>
+        let slideIndex = 1;
+        
+        // --- 修正箇所 ---
+        // document.querySelectorAll(".slide") は環境によって動作しないため、手動で取得します。
+        const allSections = Array.from(document.getElementsByTagName("section"));
+        const slides = allSections.filter(el => el.classList.contains('slide'));
+        // --- 修正ここまで ---
+
+        const counter = document.getElementById("slide-counter");
+        const totalSlides = slides.length;
+
+        showSlide(slideIndex);
+
+        function changeSlide(n) {
+            showSlide(slideIndex += n);
+        }
+
+        function showSlide(n) {
+            if (totalSlides === 0) return; // スライドがない場合は何もしない
+
+            if (n > totalSlides) {
+                slideIndex = 1; // 最後に達したら最初に戻る
+            }
+            if (n < 1) {
+                slideIndex = totalSlides; // 最初に達したら最後に戻る
+            }
+
+            // すべてのスライドを非表示
+            slides.forEach(slide => {
+                slide.classList.remove("active");
+            });
+
+            // 現在のスライドのみ表示
+            slides[slideIndex - 1].classList.add("active");
+
+            // カウンターを更新
+            if (counter) {
+                counter.textContent = `${slideIndex} / ${totalSlides}`;
+            }
+        }
+    </script>
+
+</body>
+</html>
