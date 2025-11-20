@@ -145,7 +145,8 @@
         #slide-17 .slide-header,
         #slide-18 .slide-header,
         #slide-19 .slide-header,
-        #slide-20 .slide-header {
+        #slide-20 .slide-header, /* 20, 21も対象に */
+        #slide-21 .slide-header {
             font-size: 2.5rem; /* 40px */
         }
         #slide-15 .slide-header {
@@ -311,13 +312,6 @@
             gap: 2rem;
             flex-grow: 1; /* 縦幅を埋める */
         }
-        /* Slide 18 (旧17) 用の3列タイル */
-        .tile-grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 2rem;
-            flex-grow: 1;
-        }
         
         .info-tile {
             background-color: #1e293b; /* slate-800 */
@@ -333,20 +327,19 @@
             color: #34d399; /* emerald-400 */
             margin-bottom: 0.75rem;
         }
-        /* 修正(font-size 1.1rem -> 1.2rem) */
         .info-tile .tile-text {
-            font-size: 1.2rem; 
+            font-size: 1.2rem; /* 1.1remから大きく */
             color: #cbd5e1; /* slate-300 */
             line-height: 1.7;
         }
         
-        /* === スライド7, 8用 内部箇条書きスタイル === */
+        /* === スライド7, 8, 12用 内部箇条書きスタイル === */
         .info-tile ul {
             list-style-type: disc;
             list-style-position: outside;
             padding-left: 1.25rem; /* 20px */
             margin-top: 0.75rem; /* 12px */
-            font-size: 1.1rem; /* 修正(font-size 1rem -> 1.1rem) */
+            font-size: 1.1rem; /* 1remから大きく */
             line-height: 1.6;
             color: #cbd5e1; /* slate-300 */
         }
@@ -357,9 +350,10 @@
             font-weight: 700;
             color: #ffffff;
         }
-        /* === /スライド7, 8用 === */
+        /* === /スライド7, 8, 12用 === */
 
 
+        /* === スライド9 === */
         /* スライド9(旧8)のタイル内リスト用のスタイル */
         .info-tile-list {
             list-style-type: disc;
@@ -371,6 +365,20 @@
         .info-tile-list li {
             margin-bottom: 0.75rem; /* 12px */
         }
+        /* スライド9（若手/経験者）専用のスタイル調整 */
+        #slide-9 .info-tile-list {
+            font-size: 1.05rem; /* 17px (6項目/5項目のバランス取り) */
+            line-height: 1.7;
+        }
+        /* 若手向け (6項目) */
+        #slide-9 .info-tile-list.list-for-junior li {
+            margin-bottom: 0.5rem; /* 8px (6項目あるので詰める) */
+        }
+        /* 経験者向け (5項目) */
+        #slide-9 .info-tile-list.list-for-senior li {
+            margin-bottom: 0.65rem; /* 10px (5項目なので junior と senior の中間) */
+        }
+
         .info-tile-list li:last-child {
             margin-bottom: 0;
         }
@@ -378,6 +386,7 @@
              font-weight: 700;
              color: #ffffff;
         }
+        /* === /スライド9 === */
 
         /* スライド4 (新規スライド) 用のスタイル */
         #slide-4 .tile-grid {
@@ -464,8 +473,8 @@
             margin: 1.5rem 0;
         }
         
-        /* Slide 20 (まとめ) */
-        #slide-20 ul {
+        /* スライド20 (復習), 21 (最後) のスタイル */
+        .summary-list {
             list-style-type: disc;
             list-style-position: outside;
             font-size: 1.875rem; /* 30px */
@@ -473,29 +482,30 @@
             line-height: 1.8;
             padding-left: 2.5rem;
         }
-        #slide-20 ul li {
+        .summary-list li {
             margin-bottom: 1rem;
         }
-        #slide-20 ul .highlight {
+        .summary-list .highlight {
             font-weight: 900;
             color: #fef08a; /* yellow-200 */
         }
-        #slide-20 ul .highlight-green {
+        .summary-list .highlight-green {
             font-weight: 900;
             color: #6ee7b7; /* emerald-300 */
         }
-        #slide-20 ul .highlight-white {
+        .summary-list .highlight-white {
             font-weight: 900;
             color: #ffffff;
         }
+        /* === /スライド20, 21 === */
 
 
-        /* Slide 21 (最後) */
-        #slide-21 {
+        /* Slide 22 (最後) */
+        #slide-22 {
             align-items: center;
             text-align: center;
         }
-        #slide-21 .final-message {
+        #slide-22 .final-message {
             font-size: 3.75rem; /* 60px */
             font-weight: 700;
             color: #ffffff;
@@ -531,7 +541,7 @@
                 </div>
             </div>
             <div class="slide-footer">上流工程デビューを成功させる！</div>
-            <div class="slide-pagination">2 / 21</div>
+            <div class="slide-pagination">2 / 22</div>
         </section>
 
         <!-- スライド 3: アジェンダ -->
@@ -545,10 +555,10 @@
                 <li>AIはあくまで副操縦士と考える</li>
                 <li>日常生活でできる要件定義 ⇔ 設計の訓練術</li>
                 <li>今回1番お伝えしたいこと</li>
-                <li>最後に（本日のまとめ）</li>
+                <li>最後に</li> <!-- (本日のまとめ) を削除 -->
             </ol>
             <div class="slide-footer">上流工程デビューを成功させる！</div>
-            <div class="slide-pagination">3 / 21</div>
+            <div class="slide-pagination">3 / 22</div>
         </section>
 
         <!-- スライド 4: 1. なぜ要件定義から学ぶか？ (4つのメリット) -->
@@ -580,7 +590,7 @@
             </div>
 
             <div class="slide-footer">1. 上流工程の第一歩は要件定義である。</div>
-            <div class="slide-pagination">4 / 21</div>
+            <div class="slide-pagination">4 / 22</div>
         </section>
 
 
@@ -654,7 +664,7 @@
             <p class="comment-sub">これをいきなりお客様に「さあ決めましょう！」は<br><span class="font-bold text-red-500 text-2xl">現実的ではありません。</span></p>
             
             <div class="slide-footer">1. 上流工程の第一歩は要件定義である。</div>
-            <div class="slide-pagination">5 / 21</div>
+            <div class="slide-pagination">5 / 22</div>
         </section>
         
         <!-- スライド 6: 1. 要件定義とは（一言でいうと） -->
@@ -678,10 +688,10 @@
             </div>
 
             <div class="slide-footer">1. 上流工程の第一歩は要件定義である。</div>
-            <div class="slide-pagination">6 / 21</div>
+            <div class="slide-pagination">6 / 22</div>
         </section>
 
-        <!-- === スライド7 修正 === -->
+        <!-- スライド7 -->
         <section class="slide" id="slide-7">
             <h2 class="slide-header">1. なぜ要件定義が「最も」重要なのか？</h2>
             
@@ -726,11 +736,10 @@
             </div>
 
             <div class="slide-footer">1. 上流工程の第一歩は要件定義である。</div>
-            <div class="slide-pagination">7 / 21</div>
+            <div class="slide-pagination">7 / 22</div>
         </section>
-        <!-- === /スライド7 修正 === -->
 
-        <!-- === スライド8 修正 === -->
+        <!-- スライド8 -->
         <section class="slide" id="slide-8">
             <h2 class="slide-header">1. 要件定義の「難しさ」</h2>
 
@@ -773,11 +782,10 @@
             </div>
 
             <div class="slide-footer">1. 上流工程の第一歩は要件定義である。</div>
-            <div class="slide-pagination">8 / 21</div>
+            <div class="slide-pagination">8 / 22</div>
         </section>
-        <!-- === /スライド8 修正 === -->
         
-        <!-- スライド 9: 2. 本日お伝えしたいこと -->
+        <!-- スライド9 -->
         <section class="slide" id="slide-9">
             <h2 class="slide-header">2. 本日お伝えしたいこと</h2>
             
@@ -786,18 +794,22 @@
                 <div class="info-tile">
                     <h3 class="tile-title"><i class="fas fa-user-graduate mr-2"></i>若手のエンジニアの皆さまへ</h3>
                     
-                    <ul class="info-tile-list">
-                        <li>「自分にはまだ早い」と遠慮せず、<span class="highlight">早期から挑戦</span>しましょう。</li>
-                        <li>全てを網羅的にできる必要はありません。</li>
-                        <li>まずは得意領域で<span class="highlight">「どう実現するか」</span>を想像することから。</li>
-                        <li>いきなりお客様と話すのが難しければ、<span class="highlight">先輩相手に練習</span>しましょう。</li>
+                    <ul class="info-tile-list list-for-junior">
+                        <li>「自分にはまだ早い」と遠慮せず、早期から挑戦しましょう。</li>
+                        <li>最初から全てを網羅的にできる必要はありません。</li>
+                        <li>まずは得意領域で「どう実現するか」を想像することから。</li>
+                        <li>自信を持って対峙するためにAIで事前準備をみっちりするクセを。</li>
+                        <li>いきなりお客様と話すのが難しければ、先輩相手に練習しましょう。</li>
+                        <li>完璧な要件定義は存在しません。0⇔100で考えすぎないように。</li>
                     </ul>
                 </div>
 
                 <div class="info-tile">
                     <h3 class="tile-title"><i class="fas fa-user-tie mr-2"></i>経験豊富な皆さまへ</h3>
-                    <ul class="info-tile-list">
-                        <li><span class="highlight">「100点満点の要件定義」</span>なんて、今でも難しいですよね？</li>
+                    <ul class="info-tile-list list-for-senior">
+                        <li>今までたくさん失敗して、たくさん怒られてきましたよね？</li>
+                        <li>ぶっちゃけた話、「<span class="highlight">今回は完璧だ！100点だ！</span>」って思ったこと、ないですよね？</li>
+                        <li>若手の<span class="highlight">「前向きな失敗」</span>を評価する土壌、できてますよね？</li>
                         <li>100時間の座学より<span class="highlight">1回の実戦経験</span>が勝ります。</li>
                         <li>最低限のマナーさえあれば、若手を積極的に<span class="highlight">「場」に同席</span>させてみてください。</li>
                     </ul>
@@ -805,7 +817,7 @@
             </div>
 
             <div class="slide-footer">2. 本日お伝えしたいこと</div>
-            <div class="slide-pagination">9 / 21</div>
+            <div class="slide-pagination">9 / 22</div>
         </section>
 
         <!-- スライド 10: 3. AIが得意な事 -->
@@ -822,7 +834,7 @@
             </ul>
 
             <div class="slide-footer">3. AIを活用した要件定義</div>
-            <div class="slide-pagination">10 / 21</div>
+            <div class="slide-pagination">10 / 22</div>
         </section>
 
         <!-- スライド 11: 3. AIに任せてはいけないこと -->
@@ -839,34 +851,50 @@
             </ul>
 
             <div class="slide-footer">3. AIを活用した要件定義</div>
-            <div class="slide-pagination">11 / 21</div>
+            <div class="slide-pagination">11 / 22</div>
         </section>
 
-        <!-- スライド 12: 3. AI活用による属人化の低減メリット -->
+        <!-- スライド12 -->
         <section class="slide" id="slide-12">
             <h2 class="slide-header">3. AI活用による「属人化」低減メリット</h2>
             
              <div class="tile-grid">
                 <div class="info-tile">
                     <h3 class="tile-title"><i class="fas fa-book-open mr-2"></i>ナレッジの平準化</h3>
-                    <p class="tile-text">ベテランの「暗黙知」をAIに学習させ、プロンプトを通じて若手でも引き出せるようにする。</p>
+                    <p class="tile-text">ベテランの「暗黙知」をAIに学習させ、プロンプトを通じて若手でも引き出せるようにします。</p>
+                    <ul>
+                        <li>「こういう時どうする？」という<span class="highlight">ノウハウをAIが回答</span></li>
+                        <li>優れたプロンプト（指示文）自体を<span class="highlight">チームで共有・再利用</span></li>
+                    </ul>
                 </div>
                 <div class="info-tile">
                     <h3 class="tile-title"><i class="fas fa-file-signature mr-2"></i>ドキュメント品質の均一化</h3>
-                    <p class="tile-text">AIに共通のテンプレートやルールを適用させ、誰が書いても一定品質の文書（議事録、要件定義書）を作成する。</p>
+                    <p class="tile-text">AIに共通のテンプレートやルールを適用させ、誰が書いても一定品質の文書を作成します。</p>
+                     <ul>
+                        <li>議事録を<span class="highlight">「所定のフォーマット」</span>で出力</li>
+                        <li>文章の<span class="highlight">「ですます」調や表記ゆれ</span>を自動で統一</li>
+                    </ul>
                 </div>
                  <div class="info-tile">
                     <h3 class="tile-title"><i class="fas fa-search-plus mr-2"></i>レビューの効率化</h3>
-                    <p class="tile-text">AIが一次レビュー（誤字脱字、抜け漏れチェック）を行うことで、人間はより本質的なレビューに集中できる。</p>
+                    <p class="tile-text">AIが一次レビュー（誤字脱字、抜け漏れチェック）を行うことで、人間はより本質的なレビューに集中できます。</p>
+                    <ul>
+                        <li>チェックリストに基づく<span class="highlight">機械的な確認作業</span>をAIが代行</li>
+                        <li>人間は<span class="highlight">「内容の妥当性」</span>という高度な判断に集中</li>
+                    </ul>
                 </div>
                  <div class="info-tile">
                     <h3 class="tile-title"><i class="fas fa-brain mr-2"></i>思考の壁打ち相手</h3>
-                    <p class="tile-text">「この要件で他に考慮すべき点は？」とAIに問いかけることで、自身の思考の偏りや漏れに気づくことができる。</p>
+                    <p class="tile-text">「この要件で他に考慮すべき点は？」とAIに問いかけることで、自身の思考の偏りや漏れに気づくことができます。</p>
+                    <ul>
+                        <li>深夜でも早朝でも<span class="highlight">「一人ブレスト」</span>が可能に</li>
+                        <li>自分では思いつかない<span class="highlight">多角的な視点</span>を得られる</li>
+                    </ul>
                 </div>
             </div>
 
             <div class="slide-footer">3. AIを活用した要件定義</div>
-            <div class="slide-pagination">12 / 21</div>
+            <div class="slide-pagination">12 / 22</div>
         </section>
 
         <!-- スライド 13: 4. 活用例 -->
@@ -882,7 +910,7 @@
             </div>
 
             <div class="slide-footer">4. 活用例</div>
-            <div class="slide-pagination">13 / 21</div>
+            <div class="slide-pagination">13 / 22</div>
         </section>
         
         <!-- スライド 14: 5. AIはあくまで副操縦士 -->
@@ -900,7 +928,7 @@
             </div>
 
             <div class="slide-footer">5. AIはあくまで副操縦士</div>
-            <div class="slide-pagination">14 / 21</div>
+            <div class="slide-pagination">14 / 22</div>
         </section>
 
         <!-- スライド 15: 6. 日常生活でできる要件定義 ⇔ 設計の訓練術 -->
@@ -929,7 +957,7 @@
             </div>
 
             <div class="slide-footer">6. 日常生活でできる要件定義 ⇔ 設計の訓練術</div>
-            <div class="slide-pagination">15 / 21</div>
+            <div class="slide-pagination">15 / 22</div>
         </section>
 
 
@@ -947,7 +975,7 @@
             </p>
             
             <div class="slide-footer">7. 今回1番お伝えしたいこと</div>
-            <div class="slide-pagination">16 / 21</div>
+            <div class="slide-pagination">16 / 22</div>
         </section>
 
         <!-- スライド 17: 7. 要件定義の「もう一つ」の目的 -->
@@ -968,32 +996,43 @@
             </p>
 
             <div class="slide-footer">7. 今回1番お伝えしたいこと</div>
-            <div class="slide-pagination">17 / 21</div>
+            <div class="slide-pagination">17 / 22</div>
         </section>
 
-        <!-- スライド 18: 7. 「完璧」よりも「姿勢」 -->
+        <!-- スライド18 -->
         <section class="slide" id="slide-18">
             <h2 class="slide-header">7. 「完璧」よりも「姿勢」が信頼を生む</h2>
             
-            <div class="tile-grid-3">
-                <div class="info-tile">
-                    <h3 class="tile-title"><i class="fas fa-times-circle mr-2 text-red-400"></i>完璧は不可能</h3>
-                    <p class="tile-text">常に100点満点の要件定義は不可能です。プロジェクトには必ず不確実性が伴います。</p>
-                </div>
-                <div class="info-tile">
-                    <h3 class="tile-title"><i class="fas fa-running mr-2"></i>目指す姿勢</h3>
-                    <p class="tile-text">しかし、完璧を目指し「同じ目線で一緒に考える」姿勢こそが、お客様の信頼に繋がります。</p>
-                </div>
-                <div class="info-tile" style="background-color: #34d399;">
-                    <p class="text-2xl font-bold text-gray-900 text-center m-auto">
-                        「この人と<br>一緒に仕事がしたい」<br>
-                        <span class="text-lg">(そう思わせる力が技術力です)</span>
+            <!-- 縦3段のレイアウトに変更 -->
+            <div class="flex flex-col justify-center gap-5 flex-grow"> <!-- gap-5, flex-grow追加 -->
+                
+                <!-- 1段目 -->
+                <div class="info-tile w-full max-w-5xl mx-auto"> 
+                    <h3 class="tile-title" style="font-size: 1.75rem;"><i class="fas fa-times-circle mr-2 text-red-400"></i>完璧は不可能</h3>
+                    <p class="tile-text" style="font-size: 1.25rem;">
+                        常に100点満点の要件定義は不可能です。プロジェクトには必ず不確実性が伴い、後から「ああすれば良かった」は必ず出てきます。
                     </p>
+                </div>
+                
+                <!-- 2段目 -->
+                <div class="info-tile w-full max-w-5xl mx-auto">
+                    <h3 class="tile-title" style="font-size: 1.75rem;"><i class="fas fa-running mr-2"></i>目指す姿勢</h3>
+                    <p class="tile-text" style="font-size: 1.25rem;">
+                        しかし、完璧を目指し「お客様と同じ目線で一緒に考える」姿勢こそが信頼に繋がります。「技術的な言い訳」ではなく「どうすれば実現できるか」を考え抜くことが重要です。
+                    </p>
+                </div>
+                
+                <!-- 3段目 (強調) -->
+                <div class="info-tile w-full max-w-5xl mx-auto" style="background-color: #34d399;">
+                    <p class="text-3xl font-bold text-gray-900 text-center m-auto py-4">
+                        「この人と一緒に仕事がしたい」
+                        <span class="block text-xl font-normal mt-2">(そう思わせる人間力・技術力が最強のスキルです)</span>
+                    </A>
                 </div>
             </div>
 
             <div class="slide-footer">7. 今回1番お伝えしたいこと</div>
-            <div class="slide-pagination">18 / 21</div>
+            <div class="slide-pagination">18 / 22</div>
         </section>
 
         <!-- スライド 19: 7. AIは「自分ごと」化のブースター -->
@@ -1011,29 +1050,63 @@
             </ul>
 
             <div class="slide-footer">7. 今回1番お伝えしたいこと</div>
-            <div class="slide-pagination">19 / 21</div>
+            <div class="slide-pagination">19 / 22</div>
         </section>
 
 
-        <!-- スライド 20: 8. 最後に -->
+        <!-- === スライド20 (復習) === -->
         <section class="slide" id="slide-20">
-            <h2 class="slide-header">8. 最後に（本日のまとめ）</h2>
-            <ul class="space-y-4">
-                <li>要件定義は「<span class="highlight">北極星</span>」であり「<span class="highlight">信頼関係のスタート</span>」です。</li>
+            <h2 class="slide-header">本日の復習</h2>
+            
+            <!-- ▼▼▼ 各章のまとめ（旧21）をここに移動 ▼▼▼ -->
+            <ul class="summary-list space-y-3" style="font-size: 1.25rem; line-height: 1.6; padding-left: 2rem; list-style-position: inside;"> <!-- スタイルは旧21のものを継承 -->
                 
-                <li>AIは「<span class="highlight-green">副操縦士</span>」であり「<span class="highlight-green">自分ごと化のブースター</span>」です。</li>
+                <li><span class="highlight">1. 要件定義は:</span> 「プロジェクトの全体像」と「当事者意識」を養う最良の訓練の場である。</li>
+                
+                <li><span class="highlight">2. 皆様へ:</span> 完璧な要件定義はない。失敗を恐れず「挑戦」し「挑戦させる」文化が重要。</li>
 
-                <li>AIに任せること（作業）、人間にしかできないこと（責任、判断、共感）を区別しましょう。</li>
+                <li><span class="highlight">3. AI活用:</span> AIは「作業」が得意。「責任・判断」は人間が持ち、AIを「副操縦士」として活用する。</li>
+                
+                <li><span class="highlight">4. 活用例:</span> AIとの「<span class="highlight-green">壁打ち実践デモ</span>」で見たように、議事録や抜け漏れチェックが効率化できる。</li>
+                
+                <li><span class="highlight">5. AIは副操縦士:</span> <span class="highlight text-red-400">操縦桿（イニシアチブ）</span>は常に人間が握り、AIの出力を鵜呑みにしない。</li>
+                
+                <li><span class="highlight">6. 訓練術:</span> 日常から「<span class="highlight-white">目的（要件）</span>」と「<span class="highlight-white">手段（設計）</span>」を意識的に分解する。</li>
 
-                <li>AIを使いこなし、<span class="highlight-white">「あなたと仕事がしたい」</span>と<br>言われるエンジニアになりましょう。</li>
+                <li><span class="highlight">7. 結論:</span> AIは「手段」。AIを活用し、お客様との「<span class="highlight-white">信頼関係構築</span>」という最も重要な仕事に時間を使う。</li>
             </ul>
+            <!-- ▲▲▲ 内容を入れ替え ▲▲▲ -->
+            
+            <div class="slide-footer">本日の復習</div>
+            <div class="slide-pagination">20 / 22</div>
+        </section>
+
+        <!-- === スライド21 (最後に) === -->
+        <section class="slide" id="slide-21">
+            <h2 class="slide-header">8. 最後に</h2> <!-- タイトル変更 -->
+            
+            <!-- ▼▼▼ 具体的な復習（旧20）をここに移動 ▼▼▼ -->
+            <ul class="summary-list" style="font-size: 1.7rem; line-height: 1.7;"> <!-- スタイルは旧20のものを継承 -->
+                <li>要件定義の目的は「<span class="highlight">なぜ・何が欲しいか</span>」を明確にすること。</li>
+                
+                <li>お客様は真の課題を知りません。「<span class="highlight">速い馬</span>」の要求の裏にある「<span class="highlight">なぜ</span>」を深掘りしましょう。</li>
+
+                <li>AIは「<span class="highlight-green">要約・清書・壁打ち</span>」が得意なアシスタントです。</li>
+
+                <li>AIに「<span class="highlight text-red-400">責任・判断・合意形成</span>」は任せてはいけません。</li>
+
+                <li>日常から「<span class="highlight-white">目的（要件）</span>」と「<span class="highlight-white">手段（設計）</span>」を意識して訓練しましょう。</li>
+                
+                <li>最も重要なのは、プロジェクトを「<span class="highlight-white">自分ごと</span>」として捉える姿勢です。</li>
+            </ul>
+            <!-- ▲▲▲ 内容を入れ替え ▲▲▲ -->
             
             <div class="slide-footer">8. 最後に</div>
-            <div class="slide-pagination">20 / 21</div>
+            <div class="slide-pagination">21 / 22</div>
         </section>
 
-        <!-- スライド 21: ご清聴ありがとうございました -->
-        <section class="slide" id="slide-21">
+        <!-- === 新スライド22 (旧21) === -->
+        <section class="slide" id="slide-22">
             <h2 class="final-message">ご清聴ありがとうございました。</h2>
             
             <!-- フッターとページ番号は非表示 -->
@@ -1064,7 +1137,7 @@
             const nextButton = document.getElementById('next-button');
             
             const slides = document.querySelectorAll('.slide');
-            const totalSlides = slides.length; // 21
+            const totalSlides = slides.length; // 22
             
             let currentSlide = 1;
 
@@ -1098,8 +1171,9 @@
                     e.preventDefault();
                     goToSlide(currentSlide + 1);
                 } else if (e.key === 'ArrowLeft') {
+                    // 修正: 左矢印キーで前のスライドに進むべき (e.preventDefault() も必要)
                     e.preventDefault();
-                    goToSlide(currentSlide + 1);
+                    goToSlide(currentSlide - 1);
                 }
             });
 
