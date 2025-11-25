@@ -31,7 +31,7 @@
             background-color: #1F2937; /* bg-gray-800 */
             border-radius: 0.75rem;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            padding: 2.5rem 3.5rem;
+            padding: 2rem 3rem;
             display: none; /* JSで制御 */
             flex-direction: column;
             transition: all 0.3s ease;
@@ -53,66 +53,65 @@
             display: flex; /* アクティブなスライドだけ表示 */
         }
         .slide-title {
-            font-size: 2.25rem;
+            font-size: 2rem;
             font-weight: 800;
             color: #FFFFFF; /* text-white */
             border-bottom: 3px solid #3B82F6; /* border-blue-500 */
-            padding-bottom: 0.75rem;
-            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
         .slide-subtitle {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 600;
             color: #60A5FA; /* text-blue-400 */
             margin-bottom: 1rem;
         }
         .content {
-            font-size: 1.1rem;
-            line-height: 1.8;
+            font-size: 1rem;
+            line-height: 1.6;
             color: #D1D5DB; /* text-gray-300 */
             flex-grow: 1;
         }
         .content ul {
             list-style-type: disc;
             padding-left: 2rem;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
-        /* v11 論点リスト用 */
         .content ul.columns-2 {
             columns: 2;
             -webkit-columns: 2;
             -moz-columns: 2;
         }
         .content li {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
         }
         .content ol {
             list-style-type: decimal;
             padding-left: 2rem;
-            margin-top: 1rem;
-            space-y: 1rem; /* ol内のスペース */
+            margin-top: 0.5rem;
+            space-y: 0.5rem; /* ol内のスペース */
         }
         .highlight {
             background-color: #B45309; /* bg-yellow-700 */
-            padding: 0.2rem 0.5rem;
+            padding: 0.1rem 0.4rem;
             border-radius: 0.375rem;
             font-weight: 600;
             color: #FDE68A; /* text-yellow-100 */
         }
         .arrow {
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: #60A5FA; /* text-blue-400 */
             margin: 0 0.5rem;
             font-weight: 900;
         }
         .footer {
             text-align: right;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 500;
             color: #9CA3AF; /* text-gray-400 */
             border-top: 1px solid #374151; /* border-gray-700 */
-            padding-top: 1rem;
-            margin-top: 1.5rem;
+            padding-top: 0.75rem;
+            margin-top: 1rem;
             
             position: relative;
             z-index: 5; /* スライド内容より上、ボタンより下 */
@@ -140,11 +139,55 @@
             border: 1px solid #374151;
             color: #A5F3FC; /* text-cyan-200 */
             font-family: monospace;
-            padding: 1rem;
+            padding: 0.75rem;
             border-radius: 0.5rem;
-            font-size: 0.9rem;
-            line-height: 1.6;
+            font-size: 0.85rem;
+            line-height: 1.5;
             white-space: pre-wrap;
+        }
+
+        /* フローチャート用スタイル */
+        .flow-step {
+            background-color: #374151; /* bg-gray-700 */
+            border: 1px solid #4B5563; /* border-gray-600 */
+            border-radius: 0.5rem;
+            padding: 0.75rem 0.25rem; /* パディング調整 */
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            height: 100%;
+            min-height: 5.5rem; /* 高さを少し低く */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem; /* 文字サイズ調整 */
+            line-height: 1.2;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .flow-step-number {
+            position: absolute;
+            top: -0.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #3B82F6; /* bg-blue-500 */
+            color: white;
+            border-radius: 9999px;
+            width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+            border: 2px solid #1F2937; /* ボーダーで見やすく */
+        }
+        .flow-arrow-right, .flow-arrow-down, .flow-arrow-left {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #60A5FA; /* text-blue-400 */
+            font-size: 1.25rem;
         }
 
         /* --- ナビゲーションボタン (position: fixed) --- */
@@ -185,6 +228,57 @@
             padding: 0.25rem 1rem;
             border-radius: 1rem;
         }
+        
+        /* チャットUI用スタイル */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .chat-bubble-left {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+        .chat-bubble-right {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+        .chat-content-left {
+            background-color: #1e3a8a; /* blue-900 */
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem 1rem 1rem 0;
+            max-width: 85%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            border: 1px solid #3b82f6; /* blue-500 */
+            font-size: 0.95rem;
+        }
+        .chat-content-right {
+            background-color: #064e3b; /* green-900 */
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem 1rem 0 1rem;
+            max-width: 85%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            border: 1px solid #10b981; /* green-500 */
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        .chat-name {
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-bottom: 0.1rem;
+            opacity: 0.8;
+        }
+        .chat-icon {
+            font-size: 2rem;
+            line-height: 1;
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -203,7 +297,7 @@
             </div>
         </section>
 
-        <!-- スライド 2: 【v10追加】本日の内容 -->
+        <!-- スライド 2: 本日の内容 -->
         <section class="slide">
             <h2 class="slide-title">本日の内容：実践的な「壁打ち」の紹介</h2>
             <h3 class="slide-subtitle">エンジニアがAIを活用するプロセス</h3>
@@ -219,10 +313,48 @@
                     <p class="text-lg mt-4">私がクライアントとして「架空の案件」をフワッと発注し、AI（を武器とするエンジニア）がどのように要件を固めていったか、その生のやり取りをご覧ください。</p>
                 </div>
             </div>
-            <div class="footer">スライド 2 / 21</div>
+            <div class="footer">スライド 2 / 22</div>
         </section>
 
-        <!-- スライド 3: プロジェクトの背景 -->
+        <!-- スライド 3: 本日のデモの流れ -->
+        <section class="slide">
+            <h2 class="slide-title">本日のデモの流れ（全8ステップ）</h2>
+            <h3 class="slide-subtitle">「フワッとした要望」が「具体的な仕様」になるまで</h3>
+            <div class="content flex flex-col justify-center h-full">
+                <!-- 上段 (1 -> 4) -->
+                <div class="grid grid-cols-11 gap-2 items-center mb-4">
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">1</span>クライアントの<br>「フワッとした」<br>最初の要望</div>
+                    <div class="flow-arrow-right col-span-1">➜</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">2</span>「手間」と<br>「セキュリティ」<br>のバランス</div>
+                    <div class="flow-arrow-right col-span-1">➜</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">3</span>クライアントの<br>「わがまま」を<br>仕様に落とす</div>
+                    <div class="flow-arrow-right col-span-1">➜</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">4</span>「現場」と<br>「オーナー」<br>の分離</div>
+                </div>
+                
+                <!-- 折り返し矢印 -->
+                <div class="grid grid-cols-11 gap-2 mb-4 relative" style="height: 1.5rem;">
+                    <div class="col-start-10 col-span-2 flex justify-center">
+                        <div class="h-full w-1 bg-blue-400 absolute top-[-1.5rem] bottom-0"></div>
+                        <div class="flow-arrow-down absolute bottom-[-1rem] text-blue-400">⬇</div>
+                    </div>
+                </div>
+
+                <!-- 下段 (8 <- 5) -->
+                <div class="grid grid-cols-11 gap-2 items-center">
+                    <div class="flow-step col-span-2 relative bg-green-900 border-green-600"><span class="flow-step-number bg-green-600">8</span>対話で固まった<br>システム全体像<br>(GOAL)</div>
+                    <div class="flow-arrow-left col-span-1 rotate-180">⬅</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">7</span>AIが<br>「将来の課題」を<br>先回り提示</div>
+                    <div class="flow-arrow-left col-span-1 rotate-180">⬅</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">6</span>クライアントの<br>「夢」を<br>現実的な仕様に</div>
+                    <div class="flow-arrow-left col-span-1 rotate-180">⬅</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">5</span>「言い忘れていた」<br>重要機能の<br>発見</div>
+                </div>
+            </div>
+            <div class="footer">スライド 3 / 22</div>
+        </section>
+
+        <!-- スライド 4: プロジェクトの背景 -->
         <section class="slide">
             <h2 class="slide-title">1. プロジェクトの背景・課題</h2>
             <h3 class="slide-subtitle">クライアントの「フワッとした」最初の要望</h3>
@@ -248,10 +380,10 @@
                     <p class="text-lg text-gray-400">「決済方法は？ログイン方式は？サーバーは？DBは？」<span class="arrow">→</span> <span class="font-bold text-red-400">クライアントが発狂する！</span></p>
                 </div>
             </div>
-            <div class="footer">スライド 3 / 21</div>
+            <div class="footer">スライド 4 / 22</div>
         </section>
 
-        <!-- スライド 4: AIの役割 -->
+        <!-- スライド 5: AIの役割 -->
         <section class="slide">
             <h2 class="slide-title">2. AI活用の準備（エンジニアの役割）</h2>
             <h3 class="slide-subtitle">AIは「推測」せず「大枠から質問」する</h3>
@@ -278,169 +410,266 @@
                     <li><span class="arrow">→</span> エンジニアが「では配達は…」と次の論点に進む。</li>
                 </ul>
             </div>
-            <div class="footer">スライド 4 / 21</div>
+            <div class="footer">スライド 5 / 22</div>
         </section>
 
-        <!-- スライド 5: 実例 (ログイン) -->
+        <!-- スライド 6: 実例 (ログイン) -->
         <section class="slide">
             <h2 class="slide-title">3. 実例①：利用者（キャスト）の特定</h2>
             <h3 class="slide-subtitle">「手間」と「セキュリティ」のバランス</h3>
             <div class="content">
-                <ol class="list-decimal pl-6 space-y-4">
-                    <li>
-                        <span class="font-bold">エンジニア (AIと準備済):</span> 「キャストさんのログイン方法は？ <span class="highlight">A: お店ごとの共通ID・パスワード</span>、<span class="highlight">B: キャスト個人が登録して承認</span>、どちらが良いですか？」
-                    </li>
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「うーん… <span class="font-bold text-red-400">キャストさんに煩わしいことさせるのはダメだ。</span>お店（オーナー）には手間かけさせても良い。」
-                    </li>
-                    <li>
-                        <span class="font-bold">エンジニア:</span> 「なるほど。では、<span class="font-bold text-blue-300">Aの『お店ごとの共通ID・パスワード』</span>にしましょう。キャストさんはそれを入力するだけで、すぐに注文を開始できます。」
-                    </li>
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「それが良い。」
-                    </li>
-                </ol>
-                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
+                <div class="chat-container">
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>キャストさんのログイン方法は？</p>
+                            <p><span class="highlight font-bold text-yellow-400">A: お店ごとの共通ID・パスワード</span><br>
+                            <span class="highlight font-bold text-yellow-400">B: キャスト個人が登録して承認</span><br>
+                            どちらが良いですか？</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>うーん… <span class="font-bold text-red-400">キャストさんに煩わしいことさせるのはダメだ。</span>お店（オーナー）には手間かけさせても良い。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>なるほど。では、<span class="font-bold text-blue-300">Aの『お店ごとの共通ID・パスワード』</span>にしましょう。キャストさんはそれを入力するだけで、すぐに注文を開始できます。</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>それが良い。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                </div>
+                <p class="mt-2 text-lg font-bold text-center p-3 bg-green-900 text-green-200 rounded-lg border border-green-700">
                     クライアントが「誰に手間をかけたくないか」という<span class="text-white">優先順位</span>を明確にし、シンプルな認証方式を即決。
                 </p>
             </div>
-            <div class="footer">スライド 5 / 21</div>
+            <div class="footer">スライド 6 / 22</div>
         </section>
 
-        <!-- スライド 6: 実例（決済） -->
+        <!-- スライド 7: 実例（決済） -->
         <section class="slide">
             <h2 class="slide-title">4. 実例②：決済方法の決定プロセス</h2>
             <h3 class="slide-subtitle">クライアントの「わがまま」を仕様に落とし込む</h3>
             <div class="content">
-                <ol class="list-decimal pl-6 space-y-4">
-                    <li>
-                        <span class="font-bold">エンジニア (AIと準備済):</span> 「お会計は<span class="highlight">『都度払い』</span>ですか？<span class="highlight">『掛け払い』</span>ですか？」
-                    </li>
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「うーん… <span class="font-bold text-red-400">どっちも</span>やりたい。信頼できる店は掛け、新規は都度。」
-                    </li>
-                    <li>
-                        <span class="font-bold">エンジニア:</span> （AIとの壁打ちで想定内）「なるほど！では、オーナー（あなた）が使う<span class="highlight">『③管理Webサイト』</span>で、お店ごとに『都度』か『掛け』かを<span class="font-bold text-blue-300">設定・変更できる</span>ようにしましょう。」
-                    </li>
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「それだ！最高！」
-                    </li>
-                </ol>
-                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
+                <div class="chat-container">
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>お会計は<span class="highlight text-yellow-400">『都度払い』</span>ですか？<span class="highlight text-yellow-400">『掛け払い』</span>ですか？</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>うーん… <span class="font-bold text-red-400">どっちも</span>やりたい。信頼できる店は掛け、新規は都度。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left opacity-70">
+                        <div class="chat-icon"></div>
+                        <div class="bg-gray-700 text-gray-300 p-2 rounded-lg text-sm italic border border-gray-600">
+                            （失敗例：「両方対応は開発費が倍です！」と言ってしまう）
+                        </div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>なるほど！では、オーナー（あなた）が使う<span class="font-bold text-blue-300">『③管理Webサイト』</span>で、お店ごとに『都度』か『掛け』かを<span class="font-bold text-blue-300">設定・変更できる</span>ようにしましょう。</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>それだ！最高！</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                </div>
+                <p class="mt-2 text-lg font-bold text-center p-3 bg-green-900 text-green-200 rounded-lg border border-green-700">
                     クライアントの「現実的な要望」を引き出し、それを実現する「具体的なシステム機能」に翻訳する。
                 </p>
             </div>
-            <div class="footer">スライド 6 / 21</div>
+            <div class="footer">スライド 7 / 22</div>
         </section>
         
-        <!-- スライド 7: 実例 (管理画面) -->
+        <!-- スライド 8: 実例 (管理画面) -->
         <section class="slide">
             <h2 class="slide-title">5. 実例③：役割分担の明確化</h2>
             <h3 class="slide-subtitle">「現場の仕事」と「オーナーの仕事」を分離</h3>
             <div class="content">
-                <ol class="list-decimal pl-6 space-y-4">
-                    <li>
-                        <span class="font-bold">エンジニア (AIと準備済):</span> 「メニューの『売り切れ』設定は、現場の<span class="highlight">『②注文用タブレット』</span>で操作しますか？」
-                    </li>
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「いや、<span class="font-bold text-red-400">俺が家（PC）からもやりたい。</span>現場のスタッフには注文受付だけ集中させたい。」
-                    </li>
-                    <li>
-                        <span class="font-bold">エンジニア:</span> 「承知しました。ではシステムを明確に分離しましょう。<br>
-                        ・<span class="highlight">②現場タブレット</span>（注文受付専用）<br>
-                        ・<span class="highlight">③管理Webサイト</span>（PC/スマホOK。メニュー、待ち時間、決済方法などをオーナーが設定）
-                        」
-                    </li>
-                </ol>
-                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
-                    「誰がどこで操作するか」を明確にし、システムの全体像（スライド11）をクライアントと合意する。
+                <div class="chat-container">
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>メニューの『売り切れ』設定は、現場の<span class="font-bold text-blue-300">『②注文用タブレット』</span>で操作しますか？</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>いや、<span class="font-bold text-red-400">俺が家（PC）からもやりたい。</span>現場のスタッフには注文受付だけ集中させたい。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>承知しました。ではシステムを明確に分離しましょう。<br>
+                            ・<span class="font-bold text-yellow-300">②現場タブレット</span>（注文受付専用）<br>
+                            ・<span class="font-bold text-yellow-300">③管理Webサイト</span>（PC/スマホOK。メニュー管理など）</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg border border-green-700">
+                    「誰がどこで操作するか」を明確にし、システムの全体像（スライド12）をクライアントと合意する。
                 </p>
             </div>
-            <div class="footer">スライド 7 / 21</div>
+            <div class="footer">スライド 8 / 22</div>
         </section>
         
-        <!-- スライド 8: 実例（オペレーション） -->
+        <!-- スライド 9: 実例（オペレーション） -->
         <section class="slide">
             <h2 class="slide-title">6. 実例④：現場オペレーションの考慮</h2>
             <h3 class="slide-subtitle">クライアントが「言い忘れていた」重要機能の発見</h3>
             <div class="content">
-                <ol class="list-decimal pl-6 space-y-4">
-                    <li>
-                        <span class="font-bold">エンジニア (AIと準備済):</span> 「注文を受けたら『注文確認ボタン』を押してキャストさんを安心させるのはどうですか？」
-                    </li>
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「良いね！ あ、そうだ！<span class="font-bold text-red-400">目安の待ち時間</span>もこっちで設定したい！」
-                    </li>
-                    <li>
-                        <span class="font-bold">エンジニア:</span> （AIとの壁打ちで想定内）「素晴らしい。では、あの<span class="highlight">『③管理Webサイト』</span>から<span class="font-bold text-blue-300">『現在の目安時間』を一括設定</span>できるようにしましょう。」
-                    </li>
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「それも欲しい！ あと<span class="font-bold text-red-400">一時停止ボタン</span>と<span class="font-bold text-red-400">定休日設定</span>も！」
-                    </li>
-                    <li>
-                        <span class="font-bold">エンジニア:</span> 「承知しました。管理サイトに『営業中／準備中』のスイッチと、『定休日カレンダー』を追加します。」
-                    </li>
-                </ol>
-                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
+                <div class="chat-container">
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>注文を受けたら『注文確認ボタン』を押してキャストさんを安心させるのはどうですか？</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>良いね！ あ、そうだ！<span class="font-bold text-red-400">目安の待ち時間</span>もこっちで設定したい！</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>素晴らしい。では、あの<span class="font-bold text-blue-300">『③管理Webサイト』</span>から<span class="font-bold text-blue-300">『現在の目安時間』を一括設定</span>できるようにしましょう。</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>それも欲しい！ あと<span class="font-bold text-red-400">一時停止ボタン</span>と<span class="font-bold text-red-400">定休日設定</span>も！</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                </div>
+                <p class="mt-2 text-lg font-bold text-center p-3 bg-green-900 text-green-200 rounded-lg border border-green-700">
                     一つの質問が、クライアントの「現場のリアルな悩み」を引き出し、システムが格段に実用的になる。
                 </p>
             </div>
-            <div class="footer">スライド 8 / 21</div>
+            <div class="footer">スライド 9 / 22</div>
         </section>
 
-        <!-- スライド 9: 実例（拡張性）-->
+        <!-- スライド 10: 実例（拡張性）-->
         <section class="slide">
             <h2 class="slide-title">7. 実例⑤：将来の構想（拡張性）</h2>
             <h3 class="slide-subtitle">クライアントの「夢」を現実的な仕様に</h3>
             <div class="content">
-                <ol class="list-decimal pl-6 space-y-4">
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「言い忘れた。将来、<span class="font-bold text-red-400">他の飲食店</span>も参加させて手数料ビジネスしたい。」
-                    </li>
-                    <li>
-                        <span class="font-bold">エンジニア (AIと懸念共有):</span> 「素晴らしい。方法は<span class="highlight">【A案：まず自店のみ】</span>と<span class="highlight">【B案：拡張前提】</span>がありますが、B案で進めますか？ <span class="text-gray-400">（ただしB案だと、当面1店舗だけなのでキャストさんに『なぜ店を選ぶ画面が？』と不思議に思われる懸念があります）</span>」
-                    </li>
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「B案が良いけど、キャストは<span class="font-bold text-red-400">『店』じゃなくて『メニュー』で選びたい</span>はず。」
-                    </li>
-                    <li>
-                        <span class="font-bold">エンジニア:</span> 「なるほど！【B案（改）】ですね。トップに<span class="font-bold text-blue-300">全店の全メニューを一覧表示</span>し、店名を併記しましょう。これなら当面1店舗でも違和感がなく、拡張もスムーズです。」
-                    </li>
-                </ol>
-                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
+                <div class="chat-container">
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>言い忘れた。将来、<span class="font-bold text-red-400">他の飲食店</span>も参加させて手数料ビジネスしたい。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>素晴らしい。方法は<span class="highlight text-yellow-400">【A案：まず自店のみ】</span>と<span class="highlight text-yellow-400">【B案：拡張前提】</span>がありますが、B案で進めますか？ <span class="text-gray-300 text-sm">（ただしB案だと、当面1店舗だけなのでキャストさんが『なぜ店を選ぶ？』と不思議に思う懸念があります）</span></p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>B案が良いけど、キャストは<span class="font-bold text-red-400">『店』じゃなくて『メニュー』で選びたい</span>はず。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>なるほど！【B案（改）】ですね。トップに<span class="font-bold text-blue-300">全店の全メニューを一覧表示</span>し、店名を併記しましょう。これなら当面1店舗でも違和感がなく、拡張もスムーズです。</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-2 text-lg font-bold text-center p-3 bg-green-900 text-green-200 rounded-lg border border-green-700">
                     クライアントの「鋭い視点」をエンジニアが即座に仕様に反映し、当初の設計案より優れた設計に進化。
                 </p>
             </div>
-            <div class="footer">スライド 9 / 21</div>
+            <div class="footer">スライド 10 / 22</div>
         </section>
 
-        <!-- スライド 10: 実例（カートルール） -->
+        <!-- スライド 11: 実例（カートルール） -->
         <section class="slide">
             <h2 class="slide-title">8. 実例⑥：拡張に伴うルールの決定</h2>
             <h3 class="slide-subtitle">AIが「将来の運用課題」を先回りして提示</h3>
             <div class="content">
-                <ol class="list-decimal pl-6 space-y-4">
-                    <li>
-                        <span class="font-bold">エンジニア (AIと準備済):</span> 「（実例⑤の直後）では、もし将来、A店とB店が参加した時、キャストが<span class="highlight">『A店の唐揚げ』と『B店の寿司』を同時にカート</span>に入れたらどうしましょう？」
-                    </li>
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「あ…、配達も会計も別々になるから困るな。」
-                    </li>
-                    <li>
-                        <span class="font-bold">エンジニア:</span> 「ですよね。では、<span class="font-bold text-blue-300">『1回の注文（カート）には、1つのお店のメニューしか入れられない』</span>というルール（制限）を最初から仕様に盛り込みましょう。」
-                    </li>
-                    <li>
-                        <span class="font-bold">クライアント:</span> 「そうですね。それがいいです。お願いします。」
-                    </li>
-                </ol>
-                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
+                <div class="chat-container">
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>（実例⑤の直後）では、もし将来、A店とB店が参加した時、キャストが<span class="highlight text-yellow-400">『A店の唐揚げ』と『B店の寿司』を同時にカート</span>に入れたらどうしましょう？</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>あ…、配達も会計も別々になるから困るな。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>ですよね。では、<span class="font-bold text-blue-300">『1回の注文（カート）には、1つのお店のメニューしか入れられない』</span>というルール（制限）を最初から仕様に盛り込みましょう。</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>そうですね。それがいいです。お願いします。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                </div>
+                <p class="mt-2 text-lg font-bold text-center p-3 bg-green-900 text-green-200 rounded-lg border border-green-700">
                     クライアントの「夢」に対し、エンジニアがAIとの準備で得た「運用課題」を提示し、重要な基本ルールを確定させる。
                 </p>
             </div>
-            <div class="footer">スライド 10 / 21</div>
+            <div class="footer">スライド 11 / 22</div>
         </section>
 
-        <!-- スライド 11: フェーズ1概要 -->
+        <!-- スライド 12: フェーズ1概要 -->
         <section class="slide">
             <h2 class="slide-title">9. 【フェーズ1】システム概要</h2>
             <h3 class="slide-subtitle">対話で固まったシステム全体像</h3>
@@ -487,10 +716,10 @@
                     </div>
                 </div>
             </div>
-            <div class="footer">スライド 11 / 21</div>
+            <div class="footer">スライド 12 / 22</div>
         </section>
 
-        <!-- スライド 12: このプロセスの使い方 -->
+        <!-- スライド 13: このプロセスの使い方 -->
         <section class="slide">
             <h2 class="slide-title">10. エンジニアの実践プロセス</h2>
             <h3 class="slide-subtitle">AIとの事前準備を「クライアント会議の武器」にする</h3>
@@ -518,10 +747,10 @@
                     AIとの対話ログこそが、エンジニアが主導権を握り、認識齟齬を防ぐ「最強の要件定義書（たたき台）」となる。
                 </p>
             </div>
-            <div class="footer">スライド 12 / 21</div>
+            <div class="footer">スライド 13 / 22</div>
         </section>
 
-        <!-- スライド 13: まとめ（仕様一覧） -->
+        <!-- スライド 14: まとめ（仕様一覧） -->
         <section class="slide">
             <h2 class="slide-title">11. 【フェーズ1】仕様まとめ</h2>
             <h3 class="slide-subtitle">対話で確定した「作ること」</h3>
@@ -545,10 +774,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="footer">スライド 13 / 21</div>
+            <div class="footer">スライド 14 / 22</div>
         </section>
 
-        <!-- スライド 14: 結論 -->
+        <!-- スライド 15: 結論 -->
         <section class="slide">
             <h2 class="slide-title">12. フェーズ1の「エンジニアの準備」</h2>
             <h3 class="slide-subtitle">AIと「想定問答（壁打ち）」を済ませて会議に臨む</h3>
@@ -569,10 +798,10 @@
                     <span class="text-white">実際の会議でクライアントの要望を即座に理解し、プロとして対応（代替案の提示など）ができる</span>のです。
                 </p>
             </div>
-            <div class="footer">スライド 14 / 21</div>
+            <div class="footer">スライド 15 / 22</div>
         </section>
 
-        <!-- スライド 15: 【v11追加】論点抜粋 -->
+        <!-- スライド 16: 論点抜粋 -->
         <section class="slide">
             <h2 class="slide-title">13. フェーズ1で洗い出した論点（一部抜粋）</h2>
             <h3 class="slide-subtitle">AIとの「壁打ち」でこれだけの論点が整理された</h3>
@@ -603,16 +832,16 @@
                     これらすべてを「武器（選択肢）」として準備して会議に臨むことで、クライアントの「言い忘れ」や「認識ズレ」を最小限にします。
                 </p>
             </div>
-            <div class="footer">スライド 15 / 21</div>
+            <div class="footer">スライド 16 / 22</div>
         </section>
 
-        <!-- スライド 16: フェーズ2 区切り -->
+        <!-- スライド 17: フェーズ2 区切り -->
         <section class="slide phase-break">
             <h1 class="text-5xl font-extrabold text-white mb-4">フェーズ 2</h1>
             <p class="text-3xl font-semibold text-green-300">詳細仕様の確定：<br>「モックアップ」による解像度の向上</p>
         </section>
 
-        <!-- スライド 17: AIの優位性（モック）-->
+        <!-- スライド 18: AIの優位性（モック）-->
         <section class="slide">
             <h2 class="slide-title">14. フェーズ2の進め方</h2>
             <h3 class="slide-subtitle">「大枠（フェーズ1）」から「詳細（フェーズ2）」へ</h3>
@@ -637,15 +866,15 @@
                     エンジニアの強み：AIを使い、<span class="text-white">即座に「視覚的なたたき台（モックアップ）」を生成</span>し、会議の武器とできる。
                 </p>
             </div>
-            <div class="footer">スライド 16 / 21</div>
+            <div class="footer">スライド 17 / 22</div>
         </section>
 
-        <!-- スライド 18: モックの提示 -->
+        <!-- スライド 19: モックの提示 -->
         <section class="slide">
             <h2 class="slide-title">15. 実践①：管理画面（全体像）の合意</h2>
             <h3 class="slide-subtitle">モック（たたき台）を使った具体的な議論</h3>
             <div class="content">
-                <p class="text-lg">エンジニアがAIと準備したモック（`admin_mockup_phase2.html`）をクライアントと確認し、まず「画面一覧（左帯メニュー）」をFIXさせる。</p>
+                <p class="text-lg">エンジニアがAIと準備したモックをクライアントと確認し、まず「画面一覧（左帯メニュー）」をFIXさせる。</p>
                 
                 <div class="flex gap-6 mt-4">
                     <div class="flex-1">
@@ -670,10 +899,10 @@
                     </div>
                 </div>
             </div>
-            <div class="footer">スライド 17 / 21</div>
+            <div class="footer">スライド 18 / 22</div>
         </section>
 
-        <!-- スライド 19: 詳細項目（メニュー登録） -->
+        <!-- スライド 20: 詳細項目（メニュー登録） -->
         <section class="slide">
             <h2 class="slide-title">16. 実践②：詳細項目（メニュー登録）の合意</h2>
             <h3 class="slide-subtitle">「画面」から「項目」へ、さらに詳細化</h3>
@@ -705,10 +934,10 @@
                     </div>
                 </div>
             </div>
-            <div class="footer">スライド 18 / 21</div>
+            <div class="footer">スライド 19 / 22</div>
         </section>
 
-        <!-- スライド 20: フェーズ2 結論 -->
+        <!-- スライド 21: フェーズ2 結論 -->
         <section class="slide">
             <h2 class="slide-title">17. フェーズ2 結論</h2>
             <h3 class="slide-subtitle">「モック」がクライアントの具体的なフィードバックを引き出す</h3>
@@ -729,10 +958,10 @@
                     AIとの「対話（フェーズ1）」と「モックアップ（フェーズ2）」こそが、<br>エンジニアが主導する高速な要件定義の武器となる。
                 </p>
             </div>
-            <div class="footer">スライド 19 / 21</div>
+            <div class="footer">スライド 20 / 22</div>
         </section>
 
-        <!-- スライド 21: 最終まとめ -->
+        <!-- スライド 22: 最終まとめ -->
         <section class="slide">
             <h2 class="slide-title">18. 最終結論：AIとの伴走</h2>
             <h3 class="slide-subtitle">AIは「答え」を出すのではなく「答えに導く」</h3>
@@ -754,10 +983,10 @@
                     AIに「仕事を奪われる」のではなく、AIを「使いこなし」、<br>クライアントの要望の「一歩先を行く」エンジニアになる。
                 </p>
             </div>
-            <div class="footer">スライド 20 / 21</div>
+            <div class="footer">スライド 21 / 22</div>
         </section>
 
-        <!-- スライド 21: 【v12修正】実践編パートの終了 -->
+        <!-- スライド 22: 実践編パートの終了 -->
         <section class="slide">
             <div class="flex-grow flex flex-col justify-center items-center text-center">
                 <h1 class="text-5xl font-extrabold text-white mb-4">実践編（AIとの壁打ち）<br>は以上です</h1>
@@ -768,14 +997,14 @@
                 <p class="text-xl text-gray-300 mt-6">（メインスライドに戻ります）</p>
             </div>
             <div class="footer">
-                スライド 21 / 21
+                スライド 22 / 22
             </div>
         </section>
 
     </div> <!-- slide-container の終了 -->
 
     <!-- ナビゲーション (v4でコンテナの外に移動) -->
-    <span id="slide-counter">1 / 21</span>
+    <span id="slide-counter">1 / 22</span>
     <button id="prev" class="nav-button" onclick="changeSlide(-1)">＜</button>
     <button id="next" class="nav-button" onclick="changeSlide(1)">＞</button>
 
