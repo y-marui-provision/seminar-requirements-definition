@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIを活用した要件定義の実践セミナー（縦スクロール版）</title>
+    <!-- Tailwind CSSを読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* --- 基本設定 --- */
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+            color: #D1D5DB; /* text-gray-300 */
+            margin: 0;
+            padding: 0;
+            /* 縦スクロールを有効化 */
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* コンテナ：縦並びレイアウト */
+        #slide-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4rem; /* スライド間の余白 */
+            padding: 4rem 2rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* --- スライドのスタイル --- */
+        .slide {
+            /* サイズと比率 */
+            width: 100%;
+            max-width: 1000px; /* A4横に近い比率で見やすく */
+            aspect-ratio: 16 / 9; /* アスペクト比を固定してスライド感を出す */
+            
+            /* 見た目 */
+            background-color: #1F2937; /* bg-gray-800 */
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border-top: 4px solid #3B82F6; /* border-blue-500 */
+            
+            /* レイアウト */
+            display: flex; /* 常に表示 */
+            flex-direction: column;
+            padding: 2rem 3rem;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* フェーズ区切りスライド */
+        .slide.phase-break {
+            background-color: #064E3B; /* bg-green-900 */
+            border-top: 4px solid #10B981; /* border-green-500 */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* タイトル・文字周り */
+        .slide-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            border-bottom: 3px solid #3B82F6;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .slide-subtitle {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #60A5FA;
+            margin-bottom: 1rem;
+        }
+        .content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #D1D5DB;
+            flex-grow: 1;
+            overflow-y: auto; /* 内容があふれた場合のみスクロール */
+        }
+
+        /* 箇条書き */
+        .content ul { list-style-type: disc; padding-left: 2rem; margin-top: 0.5rem; }
+        .content li { margin-bottom: 0.5rem; }
+        .content ol { list-style-type: decimal; padding-left: 2rem; margin-top: 0.5rem; space-y: 0.5rem; }
+        .highlight { background-color: #B45309; padding: 0.1rem 0.4rem; border-radius: 0.375rem; font-weight: 600; color: #FDE68A; }
+        .arrow { font-size: 1.5rem; color: #60A5FA; margin: 0 0.5rem; font-weight: 900; }
+        
+        /* フッター */
+        .footer {
+            text-align: right;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #9CA3AF;
+            border-top: 1px solid #374151;
+            padding-top: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        /* --- 各種コンポーネント --- */
+        .failure-case { flex: 1; padding: 1rem; border-radius: 0.5rem; min-width: 300px; background-color: #4B1D1D; border: 1px solid #DC2626; }
+        .success-case { flex: 1; padding: 1rem; border-radius: 0.5rem; min-width: 300px; background-color: #1E3A3A; border: 1px solid #10B981; }
+        .mockup-code { background-color: #000; border: 1px solid #374151; color: #A5F3FC; font-family: monospace; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; }
+        
+        /* フローチャート */
+        .flow-step { background-color: #374151; border: 1px solid #4B5563; border-radius: 0.5rem; padding: 0.75rem 0.25rem; text-align: center; font-weight: bold; color: white; position: relative; height: 100%; min-height: 5.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; line-height: 1.2; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); }
+        .flow-step-number { position: absolute; top: -0.75rem; left: 50%; transform: translateX(-50%); background-color: #3B82F6; color: white; border-radius: 9999px; width: 1.5rem; height: 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; border: 2px solid #1F2937; }
+        .flow-arrow-right, .flow-arrow-down, .flow-arrow-left { display: flex; align-items: center; justify-content: center; color: #60A5FA; font-size: 1.25rem; }
+
+        /* チャットUI */
+        .chat-container { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+        .chat-bubble-left { display: flex; justify-content: flex-start; align-items: flex-end; gap: 0.5rem; }
+        .chat-bubble-right { display: flex; justify-content: flex-end; align-items: flex-end; gap: 0.5rem; }
+        .chat-content-left { background-color: #1e3a8a; color: white; padding: 0.75rem 1rem; border-radius: 1rem 1rem 1rem 0; max-width: 85%; box-shadow: 0 2px 4px rgba(0,0,0,0.3); border: 1px solid #3b82f6; font-size: 0.95rem; }
+        .chat-content-right { background-color: #064e3b; color: white; padding: 0.75rem 1rem; border-radius: 1rem 1rem 0 1rem; max-width: 85%; box-shadow: 0 2px 4px rgba(0,0,0,0.3); border: 1px solid #10b981; text-align: left; font-size: 0.95rem; }
+        .chat-name { font-size: 0.7rem; font-weight: bold; margin-bottom: 0.1rem; opacity: 0.8; }
+        .chat-icon { font-size: 2rem; line-height: 1; }
+
+
+        /* --- PDF保存（印刷）用設定 --- */
+        @media print {
+            @page {
+                size: landscape; /* 横向き */
+                margin: 0;       /* 余白なし */
+            }
+            body {
+                background-color: #111827 !important; /* 背景色を強制 */
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact;
+            }
+            #slide-container {
+                padding: 0 !important;
+                gap: 0 !important;
+                display: block !important; /* Flex解除 */
+            }
+            .slide {
+                width: 100% !important;
+                height: 100vh !important; /* 1ページ1スライド */
+                max-width: none !important;
+                aspect-ratio: auto !important; /* 比率解除して画面に合わせる */
+                
+                break-after: page;        /* 改ページ */
+                page-break-after: always; /* 改ページ(古いブラウザ用) */
+                
+                margin: 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                
+                /* 印刷時の余白調整 */
+                padding: 4rem 5rem !important; 
+            }
+            
+            /* 最後のページ後の空白防止 */
+            .slide:last-child {
+                break-after: auto;
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="slide-container">
+
+        <!-- スライド 1: タイトル -->
+        <section class="slide active">
+            <div class="flex-grow flex flex-col justify-center items-center text-center">
+                <h1 class="text-5xl font-extrabold text-white mb-4">AIを活用した要件定義の実践</h1>
+                <p class="text-3xl font-semibold text-blue-400">対話による「あいまい」から「具体」へのプロセス</p>
+                <p class="text-xl text-gray-300 mt-8">クライアントの「発狂しない」ヒアリング実例</p>
+            </div>
+            <div class="footer">
+                繁華街デリバリーアプリ 案件
+            </div>
+        </section>
+
+        <!-- スライド 2: 本日の内容 -->
+        <section class="slide">
+            <h2 class="slide-title">本日の内容：実践的な「壁打ち」の紹介</h2>
+            <h3 class="slide-subtitle">エンジニアがAIを活用するプロセス</h3>
+            <div class="content">
+                <p class="text-lg mt-4">このセミナーでは、<span class="highlight">「AIを活用したいエンジニア（聴講者の皆様）」</span>が、どのようにAIと連携して要件定義を進めるか、その<span class="font-bold text-white">具体的な「壁打ち」のプロセス</span>を紹介します。</p>
+                
+                <div class="mt-8 p-6 bg-gray-900 border border-gray-700 rounded-lg">
+                    <h4 class="text-xl font-bold text-white mb-3">【設定】</h4>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><span class="font-bold text-blue-300">私（発表者）:</span> クライアント（発注者）役</li>
+                        <li><span class="font-bold text-green-300">AI:</span> エンジニア（受注者）の「壁打ち相手」役</li>
+                    </ul>
+                    <p class="text-lg mt-4">私がクライアントとして「架空の案件」をフワッと発注し、AI（を武器とするエンジニア）がどのように要件を固めていったか、その生のやり取りをご覧ください。</p>
+                </div>
+            </div>
+            <div class="footer">スライド 2 / 22</div>
+        </section>
+
+        <!-- スライド 3: 本日のデモの流れ -->
+        <section class="slide">
+            <h2 class="slide-title">本日のデモの流れ（全8ステップ）</h2>
+            <h3 class="slide-subtitle">「フワッとした要望」が「具体的な仕様」になるまで</h3>
+            <div class="content flex flex-col justify-center h-full">
+                <!-- 上段 (1 -> 4) -->
+                <div class="grid grid-cols-11 gap-2 items-center mb-4">
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">1</span>クライアントの<br>「フワッとした」<br>最初の要望</div>
+                    <div class="flow-arrow-right col-span-1">➜</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">2</span>「手間」と<br>「セキュリティ」<br>のバランス</div>
+                    <div class="flow-arrow-right col-span-1">➜</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">3</span>クライアントの<br>「わがまま」を<br>仕様に落とす</div>
+                    <div class="flow-arrow-right col-span-1">➜</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">4</span>「現場」と<br>「オーナー」<br>の分離</div>
+                </div>
+                
+                <!-- 折り返し矢印 -->
+                <div class="grid grid-cols-11 gap-2 mb-4 relative" style="height: 1.5rem;">
+                    <div class="col-start-10 col-span-2 flex justify-center">
+                        <div class="h-full w-1 bg-blue-400 absolute top-[-1.5rem] bottom-0"></div>
+                        <div class="flow-arrow-down absolute bottom-[-1rem] text-blue-400">⬇</div>
+                    </div>
+                </div>
+
+                <!-- 下段 (8 <- 5) -->
+                <div class="grid grid-cols-11 gap-2 items-center">
+                    <div class="flow-step col-span-2 relative bg-green-900 border-green-600"><span class="flow-step-number bg-green-600">8</span>対話で固まった<br>システム全体像<br>(GOAL)</div>
+                    <div class="flow-arrow-left col-span-1 rotate-180">⬅</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">7</span>AIが<br>「将来の課題」を<br>先回り提示</div>
+                    <div class="flow-arrow-left col-span-1 rotate-180">⬅</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">6</span>クライアントの<br>「夢」を<br>現実的な仕様に</div>
+                    <div class="flow-arrow-left col-span-1 rotate-180">⬅</div>
+                    <div class="flow-step col-span-2 relative"><span class="flow-step-number">5</span>「言い忘れていた」<br>重要機能の<br>発見</div>
+                </div>
+            </div>
+            <div class="footer">スライド 3 / 22</div>
+        </section>
+
+        <!-- スライド 4: プロジェクトの背景 -->
+        <section class="slide">
+            <h2 class="slide-title">1. プロジェクトの背景・課題</h2>
+            <h3 class="slide-subtitle">クライアントの「フワッとした」最初の要望</h3>
+            <div class="content">
+                <div class="p-6 bg-gray-900 border border-gray-700 rounded-lg">
+                    <p class="text-lg font-medium text-gray-100">「繁華街でレストラン居酒屋をやっています。</p>
+                    <p class="mt-4">
+                        ピークタイムは<span class="highlight">同伴（18-20時）</span>と<span class="highlight">アフター（24時以降）</span>です。
+                    </p>
+                    <p class="mt-2">
+                        逆に、夜のお店のピーク中（20-23時）は<span class="font-bold text-red-400">ウチはアイドルタイム</span>になってしまう。
+                        でもスタッフは待機させないといけない。
+                    </p>
+                    <p class="mt-4 font-bold text-xl text-white">
+                        そこで、近隣の夜のお店のキャストさんが、お客様用の出前を
+                        <span class="text-blue-300">ウチに気軽に注文できるスマホアプリ</span>が欲しいんです。」
+                    </p>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold text-red-400">よくある失敗（エンジニアがやらないこと）</h3>
+                    <p class="text-lg text-gray-400">「はい！承知しました！では機能一覧と見積もりです！」<span class="arrow">→</span> <span class="font-bold">まだ早い！</span></p>
+                    <p class="text-lg text-gray-400">「決済方法は？ログイン方式は？サーバーは？DBは？」<span class="arrow">→</span> <span class="font-bold text-red-400">クライアントが発狂する！</span></p>
+                </div>
+            </div>
+            <div class="footer">スライド 4 / 22</div>
+        </section>
+
+        <!-- スライド 5: AIの役割 -->
+        <section class="slide">
+            <h2 class="slide-title">2. AI活用の準備（エンジニアの役割）</h2>
+            <h3 class="slide-subtitle">AIは「推測」せず「大枠から質問」する</h3>
+            <div class="content">
+                <p class="text-lg">エンジニアは、クライアントが混乱しないよう、AIと「壁打ち」して論点を整理する。</p>
+                
+                <div class="flex justify-around items-center mt-8 p-4 bg-gray-700 rounded-lg">
+                    <div class="text-center">
+                        <p class="text-xl font-bold text-white">エンジニア（準備中）</p>
+                        <p class="text-4xl">👨‍💻</p>
+                        <p class="mt-2 text-gray-300">「注文の受け方は…<br>タブレットか？スマホ通知か？」</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xl font-bold text-white">AI（壁打ち相手）</p>
+                        <p class="text-4xl">🤖</p>
+                        <p class="mt-2 text-blue-300">「タブレット案の場合、<br>配達は誰がしますか？<br>という論点も出ますね」</p>
+                    </div>
+                </div>
+
+                <p class="text-lg mt-8">AIと論点を洗い出し、クライアント会議では「選択肢」を提示する。</p>
+                <ul>
+                    <li>エンジニアが「タブレット案とスマホ案があります」と提示。</li>
+                    <li><span class="arrow">→</span> クライアントが「タブレットが良いね」と選択。</li>
+                    <li><span class="arrow">→</span> エンジニアが「では配達は…」と次の論点に進む。</li>
+                </ul>
+            </div>
+            <div class="footer">スライド 5 / 22</div>
+        </section>
+
+        <!-- スライド 6: 実例 (ログイン) -->
+        <section class="slide">
+            <h2 class="slide-title">3. 実例①：利用者（キャスト）の特定</h2>
+            <h3 class="slide-subtitle">「手間」と「セキュリティ」のバランス</h3>
+            <div class="content">
+                <div class="chat-container">
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>キャストさんのログイン方法は？</p>
+                            <p><span class="highlight font-bold text-yellow-400">A: お店ごとの共通ID・パスワード</span><br>
+                            <span class="highlight font-bold text-yellow-400">B: キャスト個人が登録して承認</span><br>
+                            どちらが良いですか？</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>うーん… <span class="font-bold text-red-400">キャストさんに煩わしいことさせるのはダメだ。</span>お店（オーナー）には手間かけさせても良い。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>なるほど。では、<span class="font-bold text-blue-300">Aの『お店ごとの共通ID・パスワード』</span>にしましょう。キャストさんはそれを入力するだけで、すぐに注文を開始できます。</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>それが良い。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                </div>
+                <p class="mt-2 text-lg font-bold text-center p-3 bg-green-900 text-green-200 rounded-lg border border-green-700">
+                    クライアントが「誰に手間をかけたくないか」という<span class="text-white">優先順位</span>を明確にし、シンプルな認証方式を即決。
+                </p>
+            </div>
+            <div class="footer">スライド 6 / 22</div>
+        </section>
+
+        <!-- スライド 7: 実例（決済） -->
+        <section class="slide">
+            <h2 class="slide-title">4. 実例②：決済方法の決定プロセス</h2>
+            <h3 class="slide-subtitle">クライアントの「わがまま」を仕様に落とし込む</h3>
+            <div class="content">
+                <div class="chat-container">
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>お会計は<span class="highlight text-yellow-400">『都度払い』</span>ですか？<span class="highlight text-yellow-400">『掛け払い』</span>ですか？</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>うーん… <span class="font-bold text-red-400">どっちも</span>やりたい。信頼できる店は掛け、新規は都度。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left opacity-70">
+                        <div class="chat-icon"></div>
+                        <div class="bg-gray-700 text-gray-300 p-2 rounded-lg text-sm italic border border-gray-600">
+                            （失敗例：「両方対応は開発費が倍です！」と言ってしまう）
+                        </div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>なるほど！では、オーナー（あなた）が使う<span class="font-bold text-blue-300">『③管理Webサイト』</span>で、お店ごとに『都度』か『掛け』かを<span class="font-bold text-blue-300">設定・変更できる</span>ようにしましょう。</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>それだ！最高！</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                </div>
+                <p class="mt-2 text-lg font-bold text-center p-3 bg-green-900 text-green-200 rounded-lg border border-green-700">
+                    クライアントの「現実的な要望」を引き出し、それを実現する「具体的なシステム機能」に翻訳する。
+                </p>
+            </div>
+            <div class="footer">スライド 7 / 22</div>
+        </section>
+        
+        <!-- スライド 8: 実例 (管理画面) -->
+        <section class="slide">
+            <h2 class="slide-title">5. 実例③：役割分担の明確化</h2>
+            <h3 class="slide-subtitle">「現場の仕事」と「オーナーの仕事」を分離</h3>
+            <div class="content">
+                <div class="chat-container">
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>メニューの『売り切れ』設定は、現場の<span class="font-bold text-blue-300">『②注文用タブレット』</span>で操作しますか？</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>いや、<span class="font-bold text-red-400">俺が家（PC）からもやりたい。</span>現場のスタッフには注文受付だけ集中させたい。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>承知しました。ではシステムを明確に分離しましょう。<br>
+                            ・<span class="font-bold text-yellow-300">②現場タブレット</span>（注文受付専用）<br>
+                            ・<span class="font-bold text-yellow-300">③管理Webサイト</span>（PC/スマホOK。メニュー管理など）</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-6 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg border border-green-700">
+                    「誰がどこで操作するか」を明確にし、システムの全体像（スライド12）をクライアントと合意する。
+                </p>
+            </div>
+            <div class="footer">スライド 8 / 22</div>
+        </section>
+        
+        <!-- スライド 9: 実例（オペレーション） -->
+        <section class="slide">
+            <h2 class="slide-title">6. 実例④：現場オペレーションの考慮</h2>
+            <h3 class="slide-subtitle">クライアントが「言い忘れていた」重要機能の発見</h3>
+            <div class="content">
+                <div class="chat-container">
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>注文を受けたら『注文確認ボタン』を押してキャストさんを安心させるのはどうですか？</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>良いね！ あ、そうだ！<span class="font-bold text-red-400">目安の待ち時間</span>もこっちで設定したい！</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>素晴らしい。では、あの<span class="font-bold text-blue-300">『③管理Webサイト』</span>から<span class="font-bold text-blue-300">『現在の目安時間』を一括設定</span>できるようにしましょう。</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>それも欲しい！ あと<span class="font-bold text-red-400">一時停止ボタン</span>と<span class="font-bold text-red-400">定休日設定</span>も！</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                </div>
+                <p class="mt-2 text-lg font-bold text-center p-3 bg-green-900 text-green-200 rounded-lg border border-green-700">
+                    一つの質問が、クライアントの「現場のリアルな悩み」を引き出し、システムが格段に実用的になる。
+                </p>
+            </div>
+            <div class="footer">スライド 9 / 22</div>
+        </section>
+
+        <!-- スライド 10: 実例（拡張性）-->
+        <section class="slide">
+            <h2 class="slide-title">7. 実例⑤：将来の構想（拡張性）</h2>
+            <h3 class="slide-subtitle">クライアントの「夢」を現実的な仕様に</h3>
+            <div class="content">
+                <div class="chat-container">
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>言い忘れた。将来、<span class="font-bold text-red-400">他の飲食店</span>も参加させて手数料ビジネスしたい。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>素晴らしい。方法は<span class="highlight text-yellow-400">【A案：まず自店のみ】</span>と<span class="highlight text-yellow-400">【B案：拡張前提】</span>がありますが、B案で進めますか？ <span class="text-gray-300 text-sm">（ただしB案だと、当面1店舗だけなのでキャストさんが『なぜ店を選ぶ？』と不思議に思う懸念があります）</span></p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>B案が良いけど、キャストは<span class="font-bold text-red-400">『店』じゃなくて『メニュー』で選びたい</span>はず。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>なるほど！【B案（改）】ですね。トップに<span class="font-bold text-blue-300">全店の全メニューを一覧表示</span>し、店名を併記しましょう。これなら当面1店舗でも違和感がなく、拡張もスムーズです。</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-2 text-lg font-bold text-center p-3 bg-green-900 text-green-200 rounded-lg border border-green-700">
+                    クライアントの「鋭い視点」をエンジニアが即座に仕様に反映し、当初の設計案より優れた設計に進化。
+                </p>
+            </div>
+            <div class="footer">スライド 10 / 22</div>
+        </section>
+
+        <!-- スライド 11: 実例（カートルール） -->
+        <section class="slide">
+            <h2 class="slide-title">8. 実例⑥：拡張に伴うルールの決定</h2>
+            <h3 class="slide-subtitle">AIが「将来の運用課題」を先回りして提示</h3>
+            <div class="content">
+                <div class="chat-container">
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア (AI)</p>
+                            <p>（実例⑤の直後）では、もし将来、A店とB店が参加した時、キャストが<span class="highlight text-yellow-400">『A店の唐揚げ』と『B店の寿司』を同時にカート</span>に入れたらどうしましょう？</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>あ…、配達も会計も別々になるから困るな。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                    <div class="chat-bubble-left">
+                        <div class="chat-icon">👨‍💻</div>
+                        <div class="chat-content-left">
+                            <p class="chat-name">エンジニア</p>
+                            <p>ですよね。では、<span class="font-bold text-blue-300">『1回の注文（カート）には、1つのお店のメニューしか入れられない』</span>というルール（制限）を最初から仕様に盛り込みましょう。</p>
+                        </div>
+                    </div>
+                    <div class="chat-bubble-right">
+                        <div class="chat-content-right">
+                            <p class="chat-name text-right">クライアント(私)</p>
+                            <p>そうですね。それがいいです。お願いします。</p>
+                        </div>
+                        <div class="chat-icon">🤔</div>
+                    </div>
+                </div>
+                <p class="mt-2 text-lg font-bold text-center p-3 bg-green-900 text-green-200 rounded-lg border border-green-700">
+                    クライアントの「夢」に対し、エンジニアがAIとの準備で得た「運用課題」を提示し、重要な基本ルールを確定させる。
+                </p>
+            </div>
+            <div class="footer">スライド 11 / 22</div>
+        </section>
+
+        <!-- スライド 12: フェーズ1概要 -->
+        <section class="slide">
+            <h2 class="slide-title">9. 【フェーズ1】システム概要</h2>
+            <h3 class="slide-subtitle">対話で固まったシステム全体像</h3>
+            <div class="content flex flex-col justify-center items-center">
+                <p class="text-lg text-center mb-6">対話の結果、必要なシステムが3つに分類されました。</p>
+                <div class="w-full max-w-4xl p-6 bg-gray-900 rounded-lg border border-gray-700">
+                    
+                    <div class="flex flex-col md:flex-row justify-between gap-6">
+                        
+                        <!-- キャスト用アプリ -->
+                        <div class="flex-1 text-center p-4 bg-gray-800 rounded-lg">
+                            <p class="text-3xl mb-2">📱</p>
+                            <h4 class="text-xl font-bold text-white mb-2">① キャスト用アプリ</h4>
+                            <ul class="text-left text-gray-300 list-disc pl-5 text-base">
+                                <li>メニュー一覧・注文</li>
+                                <li>共通ID/PWでログイン</li>
+                                <li>備考欄 (要望)</li>
+                                <li>注文状況の確認</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- 現場用タブレット -->
+                        <div class="flex-1 text-center p-4 bg-gray-800 rounded-lg">
+                            <p class="text-3xl mb-2">📟</p>
+                            <h4 class="text-xl font-bold text-white mb-2">② 現場用タブレット</h4>
+                            <ul class="text-left text-gray-300 list-disc pl-5 text-base">
+                                <li>注文の受信・アラート</li>
+                                <li>「注文確認」ボタン</li>
+                                <li>支払い方法の確認</li>
+                            </ul>
+                        </div>
+
+                        <!-- オーナー用管理サイト -->
+                        <div class="flex-1 text-center p-4 bg-gray-800 rounded-lg">
+                            <p class="text-3xl mb-2">💻</p>
+                            <h4 class="text-xl font-bold text-white mb-2">③ オーナー用管理サイト</h4>
+                            <ul class="text-left text-gray-300 list-disc pl-5 text-base">
+                                <li>メニュー・売切管理</li>
+                                <li>目安時間の設定</li>
+                                <li>一時停止・定休日設定</li>
+                                <li>夜のお店の登録・管理</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">スライド 12 / 22</div>
+        </section>
+
+        <!-- スライド 13: このプロセスの使い方 -->
+        <section class="slide">
+            <h2 class="slide-title">10. エンジニアの実践プロセス</h2>
+            <h3 class="slide-subtitle">AIとの事前準備を「クライアント会議の武器」にする</h3>
+            <div class="content">
+                <p class="text-lg mb-4">「フワッとした要望」を受けた時、エンジニアはどう動くか？</p>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <!-- 失敗例 -->
+                    <div class="failure-case">
+                        <h4 class="text-xl font-bold text-red-400 mb-2">❌ 失敗例：そのまま会議へ</h4>
+                        <p class="text-gray-300">要望をそのまま持ち帰り、開発チームも「？」となる。<br>
+                        会議では「それってどういうこと？」の繰り返しで、何も決まらない。</p>
+                        <p class="text-center text-3xl mt-4">🤦</p>
+                    </div>
+                    <!-- 成功例 -->
+                    <div class="success-case">
+                        <h4 class="text-xl font-bold text-green-400 mb-2">✅ 成功例：AIと「壁打ち」</h4>
+                        <p class="text-gray-200">まずAIと対話し、論点を洗い出す。<br>
+                        「決済はA案/B案あります」<br>
+                        「ログインはC案/D案あります」<br>
+                        という<span class="highlight">「具体的な選択肢」</span>を武器として会議に持っていく。</p>
+                        <p class="text-center text-3xl mt-4">👨‍💻(🤖)⚔️</p>
+                    </div>
+                </div>
+                <p class="mt-6 text-lg font-bold text-center p-4 bg-gray-700 text-gray-100 rounded-lg">
+                    AIとの対話ログこそが、エンジニアが主導権を握り、認識齟齬を防ぐ「最強の要件定義書（たたき台）」となる。
+                </p>
+            </div>
+            <div class="footer">スライド 13 / 22</div>
+        </section>
+
+        <!-- スライド 14: まとめ（仕様一覧） -->
+        <section class="slide">
+            <h2 class="slide-title">11. 【フェーズ1】仕様まとめ</h2>
+            <h3 class="slide-subtitle">対話で確定した「作ること」</h3>
+            <div class="content">
+                <div class="flex gap-6">
+                    <ul class="flex-1 list-disc pl-5 space-y-2">
+                        <li><span class="font-bold text-white">ログイン:</span> <span class="text-blue-300 font-bold">お店ごとの共通ID・パスワード方式</span></li>
+                        <li><span class="font-bold text-white">メニュー:</span> 全参加店のメニューを一覧表示（店名併記）</li>
+                        <li><span class="font-bold text-white">カート:</span> <span class="text-blue-300 font-bold">1カート1店舗まで</span></li>
+                        <li><span class="font-bold text-white">決済:</span> 「都度（現金）」と「掛け払い」に対応</li>
+                        <li><span class="font-bold text-white">備考欄:</span> 簡易なテキスト要望</li>
+                        <li><span class="font-bold text-white">配達:</span> まずは自店スタッフ（フェーズ1）</li>
+                    </ul>
+                    <ul class="flex-1 list-disc pl-5 space-y-2">
+                        <li><span class="font-bold text-white">注文確認:</span> レストラン側が「確認ボタン」を押す</li>
+                        <li><span class="font-bold text-white">待ち時間:</span> 管理サイトから一括設定・アプリに表示</li>
+                        <li><span class="font-bold text-white">営業設定:</span> 「一時停止」スイッチ</li>
+                        <li><span class="font-bold text-white">営業設定:</span> 「定休日」カレンダー</li>
+                        <li><span class="font-bold text-white">管理画面:</span> オーナー用Webサイト（PC/スマホ）</li>
+                        <li><span class="font-bold text-white">現場画面:</span> 注文受付用タブレット</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer">スライド 14 / 22</div>
+        </section>
+
+        <!-- スライド 15: 結論 -->
+        <section class="slide">
+            <h2 class="slide-title">12. フェーズ1の「エンジニアの準備」</h2>
+            <h3 class="slide-subtitle">AIと「想定問答（壁打ち）」を済ませて会議に臨む</h3>
+            <div class="content">
+                <p class="text-lg">ここまでの対話（スライド3〜9）は、エンジニアが「クライアントとの会議の事前準備」として行うものです。</p>
+                
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold text-blue-300">AIとの「両面」壁打ち</h3>
+                    <p class="text-gray-300 mt-2">エンジニアは、AIに対し「要件定義する側」と「（クライアント役として）される側」の両方の立場に立って、徹底的に壁打ちを行います。</p>
+                    <ul class="text-gray-300 mt-4">
+                        <li><span class="font-bold text-white">① エンジニア → AI（クライアント役）:</span><br>「この機能はA案とB案どちらが良いですか？」と質問を投げる練習。</li>
+                        <li><span class="font-bold text-white">② AI（専門家役） → エンジニア:</span><br>「その要望だと、将来この問題が出ませんか？」と、AIに課題を先回りさせる。</li>
+                    </ul>
+                </div>
+                
+                <p class="mt-8 text-xl font-bold text-center p-4 bg-gray-900 text-gray-100 rounded-lg">
+                    この「想定問答」をAIと済ませて頭に叩き込んでおくことで、<br>
+                    <span class="text-white">実際の会議でクライアントの要望を即座に理解し、プロとして対応（代替案の提示など）ができる</span>のです。
+                </p>
+            </div>
+            <div class="footer">スライド 15 / 22</div>
+        </section>
+
+        <!-- スライド 16: 論点抜粋 -->
+        <section class="slide">
+            <h2 class="slide-title">13. フェーズ1で洗い出した論点（一部抜粋）</h2>
+            <h3 class="slide-subtitle">AIとの「壁打ち」でこれだけの論点が整理された</h3>
+            <div class="content">
+                <p class="text-lg">時間の関係上、スライドでは主要なやり取り（6点）のみ紹介しましたが、実際にはフェーズ1でこれだけの論点をAIと洗い出しています。</p>
+                
+                <div class="mt-4 p-6 bg-gray-900 border border-gray-700 rounded-lg">
+                    <ul class="list-disc pl-5 space-y-2 columns-2 text-gray-300">
+                        <li>注文受付方法（タブレット/スマホ）</li>
+                        <li>配達方法（自店/採用/代行）</li>
+                        <li><span class="font-bold text-white">認証方法（お店単位/個人）</span></li>
+                        <li><span class="font-bold text-white">決済方法（都度/掛け）</span></li>
+                        <li>決済の併用（お店ごと）</li>
+                        <li>都度決済の手段（現金/QR）</li>
+                        <li>メニュー（全種/専用）</li>
+                        <li><span class="font-bold text-white">メニュー管理（現場/オーナー）</span></li>
+                        <li>要望の伝達（備考欄/選択肢）</li>
+                        <li><span class="font-bold text-white">注文確認（通知/ボタン）</span></li>
+                        <li><span class="font-bold text-white">待ち時間の設定</span></li>
+                        <li><span class="font-bold text-white">営業設定（一時停止/定休日）</span></li>
+                        <li><span class="font-bold text-white">将来構想（自店のみ/PF化）</span></li>
+                        <li>UI（店基点/メニュー基点）</li>
+                        <li><span class="font-bold text-white">カートルール（複数店/1店舗）</span></li>
+                        <li>（その他多数...）</li>
+                    </ul>
+                </div>
+                 <p class="mt-6 text-lg font-bold text-center p-4 bg-gray-700 text-gray-100 rounded-lg">
+                    これらすべてを「武器（選択肢）」として準備して会議に臨むことで、クライアントの「言い忘れ」や「認識ズレ」を最小限にします。
+                </p>
+            </div>
+            <div class="footer">スライド 16 / 22</div>
+        </section>
+
+        <!-- スライド 17: フェーズ2 区切り -->
+        <section class="slide phase-break">
+            <h1 class="text-5xl font-extrabold text-white mb-4">フェーズ 2</h1>
+            <p class="text-3xl font-semibold text-green-300">詳細仕様の確定：<br>「モックアップ」による解像度の向上</p>
+        </section>
+
+        <!-- スライド 18: AIの優位性（モック）-->
+        <section class="slide">
+            <h2 class="slide-title">14. フェーズ2の進め方</h2>
+            <h3 class="slide-subtitle">「大枠（フェーズ1）」から「詳細（フェーズ2）」へ</h3>
+            <div class="content">
+                <p class="text-lg">フェーズ1で「何を作るか」の大枠（システム概要）は合意できました。</p>
+                <p class="text-lg mt-4">しかし、<span class="font-bold text-red-400">口頭（テキスト）だけの議論</span>では、具体的な画面イメージの認識がズレる危険があります。</p>
+                
+                <div class="flex justify-around items-center mt-8 p-4 bg-gray-700 rounded-lg">
+                    <div class="text-center">
+                        <p class="text-xl font-bold text-white">エンジニア（準備）</p>
+                        <p class="text-4xl">👨‍💻→🤖</p>
+                        <p class="mt-2 text-green-300">「フェーズ1の仕様で<br><span class="highlight">『管理画面モック』を作って</span>」</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xl font-bold text-white">クライアント（次回MTG）</p>
+                        <p class="text-4xl">🤔</p>
+                        <p class="mt-2 text-gray-300">「管理サイトって言われても…<br>どんな画面だ？」</p>
+                    </div>
+                </div>
+
+                <p class="mt-8 text-lg font-bold text-center p-4 bg-green-900 text-green-200 rounded-lg">
+                    エンジニアの強み：AIを使い、<span class="text-white">即座に「視覚的なたたき台（モックアップ）」を生成</span>し、会議の武器とできる。
+                </p>
+            </div>
+            <div class="footer">スライド 17 / 22</div>
+        </section>
+
+        <!-- スライド 19: モックの提示 -->
+        <section class="slide">
+            <h2 class="slide-title">15. 実践①：管理画面（全体像）の合意</h2>
+            <h3 class="slide-subtitle">モック（たたき台）を使った具体的な議論</h3>
+            <div class="content">
+                <p class="text-lg">エンジニアがAIと準備したモックをクライアントと確認し、まず「画面一覧（左帯メニュー）」をFIXさせる。</p>
+                
+                <div class="flex gap-6 mt-4">
+                    <div class="flex-1">
+                        <p class="font-bold text-white text-lg">エンジニアの提示（モックの左帯）:</p>
+                        <div class="mockup-code">
+                            <p>■ ダッシュボード</p>
+                            <p>■ 注文管理</p>
+                            <p>■ 商品管理</p>
+                            <p>■ 顧客管理（夜のお店）</p>
+                            <p>■ 売上・分析</p>
+                            <p>■ 設定</p>
+                        </div>
+                        <p class="mt-2 text-sm text-gray-400">※HTMLなので、その場で「売上より顧客を上にして」等の修正・合意が可能。</p>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-bold text-white text-lg">クライアントとの対話例:</p>
+                        <ol class="list-decimal pl-5 space-y-3 mt-2 text-gray-300">
+                            <li><span class="font-bold text-blue-300">エンジニア:</span> 「フェーズ1で決めた<span class="highlight">『目安時間』『一時停止』</span>は、最重要なので『設定』ではなく『ダッシュボード』のトップに置く案（モック）にしました。」</li>
+                            <li><span class="font-bold">クライアント:</span> 「うん、それが見やすい。あと<span class="text-red-400">『顧客管理』と『商品管理』は逆</span>にして。」</li>
+                            <li><span class="font-bold text-blue-300">エンジニア:</span> 「承知しました。（その場でHTMLを修正）...こちらで確定ですね。」</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">スライド 18 / 22</div>
+        </section>
+
+        <!-- スライド 20: 詳細項目（メニュー登録） -->
+        <section class="slide">
+            <h2 class="slide-title">16. 実践②：詳細項目（メニュー登録）の合意</h2>
+            <h3 class="slide-subtitle">「画面」から「項目」へ、さらに詳細化</h3>
+            <div class="content">
+                <p class="text-lg">左帯メニュー（画面一覧）の合意が取れたら、次のステップとして各画面の「項目」を詰めていく。</p>
+                
+                <div class="flex gap-6 mt-4">
+                    <div class="flex-1">
+                        <p class="font-bold text-white text-lg">エンジニアの提示（AIと準備）:</p>
+                        <div class="mockup-code">
+                            <p>【必須項目】</p>
+                            <p>・商品名</p>
+                            <p>・価格（税込）</p>
+                            <p>・商品画像</p>
+                            <p>・カテゴリ</p>
+                            <p>【AI提案項目（オプション）】</p>
+                            <p><span class="highlight">[ ] オプション設定</span> (例: 大盛り, トッピング)</p>
+                            <p><span class="highlight">[ ] アレルギー情報</span></p>
+                            <p><span class="highlight">[ ] おすすめフラグ</span></p>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-bold text-white text-lg">クライアントとの対話例:</p>
+                        <ol class="list-decimal pl-5 space-y-3 mt-2 text-gray-300">
+                            <li><span class="font-bold text-blue-300">エンジニア:</span> 「『メニュー登録』に必要な項目（たたき台）です。アレルギー情報などもAIが提案していますが、いかがですか？」</li>
+                            <li><span class="font-bold">クライアント:</span> 「あ、<span class="text-green-400">オプションは絶対いる。</span>アレルギーは（フェーズ1では）まだいいや。あ、それより<span class="text-red-400">『辛さレベル（0〜5）』</span>を選べるようにしたい。」</li>
+                            <li><span class="font-bold text-blue-300">エンジニア:</span> 「承知しました。では『辛さレベル』を項目に追加し、『アレルギー』は削除しますね。」</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">スライド 19 / 22</div>
+        </section>
+
+        <!-- スライド 21: フェーズ2 結論 -->
+        <section class="slide">
+            <h2 class="slide-title">17. フェーズ2 結論</h2>
+            <h3 class="slide-subtitle">「モック」がクライアントの具体的なフィードバックを引き出す</h3>
+            <div class="content">
+                <p class="text-lg">口頭だけでは「管理サイト」という<span class="highlight">言葉</span>でしか合意できなかった。</p>
+                <p class="text-lg mt-4">エンジニアがAIと準備したモック（<span class="highlight">視覚的なたたき台</span>）を提示することで、クライアントは初めて「具体的なイメージ」を持ってフィードバックができるようになる。</p>
+                
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold text-green-300">モックアップ（たたき台）の効果</h3>
+                    <ul class="text-gray-300">
+                        <li><span class="font-bold text-white">認識のズレ防止:</span> 開発者が想像する「管理画面」と、クライアントの想像を一致させる。</li>
+                        <li><span class="font-bold text-white">具体的な要求の喚起:</span> 「これじゃない」「ここが足りない」「辛さレベルが欲しい」を（スライド18のように）言いやすくなる。</li>
+                        <li><span class="font-bold text-white">手戻りの劇的削減:</span> 作ってから「思ってたのと違う」と言われるリスクを最小限にする。</li>
+                    </ul>
+                </div>
+                
+                <p class="mt-8 text-xl font-bold text-center p-4 bg-gray-900 text-gray-100 rounded-lg">
+                    AIとの「対話（フェーズ1）」と「モックアップ（フェーズ2）」こそが、<br>エンジニアが主導する高速な要件定義の武器となる。
+                </p>
+            </div>
+            <div class="footer">スライド 20 / 22</div>
+        </section>
+
+        <!-- スライド 22: 最終まとめ -->
+        <section class="slide">
+            <h2 class="slide-title">18. 最終結論：AIとの伴走</h2>
+            <h3 class="slide-subtitle">AIは「答え」を出すのではなく「答えに導く」</h3>
+            <div class="content">
+                <p class="text-lg">AIは「万能の答え」を出すマシンではありません。<br>エンジニアが「クライアントに最高の提案」をするための、最高の壁打ち相手です。</p>
+                
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold text-blue-300">AI活用のポイント（エンジニア視点）</h3>
+                    <ul class="text-gray-300">
+                        <li><span class="font-bold text-white">【フェーズ1】論点の洗い出し:</span> AIと壁打ちし、クライアントへの「質問リスト」を磨き込む。</li>
+                        <li><span class="font-bold text-white">【フェーズ1】課題の先回り:</span> 「1カート1店舗」など、AIに将来のリスクを指摘させる。</li>
+                        <li><span class="font-bold text-white">【フェーズ1】選択肢の準備:</span> 「A案/B案」のように、クライアントが「選ぶだけ」の状態にして会議に臨む。</li>
+                        <li><span class="font-bold text-white text-green-300">【フェーズ2】モックの即時生成:</span> 「視覚的なたたき台」をAIに作らせ、議論を加速する。</li>
+                        <li><span class="font-bold text-white text-green-300">【フェーズ2】項目定義の提案:</span> 「AI提案項目」でクライアントの「言い忘れ」を防ぎ、仕様の精度を上げる。</li>
+                    </ul>
+                </div>
+                
+                <p class="mt-8 text-xl font-bold text-center p-4 bg-gray-900 text-gray-100 rounded-lg">
+                    AIに「仕事を奪われる」のではなく、AIを「使いこなし」、<br>クライアントの要望の「一歩先を行く」エンジニアになる。
+                </p>
+            </div>
+            <div class="footer">スライド 21 / 22</div>
+        </section>
+
+        <!-- スライド 22: 実践編パートの終了 -->
+        <section class="slide">
+            <div class="flex-grow flex flex-col justify-center items-center text-center">
+                <h1 class="text-5xl font-extrabold text-white mb-4">実践編（AIとの壁打ち）<br>は以上です</h1>
+                <p class="text-3xl font-semibold text-blue-400 mt-8">
+                    このように「AIと準備」することで、<br>
+                    エンジニアは会議の主導権を握ることができます。
+                </p>
+                <p class="text-xl text-gray-300 mt-6">（メインスライドに戻ります）</p>
+            </div>
+            <div class="footer">
+                スライド 22 / 22
+            </div>
+        </section>
+
+    </div> <!-- slide-container の終了 -->
+
+    <!-- ナビゲーション (v4でコンテナの外に移動) -->
+    <span id="slide-counter">1 / 22</span>
+    <button id="prev" class="nav-button" onclick="changeSlide(-1)">＜</button>
+    <button id="next" class="nav-button" onclick="changeSlide(1)">＞</button>
+
+    <script>
+        let slideIndex = 1;
+        
+        // document.querySelectorAll(".slide") は環境によって動作しないため、手動で取得します。
+        const allSections = Array.from(document.getElementsByTagName("section"));
+        const slides = allSections.filter(el => el.classList.contains('slide'));
+
+        const counter = document.getElementById("slide-counter");
+        const totalSlides = slides.length;
+
+        showSlide(slideIndex);
+
+        function changeSlide(n) {
+            showSlide(slideIndex += n);
+        }
+
+        function showSlide(n) {
+            if (totalSlides === 0) return; // スライドがない場合は何もしない
+
+            if (n > totalSlides) {
+                slideIndex = 1; // 最後に達したら最初に戻る
+            }
+            if (n < 1) {
+                slideIndex = totalSlides; // 最初に達したら最後に戻る
+            }
+
+            // すべてのスライドを非表示
+            slides.forEach(slide => {
+                slide.classList.remove("active");
+            });
+
+            // 現在のスライドのみ表示
+            if (slides[slideIndex - 1]) {
+                slides[slideIndex - 1].classList.add("active");
+            }
+
+            // カウンターを更新
+            if (counter) {
+                counter.textContent = `${slideIndex} / ${totalSlides}`;
+            }
+        }
+    </script>
+
+</body>
+</html>

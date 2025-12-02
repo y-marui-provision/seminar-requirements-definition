@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上流工程デビューを成功させる！</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: { sans: ['"Noto Sans JP"', 'sans-serif'], oswald: ['"Oswald"', 'sans-serif'] },
+                colors: { primary: '#0f172a', secondary: '#1e293b', accent: '#34d399', highlight: '#fef08a', textMain: '#f8fafc', textSub: '#94a3b8' }
+            }
+        }
+    }
+</script>
+<style>
+    /* 基本設定 */
+    html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background-color:#0f172a;color:#f8fafc}
+    .scrollbar-hide{scrollbar-width:none;-ms-overflow-style:none}.scrollbar-hide::-webkit-scrollbar{display:none}
+    #slide-container{scroll-snap-type:x mandatory;overflow-x:scroll;display:flex;width:100vw;height:100vh}
+    .slide{scroll-snap-align:start;flex:0 0 100vw;width:100vw;height:100vh;position:relative;display:flex;flex-direction:column;justify-content:center;padding:2rem 5rem; box-sizing: border-box;}
+    .slide-content{flex-grow:1;display:flex;flex-direction:column;justify-content:center;width:100%;max-width:1400px;margin:0 auto}
+    .counter-list{counter-reset:item}.counter-list li{position:relative;padding-left:3.5rem;margin-bottom:1.5rem}
+    .counter-list li::before{counter-increment:item;content:counter(item) ".";position:absolute;left:0;top:-0.2rem;font-family:'Oswald',sans-serif;font-size:2rem;color:#34d399;font-weight:700}
+    .marker-green{background:linear-gradient(transparent 60%,#34d399 60%);display:inline;color:white;padding:0 0.2em}
+    .nav-button{transition:all 0.2s}.nav-button:hover{background-color:rgba(255,255,255,0.2);transform:scale(1.1)}.nav-button:active{transform:scale(0.95)}
+
+    /* PDF保存（印刷）用設定 */
+    @media print {
+        @page { size: landscape; margin: 0; } /* 横向き設定 */
+        html, body { 
+            height: auto !important; 
+            width: 100% !important; 
+            overflow: visible !important; 
+            background-color: #0f172a !important; 
+            -webkit-print-color-adjust: exact; 
+            print-color-adjust: exact; 
+        }
+        #slide-container {
+            display: block !important; /* 横並び解除 */
+            width: 100% !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+        .slide {
+            width: 100% !important;
+            height: 100vh !important; /* 1ページ1スライド */
+            break-after: page; 
+            page-break-after: always;
+            scroll-snap-align: none !important;
+            border: none !important;
+            /* 印刷時の微調整 */
+            padding: 4rem 5rem !important; 
+        }
+        .nav-button { display: none !important; } /* ボタンを消す */
+        
+        /* 色の強制適用 (Tailwind対策) */
+        .bg-secondary { background-color: #1e293b !important; }
+        .bg-accent { background-color: #34d399 !important; }
+        .bg-slate-900 { background-color: #0f172a !important; }
+        .text-white { color: #ffffff !important; }
+        .text-slate-300 { color: #cbd5e1 !important; }
+        .text-accent { color: #34d399 !important; }
+    }
+</style>
+</head>
+<body>
+<main id="slide-container" class="scrollbar-hide font-sans">
+
+    <!-- 1. 表紙 -->
+    <section class="slide bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-center" id="slide-1">
+        <div class="slide-content items-center">
+            <h1 class="font-oswald text-6xl md:text-7xl font-bold mb-6 tracking-wide text-white drop-shadow-lg">上流工程デビューを<br><span class="text-accent">成功させる！</span></h1>
+            <div class="w-32 h-1 bg-accent mx-auto mb-8 rounded-full"></div>
+            <h2 class="text-2xl md:text-3xl text-blue-100 font-normal tracking-wider">～若手のための「要件抽出～文書化」AI活用術～</h2>
+        </div>
+    </section>
+    
+    <!-- 2. プロフィール -->
+    <section class="slide" id="slide-2">
+        <div class="border-b-4 border-accent pb-2 mb-8 w-full max-w-[1400px] mx-auto">
+            <h2 class="font-oswald text-5xl font-bold text-white tracking-wide">登壇者プロフィール</h2>
+        </div>
+        <div class="slide-content">
+            <div class="flex flex-row items-center justify-center gap-12 bg-secondary p-12 rounded-2xl shadow-xl">
+                <img src="https://placehold.co/300x300/1e293b/e2e8f0?text=Profile" class="rounded-full border-4 border-slate-600 shadow-2xl w-64 h-64 object-cover" alt="登壇者の写真">
+                <div class="space-y-4 max-w-2xl">
+                    <p class="text-4xl font-bold text-white mb-2">丸井 雄吾 <span class="text-2xl font-normal text-textSub ml-2">(Yugo Marui)</span></p>
+                    <p class="text-xl text-accent font-bold"><i class="fas fa-building mr-2"></i>株式会社ProVision / DXビジネスエンジニアリング事業部</p>
+                    <div class="h-px bg-slate-600 my-4"></div>
+                    <p class="text-lg leading-relaxed text-slate-300">札幌のIT企業にて17年間に渡り主に業務管理系のWEBアプリの開発業務に従事。<br>小規模な会社なのが功を奏しプロジェクトの立ち上げから運用保守までを長らく経験。<br>2025年1月 株式会社ProVisionに入社。決済関連PJチームリーダーとして開発業務に従事。</p>
+                    <p class="text-lg text-slate-400"><i class="fas fa-heart mr-2 text-pink-500"></i>趣味: 将棋、ゲーム、スポーツ観戦</p>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">上流工程デビューを成功させる！</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">2 / 19</div>
+    </section>
+
+    <!-- 3. アジェンダ -->
+    <section class="slide" id="slide-3">
+        <div class="border-b-4 border-accent pb-2 mb-10 w-full max-w-[1400px] mx-auto">
+            <h2 class="font-oswald text-5xl font-bold text-white tracking-wide">本日のアジェンダ</h2>
+        </div>
+        <div class="slide-content">
+            <ol class="counter-list text-3xl font-bold text-slate-200 space-y-4 ml-12">
+                <li>エンジニアの上流工程デビューは「要件定義」から</li>
+                <li>本題に入る前に皆さまと共有したい「スタンス」</li>
+                <li>AIを活用した要件定義</li>
+                <li>活用例</li>
+                <li>AIはあくまで副操縦士と考える</li>
+                <li>日常生活でできる要件定義 ⇔ 設計の訓練術</li>
+                <li>今回1番お伝えしたいこと</li>
+                <li class="text-textSub">最後に</li> 
+            </ol>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">上流工程デビューを成功させる！</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">3 / 19</div>
+    </section>
+
+    <!-- 4. 要件定義とは (北極星) -->
+    <section class="slide" id="slide-4">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">1. エンジニアの上流工程デビューは「要件定義」から</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">要件定義とは（一言でいうと）</h3>
+        </div>
+        <div class="slide-content items-center">
+            <div class="text-center mb-16">
+                <i class="fas fa-star text-8xl text-highlight mb-4 animate-pulse"></i>
+                <h2 class="text-5xl font-bold text-highlight">プロジェクトの「北極星（ゴール）」を決めること</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-12 w-full">
+                <div class="bg-secondary p-10 rounded-2xl border-t-8 border-accent relative">
+                    <h3 class="font-oswald text-3xl text-white mb-4"><i class="fas fa-users mr-3 text-accent"></i>お客様に向けては</h3>
+                    <p class="text-2xl text-slate-300 leading-relaxed"><span class="bg-accent text-slate-900 px-2 py-1 font-bold">「なぜ、何が欲しいのか」</span><br>を明確にすること</p>
+                </div>
+                <div class="bg-secondary p-10 rounded-2xl border-t-8 border-accent">
+                    <h3 class="font-oswald text-3xl text-white mb-4"><i class="fas fa-laptop-code mr-3 text-accent"></i>開発者に向けては</h3>
+                    <p class="text-2xl text-slate-300 leading-relaxed"><span class="bg-accent text-slate-900 px-2 py-1 font-bold">「何を作るべきか」</span><br>のゴールを明確にすること</p>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">1. エンジニアの上流工程デビューは「要件定義」から</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">4 / 19</div>
+    </section>
+
+    <!-- 5. そもそも要件定義とは (リスト) -->
+    <section class="slide" id="slide-5">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">1. エンジニアの上流工程デビューは「要件定義」から</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">そもそも要件定義とは</h3>
+        </div>
+        <div class="slide-content">
+            <div class="grid grid-cols-3 gap-6 text-sm text-slate-300">
+                <ul class="space-y-4">
+                    <li>
+                        <span class="text-white font-bold text-lg block border-b border-slate-600 mb-1">1. 目的・背景・スコープ</span>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-400"><li>開発の目的・狙い</li><li>背景・現状の課題</li><li>対象範囲（スコープ）と除外範囲</li><li>成果物・ゴール定義</li></ul>
+                    </li>
+                    <li>
+                        <span class="text-white font-bold text-lg block border-b border-slate-600 mb-1">2. 利用者・関係者情報</span>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-400"><li>想定ユーザー</li><li>関係部門・ステークホルダー一覧</li><li>承認者・決裁者</li></ul>
+                    </li>
+                    <li>
+                        <span class="text-white font-bold text-lg block border-b border-slate-600 mb-1">3. 業務要件（ビジネス要件）</span>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-400"><li>業務フロー（As-Is / To-Be）</li><li>業務上の制約・ルール</li><li>改善すべき業務課題</li></ul>
+                    </li>
+                </ul>
+                <ul class="space-y-4">
+                    <li>
+                        <span class="text-white font-bold text-lg block border-b border-slate-600 mb-1">4. 機能要件</span>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-400"><li>システムが提供すべき機能一覧</li><li>登録／更新／検索／削除など</li><li>CSV出力・帳票出力</li><li>通知・メール連携</li><li>機能の優先度</li></ul>
+                    </li>
+                    <li>
+                        <span class="text-white font-bold text-lg block border-b border-slate-600 mb-1">5. 非機能要件</span>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-400"><li>性能要件（レスポンス等）</li><li>セキュリティ要件</li><li>可用性・保守性</li><li>拡張性・運用性</li><li>移行要件</li></ul>
+                    </li>
+                </ul>
+                <div class="bg-slate-800/50 p-4 rounded-lg">
+                    <ul class="space-y-2 text-slate-400"><li>6. データ要件</li><li>7. 画面・UI/UX要件</li><li>8. 外部インターフェース要件</li><li>9. 運用・保守要件</li><li>10. 環境・インフラ要件</li><li>11. 開発・テスト・移行方針</li><li>12. 制約・リスク・前提条件</li><li>13. 品質保証・受入基準</li><li>14. 文書化・成果物一覧</li></ul>
+                </div>
+            </div>
+            <div class="mt-8 text-center bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <p class="text-xl text-slate-200">確かにこれらも「要件」ですが、これをいきなりお客様に「さあ決めましょう！」は <span class="text-red-400 font-bold text-3xl mx-2">現実的ではありません。</span></p>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">1. エンジニアの上流工程デビューは「要件定義」から</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">5 / 19</div>
+    </section>
+
+    <!-- 6. 要件定義から学ぶ (メリット) -->
+    <section class="slide" id="slide-6">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">1. エンジニアの上流工程デビューは「要件定義」から</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">上流工程デビューと「要件定義」</h3>
+        </div>
+        <div class="slide-content">
+            <div class="grid grid-cols-2 grid-rows-2 gap-8 h-full">
+                <div class="bg-secondary p-8 rounded-xl shadow-lg border-l-8 border-slate-600 flex flex-col justify-center">
+                    <h3 class="font-oswald text-2xl text-accent mb-4"><i class="fas fa-map-signs mr-3"></i>プロジェクトの「全体像」を掴める</h3>
+                    <p class="text-xl text-slate-300 leading-relaxed">「何のために・何を作るか」という最上流を知ることで、自分が担当する機能の「位置づけ」が明確になります。</p>
+                </div>
+                <div class="bg-secondary p-8 rounded-xl shadow-lg border-l-8 border-slate-600 flex flex-col justify-center">
+                    <h3 class="font-oswald text-2xl text-accent mb-4"><i class="fas fa-drafting-compass mr-3"></i>「設計力」の土台を養える</h3>
+                    <p class="text-xl text-slate-300 leading-relaxed">お客様の「曖昧な要望」を「具体的な機能」に落とし込む思考プロセスは、UI設計やシステム設計の土台となります。</p>
+                </div>
+                <div class="bg-secondary p-8 rounded-xl shadow-lg border-l-8 border-slate-600 flex flex-col justify-center">
+                    <h3 class="font-oswald text-2xl text-accent mb-4"><i class="fas fa-comments mr-3"></i>「コミュ力」が鍛えられる</h3>
+                    <p class="text-xl text-slate-300 leading-relaxed">上流工程に必須の「聞く力」「伝える力」「調整する力」は、お客様との対話を通じてしか鍛えられません。</p>
+                </div>
+                <div class="bg-accent p-8 rounded-xl shadow-lg flex flex-col justify-center relative overflow-hidden group">
+                    <div class="absolute -right-10 -bottom-10 text-9xl text-emerald-600 opacity-20 transform group-hover:rotate-12 transition-transform"><i class="fas fa-exclamation-circle"></i></div>
+                    <h3 class="font-oswald text-2xl text-slate-900 mb-4 font-bold relative z-10"><i class="fas fa-exclamation-circle mr-3"></i>【最重要】「自分ごと」として向き合える</h3>
+                    <p class="text-xl text-slate-900 font-bold leading-relaxed relative z-10">与えられたタスクをこなすのではなく、開発の「目的」から考えることで、プロジェクトへの当事者意識が芽生えます。</p>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">1. エンジニアの上流工程デビューは「要件定義」から</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">6 / 19</div>
+    </section>
+
+    <!-- 7. なぜ重要 (明るさ調整) -->
+    <section class="slide" id="slide-7">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">1. エンジニアの上流工程デビューは「要件定義」から</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">なぜ要件定義が「最も」重要なのか？</h3>
+        </div>
+        <div class="slide-content">
+            <div class="grid grid-cols-2 grid-rows-2 gap-6 h-full">
+                <div class="bg-secondary p-6 rounded-lg flex flex-col">
+                    <h3 class="font-oswald text-2xl text-accent mb-2"><i class="fas fa-chart-line mr-2"></i>手戻りコストの増大（1:10:100）</h3>
+                    <p class="text-lg text-slate-100 mb-2">後工程でミスが発覚するほど、修正コストは指数関数的に増大します。</p>
+                    <ul class="list-disc pl-5 text-slate-200 text-base"><li>テスト時の発見: <span class="text-white font-bold bg-red-500/50 px-1">10倍</span></li><li>リリース後の発見: <span class="text-white font-bold bg-red-500/50 px-1">100倍</span></li></ul>
+                </div>
+                <div class="bg-secondary p-6 rounded-lg flex flex-col">
+                    <h3 class="font-oswald text-2xl text-accent mb-2"><i class="fas fa-trophy mr-2"></i>プロジェクトの成功は8割決まる</h3>
+                    <p class="text-lg text-slate-100 mb-2">ゴールが曖昧なまま走り出したプロジェクトは、必ず迷走します。</p>
+                    <ul class="list-disc pl-5 text-slate-200 text-base"><li>予算・スケジュールの見積もり精度</li><li>チームの目線統一</li></ul>
+                </div>
+                <div class="bg-secondary p-6 rounded-lg flex flex-col">
+                    <h3 class="font-oswald text-2xl text-accent mb-2"><i class="fas fa-smile mr-2"></i>お客様満足度の決定要因</h3>
+                    <p class="text-lg text-slate-100 mb-2">「欲しいもの」と「出来上がったもの」の一致。</p>
+                    <ul class="list-disc pl-5 text-slate-200 text-base"><li>高性能でも<span class="text-white font-bold">使われない機能は無価値</span></li><li>お客様の<span class="text-white font-bold">「ビジネス課題」</span>を解決できているか？</li></ul>
+                </div>
+                <div class="bg-secondary p-6 rounded-lg flex flex-col">
+                    <h3 class="font-oswald text-2xl text-accent mb-2"><i class="fas fa-anchor mr-2"></i>スコープクリープ（仕様増殖）の防止</h3>
+                    <p class="text-lg text-slate-100 mb-2">「あれもこれも」と要求が膨れ上がるのを防ぐ防波堤。</p>
+                    <ul class="list-disc pl-5 text-slate-200 text-base"><li><span class="text-white font-bold">「やらないこと」</span>の明確な線引き</li><li>追加要求の判断基準（ベースライン）</li></ul>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">1. エンジニアの上流工程デビューは「要件定義」から</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">7 / 19</div>
+    </section>
+
+    <!-- 8. 難しさ (明るさ調整) -->
+    <section class="slide" id="slide-8">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">1. エンジニアの上流工程デビューは「要件定義」から</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">要件定義の「難しさ」</h3>
+        </div>
+        <div class="slide-content">
+            <div class="grid grid-cols-2 gap-8">
+                <div class="bg-secondary p-8 rounded-xl shadow-lg border-l-4 border-red-400">
+                    <h3 class="font-oswald text-2xl text-white mb-4 flex items-center"><i class="fas fa-horse mr-3 text-3xl text-red-400"></i>「速い馬が欲しい」問題</h3>
+                    <p class="text-lg text-slate-100 mb-4">お客様は「解決策（=欲しいもの）」は分かっていないことが多い。</p>
+                    <ul class="list-disc pl-6 space-y-2 text-slate-200"><li>言葉通りの要求（馬）を鵜呑みにしない</li><li>「なぜ」を繰り返し、真の目的を<span class="marker-green text-white font-bold">深掘りする</span></li><li>潜在ニーズを引き出す質問力が必須</li></ul>
+                </div>
+                <div class="bg-secondary p-8 rounded-xl shadow-lg border-l-4 border-blue-400">
+                    <h3 class="font-oswald text-2xl text-white mb-4 flex items-center"><i class="fas fa-users-slash mr-3 text-3xl text-blue-400"></i>ステークホルダー間の対立</h3>
+                    <p class="text-lg text-slate-100 mb-4">部門や役職ごとの利害対立（経営層vs現場など）。</p>
+                    <ul class="list-disc pl-6 space-y-2 text-slate-200"><li>全員の要求を満たすことは不可能</li><li>要求の「優先度付け」と「合意形成」という<span class="marker-green text-white font-bold">高度な調整力</span></li></ul>
+                </div>
+                <div class="bg-secondary p-8 rounded-xl shadow-lg border-l-4 border-yellow-400">
+                    <h3 class="font-oswald text-2xl text-white mb-4 flex items-center"><i class="fas fa-cloud mr-3 text-3xl text-yellow-400"></i>要求の曖昧さ・暗黙の前提</h3>
+                    <p class="text-lg text-slate-100 mb-4">「普通の」「なるべく早く」「言わなくても分かるでしょ」</p>
+                    <ul class="list-disc pl-6 space-y-2 text-slate-200"><li>具体的な数値・仕様に落とし込む</li><li>暗黙知を<span class="marker-green text-white font-bold">形式知化する</span>翻訳能力</li></ul>
+                </div>
+                <div class="bg-secondary p-8 rounded-xl shadow-lg border-l-4 border-purple-400">
+                    <h3 class="font-oswald text-2xl text-white mb-4 flex items-center"><i class="fas fa-code-branch mr-3 text-3xl text-purple-400"></i>技術的制約とのギャップ</h3>
+                    <p class="text-lg text-slate-100 mb-4">予算・納期・技術的に「実現不可能」な要求。</p>
+                    <ul class="list-disc pl-6 space-y-2 text-slate-200"><li>「できません」ではなく「代替案」</li><li>論理的な説明と<span class="marker-green text-white font-bold">提案力</span></li></ul>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">1. エンジニアの上流工程デビューは「要件定義」から</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">8 / 19</div>
+    </section>
+
+    <!-- 9. スタンス (UPDATED & Spacing Fix) -->
+    <section class="slide" id="slide-9">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">2. 本題に入る前に皆さまと共有したい「スタンス」</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">若手・経験豊富な皆さまへ</h3>
+        </div>
+        <div class="slide-content">
+            <div class="grid grid-cols-3 gap-8 h-full">
+                <!-- Column 1: Juniors -->
+                <div class="bg-secondary p-6 rounded-xl flex flex-col h-full">
+                    <h3 class="font-oswald text-2xl text-accent mb-6 border-b border-slate-600 pb-2"><i class="fas fa-user-graduate mr-2"></i>若手の皆さまへ</h3>
+                    <ul class="list-disc pl-5 space-y-6 text-slate-200 leading-loose text-lg flex-grow flex flex-col">
+                        <li>「自分にはまだ早い」と遠慮せず、早期から挑戦しましょう。</li>
+                        <li>「やったことない」ではなく、<span class="text-white font-bold">「実は日常でやっている」</span>と気づくこと。</li>
+                        <li>まずはAIで「事前準備」をみっちり。0⇔100で考えすぎない。</li>
+                        <li class="font-bold text-accent bg-slate-900/50 p-2 rounded leading-relaxed">全てを網羅的にできる必要はありません。<br>まずは得意領域で「どう実現するか」を想像することから。</li>
+                    </ul>
+                </div>
+                <!-- Column 2: Seniors -->
+                <div class="bg-secondary p-6 rounded-xl flex flex-col h-full">
+                    <h3 class="font-oswald text-2xl text-accent mb-6 border-b border-slate-600 pb-2"><i class="fas fa-user-tie mr-2"></i>経験豊富な皆さまへ</h3>
+                    <ul class="list-disc pl-5 space-y-6 text-slate-200 leading-loose text-lg flex-grow flex flex-col">
+                        <li class="font-bold text-white border-b border-dashed border-slate-500 pb-2 leading-relaxed">今までたくさん失敗して、たくさん怒られてきましたよね？</li>
+                        <li>ぶっちゃけ、「<span class="text-white font-bold">今回は完璧だ！100点だ！</span>」って思ったこと、ないですよね？</li>
+                        <li>若手の<span class="text-white font-bold">「前向きな失敗」</span>を評価する土壌を。</li>
+                        <li>若手を積極的に<span class="text-white font-bold">「場」に同席</span>させてみてください。</li>
+                    </ul>
+                </div>
+                <!-- Column 3: Action -->
+                <div class="bg-accent p-6 rounded-xl flex flex-col text-slate-900 h-full justify-between">
+                    <div>
+                        <h3 class="font-oswald text-2xl font-bold mb-6 border-b border-slate-700 pb-2"><i class="fas fa-flag mr-2"></i>明日からのアクション</h3>
+                        <ul class="list-disc pl-5 space-y-6 font-bold text-lg leading-loose">
+                            <li><span class="text-sm block text-slate-700 mb-1 leading-normal">[若手]</span>AIを使って<span class="bg-slate-900 text-accent px-1">「自主練」</span>！<br>まずは得意な領域から提案してみよう。</li>
+                            <li><span class="text-sm block text-slate-700 mb-1 leading-normal">[ベテラン]</span>失敗は成長の種。<br>若手を<span class="bg-slate-900 text-accent px-1">「場」</span>に引き入れ、背中を押そう。</li>
+                        </ul>
+                    </div>
+                    <div class="mt-4 border-t border-slate-700 border-dashed pt-4 text-center">
+                        <p class="font-bold text-xl leading-relaxed">「完璧」じゃなくていい。<br>まずは<span class="bg-slate-900 text-accent px-2 rounded">一歩踏み出す</span>ことから！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">2. 本題に入る前に皆さまと共有したい「スタンス」</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">9 / 19</div>
+    </section>
+
+    <!-- 10. AIが得意な事 -->
+    <section class="slide" id="slide-10">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">3. AIを活用した要件定義</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">AIが得意な事</h3>
+        </div>
+        <div class="slide-content pl-12">
+            <h3 class="text-4xl font-bold mb-10 text-accent"><i class="fas fa-check-circle mr-3"></i>AIが得意な作業</h3>
+            <div class="bg-secondary p-12 rounded-2xl shadow-xl inline-block">
+                <ul class="list-disc pl-8 text-3xl text-slate-300 space-y-6">
+                    <li>膨大な情報の<span class="text-white font-bold">要約・整理</span></li>
+                    <li>議事録やラフなメモからの<span class="text-white font-bold">清書・構造化</span></li>
+                    <li>要件の<span class="text-white font-bold">抜け漏れチェック</span>（一般的な観点から）</li>
+                    <li>専門用語の<span class="text-white font-bold">解説・平易な言葉への翻訳</span></li>
+                    <li>たたき台（ドラフト）の<span class="text-white font-bold">高速生成</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">3. AIを活用した要件定義</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">10 / 19</div>
+    </section>
+
+    <!-- 11. AIに任せてはいけないこと -->
+    <section class="slide" id="slide-11">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">3. AIを活用した要件定義</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">AIに任せてはいけないこと</h3>
+        </div>
+        <div class="slide-content pl-12">
+            <h3 class="text-4xl font-bold mb-10 text-red-400"><i class="fas fa-times-circle mr-3"></i>AIに任せてはいけない領域</h3>
+            <div class="bg-secondary p-12 rounded-2xl shadow-xl inline-block border-l-8 border-red-400">
+                <ul class="list-disc pl-8 text-3xl text-slate-300 space-y-6">
+                    <li>プロジェクト固有の文脈の<span class="text-white font-bold">深い理解</span></li>
+                    <li>言葉の裏にある<span class="text-white font-bold">「本当の課題」の深掘り</span></li>
+                    <li>ステークホルダー間の<span class="text-white font-bold">利害調整・合意形成</span></li>
+                    <li>プロジェクトの成功に対する<span class="text-white font-bold">最終的な責任</span></li>
+                    <li>機密情報の<span class="text-white font-bold">入力</span>（※学習利用される場合）</li>
+                </ul>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">3. AIを活用した要件定義</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">11 / 19</div>
+    </section>
+
+    <!-- 12. AIによる経験補完 -->
+    <section class="slide" id="slide-12">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">3. AIを活用した要件定義</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">AIによる「経験」の補完と「自分ごと化」</h3>
+        </div>
+        <div class="slide-content">
+            <div class="grid grid-cols-2 grid-rows-2 gap-8 h-full">
+                <div class="bg-secondary p-8 rounded-xl shadow-lg flex flex-col justify-center">
+                    <h3 class="font-oswald text-2xl text-accent mb-4"><i class="fas fa-user-friends mr-2"></i>顧客折衝の「疑似体験」</h3>
+                    <p class="text-xl text-slate-300 leading-relaxed">AIを<span class="font-bold text-white bg-slate-700 px-1">「気難しい顧客」</span>役に設定して壁打ち。想定問答を繰り返し、本番の恐怖心を払拭。</p>
+                </div>
+                <div class="bg-secondary p-8 rounded-xl shadow-lg flex flex-col justify-center">
+                    <h3 class="font-oswald text-2xl text-accent mb-4"><i class="fas fa-book-reader mr-2"></i>ドメイン知識の「高速学習」</h3>
+                    <p class="text-xl text-slate-300 leading-relaxed">専門用語や業務フローを<span class="font-bold text-white bg-slate-700 px-1">「中学生にも分かるように」</span>解説させ、知識不足による萎縮を防ぐ。</p>
+                </div>
+                <div class="bg-secondary p-8 rounded-xl shadow-lg flex flex-col justify-center">
+                    <h3 class="font-oswald text-2xl text-accent mb-4"><i class="fas fa-arrows-alt-v mr-2"></i>視座の「強制引き上げ」</h3>
+                    <p class="text-xl text-slate-300 leading-relaxed">「PMならどう考える？」「経営者なら？」と問い、自分の役割以上の<span class="font-bold text-white bg-slate-700 px-1">「上位者の視点」</span>を獲得。</p>
+                </div>
+                <div class="bg-accent p-8 rounded-xl shadow-lg flex flex-col justify-center text-slate-900">
+                    <h3 class="font-oswald text-3xl font-bold mb-4"><i class="fas fa-heart mr-2"></i>自分ごと化への最短ルート</h3>
+                    <p class="text-xl font-bold leading-relaxed">AIとの対話で「準備」と「理解」が深まれば、プロジェクトは他人事ではなくなります。<br><span class="text-2xl block mt-4 bg-slate-900 text-accent p-2 text-center rounded">「自信」を持って現場に立つための<br>最強の準備ツールです。</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">3. AIを活用した要件定義</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">12 / 19</div>
+    </section>
+
+    <!-- 13. 活用例 -->
+    <section class="slide" id="slide-13">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4 text-left">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">4. 活用例</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">AIを使った壁打ち実践デモ</h3>
+        </div>
+        <div class="slide-content items-center text-center">
+            <p class="text-4xl text-slate-300 mb-12 leading-relaxed">AIを活用した要件抽出や文書化の具体的なデモを<br><span class="font-bold text-highlight text-6xl block mt-4">別ウィンドウ</span>にてご紹介します。</p>
+            <div class="text-[12rem] text-accent opacity-20 animate-bounce"><i class="fas fa-laptop-code"></i></div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">4. 活用例</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">13 / 19</div>
+    </section>
+
+    <!-- 14. 副操縦士 -->
+    <section class="slide" id="slide-14">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">5. AIはあくまで副操縦士と考える</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">AIはあくまで「副操縦士」</h3>
+        </div>
+        <div class="slide-content">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <ul class="space-y-8 text-2xl text-slate-300 list-disc pl-8 leading-relaxed">
+                    <li>AIは強力なサポートツールですが、<span class="font-bold text-white border-b-2 border-accent">操縦桿（イニシアチブ）を握るのは常に人間（エンジニア）</span>です。</li>
+                    <li>AIの出力を鵜呑みにせず、<span class="font-bold text-white">「本当に正しいか？」「お客様の文脈に合っているか？」</span>を判断する責任があります。</li>
+                    <li>AIに「指示を出す（プロンプトを書く）」能力こそが、これからのエンジニアのコアスキルになります。</li>
+                </ul>
+                <div class="relative h-full min-h-[400px] bg-slate-800 rounded-xl border-4 border-slate-700 p-8 flex flex-col justify-center items-center overflow-hidden shadow-2xl">
+                    <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-blue-900/20 to-transparent z-0"></div>
+                    <div class="relative z-10 flex items-end justify-center gap-12 w-full">
+                        <div class="flex flex-col items-center">
+                            <div class="bg-blue-600 text-white p-6 rounded-full w-32 h-32 flex items-center justify-center text-5xl shadow-lg border-4 border-blue-400 relative">
+                                <i class="fas fa-user-tie"></i><div class="absolute -top-3 -right-2 bg-yellow-400 text-slate-900 text-sm font-bold px-3 py-1 rounded-full border-2 border-slate-900">PILOT</div>
+                            </div>
+                            <div class="bg-slate-700/80 backdrop-blur text-white px-6 py-3 rounded-lg text-center border-l-4 border-blue-500 shadow-lg w-40">
+                                <p class="font-bold text-xl text-blue-300">エンジニア</p><p class="text-xs text-slate-300 mt-1 font-bold">判断・責任・指示</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-center h-32 gap-6 text-slate-400 pb-24 w-24">
+                            <div class="flex items-center gap-2 text-blue-300 animate-pulse"><span class="text-sm font-bold">指示</span><i class="fas fa-long-arrow-alt-right text-2xl"></i></div>
+                            <div class="flex items-center gap-2 text-emerald-300"><i class="fas fa-long-arrow-alt-left text-2xl"></i><span class="text-sm font-bold">提案</span></div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-emerald-600 text-white p-6 rounded-full w-24 h-24 flex items-center justify-center text-4xl shadow-lg border-4 border-emerald-400 opacity-90 relative">
+                                <i class="fas fa-robot"></i><div class="absolute -top-3 -right-4 bg-slate-900 text-emerald-400 text-xs font-bold px-2 py-1 rounded-full border border-emerald-500">CO-PILOT</div>
+                            </div>
+                            <div class="bg-slate-700/80 backdrop-blur text-white px-4 py-2 rounded-lg text-center border-l-4 border-emerald-500/50 shadow-lg w-36">
+                                <p class="font-bold text-lg text-emerald-300">AI</p><p class="text-xs text-slate-300 mt-1 font-bold">生成・要約・壁打ち</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full mt-8 border-t-4 border-slate-600 pt-4 flex justify-center relative">
+                        <div class="bg-slate-900 px-8 py-4 rounded-t-xl border-t border-x border-slate-600 text-center w-3/4 shadow-inner">
+                            <p class="text-slate-500 text-[10px] tracking-[0.2em] font-oswald mb-2">CONTROL PANEL</p>
+                            <div class="flex justify-center gap-4"><div class="h-2 w-8 bg-red-500 rounded-full animate-pulse"></div><div class="h-2 w-8 bg-yellow-500 rounded-full"></div><div class="h-2 w-8 bg-green-500 rounded-full"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">5. AIはあくまで副操縦士</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">14 / 19</div>
+    </section>
+
+    <!-- 15. 日常生活 -->
+    <section class="slide" id="slide-15">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">6. 日常生活でできる要件定義 ⇔ 設計の訓練術</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">要件と設計を分解する癖をつける</h3>
+        </div>
+        <div class="slide-content">
+            <div class="grid grid-cols-3 gap-8">
+                <div class="bg-secondary p-8 rounded-xl shadow-lg">
+                    <h3 class="font-oswald text-2xl text-accent mb-4"><i class="fas fa-plane mr-2"></i>例1：旅行の計画</h3>
+                    <div class="space-y-4"><div class="bg-slate-900 p-4 rounded-lg"><span class="text-emerald-400 font-bold block mb-1">[要件]</span><p class="text-slate-300">誰と、なぜ、どこへ行きたいか。予算は？</p></div><div class="text-center text-slate-500"><i class="fas fa-arrow-down"></i></div><div class="bg-slate-900 p-4 rounded-lg"><span class="text-yellow-400 font-bold block mb-1">[設計]</span><p class="text-slate-300">どの交通手段で、どの宿に泊まるか。</p></div></div>
+                </div>
+                <div class="bg-secondary p-8 rounded-xl shadow-lg">
+                    <h3 class="font-oswald text-2xl text-accent mb-4"><i class="fas fa-utensils mr-2"></i>例2：今夜の夕食</h3>
+                    <div class="space-y-4"><div class="bg-slate-900 p-4 rounded-lg"><span class="text-emerald-400 font-bold block mb-1">[要件]</span><p class="text-slate-300">冷蔵庫の食材（制約）で、和食（機能）が食べたい。30分（非機能）で。</p></div><div class="text-center text-slate-500"><i class="fas fa-arrow-down"></i></div><div class="bg-slate-900 p-4 rounded-lg"><span class="text-yellow-400 font-bold block mb-1">[設計]</span><p class="text-slate-300">レシピ検索 → 肉じゃがと味噌汁に決定。</p></div></div>
+                </div>
+                <div class="bg-secondary p-8 rounded-xl shadow-lg">
+                    <h3 class="font-oswald text-2xl text-accent mb-4"><i class="fas fa-gift mr-2"></i>例3：友人への贈り物</h3>
+                    <div class="space-y-4"><div class="bg-slate-900 p-4 rounded-lg"><span class="text-emerald-400 font-bold block mb-1">[要件]</span><p class="text-slate-300">相手の好みは？ 予算は？ 伝えたい気持ちは？</p></div><div class="text-center text-slate-500"><i class="fas fa-arrow-down"></i></div><div class="bg-slate-900 p-4 rounded-lg"><span class="text-yellow-400 font-bold block mb-1">[設計]</span><p class="text-slate-300">〇〇（店）で、XX（品物）を買う。</p></div></div>
+                </div>
+            </div>
+            <div class="mt-8 bg-accent p-6 rounded-xl text-center shadow-lg"><p class="text-2xl font-bold text-slate-900">日常のあらゆる「目的（要件）」と「手段（設計）」を意識的に分解してみましょう。</p></div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">6. 日常生活でできる要件定義 ⇔ 設計の訓練術</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">15 / 19</div>
+    </section>
+
+    <!-- 16. 今回1番お伝えしたいこと -->
+    <section class="slide" id="slide-16">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">7. 今回1番お伝えしたいこと</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">AIは「手段」。目的は「信頼」と「自分ごと化」</h3>
+        </div>
+        <div class="slide-content">
+            <div class="grid grid-cols-3 gap-8 h-full items-stretch">
+                <div class="bg-secondary p-10 rounded-2xl flex flex-col items-center border-t-8 border-yellow-400 shadow-2xl">
+                    <div class="text-yellow-400 text-6xl mb-6"><i class="fas fa-handshake"></i></div>
+                    <h3 class="font-oswald text-3xl text-white font-bold mb-6 text-center">信頼関係の構築</h3>
+                    <div class="w-16 h-1 bg-slate-600 mb-6 rounded-full"></div>
+                    <p class="text-lg text-slate-300 leading-loose text-justify">要件定義は単に仕様を決める場ではありません。「お客様 vs 開発者」の構図を脱却し、<span class="text-white font-bold border-b border-yellow-400">「同じゴールを目指すパートナー」</span>としての信頼を築くスタート地点です。</p>
+                </div>
+                <div class="bg-secondary p-10 rounded-2xl flex flex-col items-center border-t-8 border-yellow-400 shadow-2xl">
+                    <div class="text-yellow-400 text-6xl mb-6"><i class="fas fa-running"></i></div>
+                    <h3 class="font-oswald text-3xl text-white font-bold mb-6 text-center">完璧よりも「姿勢」</h3>
+                    <div class="w-16 h-1 bg-slate-600 mb-6 rounded-full"></div>
+                    <p class="text-lg text-slate-300 leading-loose text-justify">100点満点の要件定義は不可能です。だからこそ、お客様と同じ目線で悩み抜く。その真摯な姿勢こそが<span class="text-white font-bold border-b border-yellow-400">「あなたと仕事がしたい」</span>という最高の評価を生みます。</p>
+                </div>
+                <div class="bg-accent p-10 rounded-2xl flex flex-col items-center border-t-8 border-slate-900 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-9xl text-slate-900"><i class="fas fa-rocket"></i></div>
+                    <div class="text-slate-900 text-6xl mb-6 relative z-10"><i class="fas fa-rocket"></i></div>
+                    <h3 class="font-oswald text-3xl text-slate-900 font-bold mb-6 text-center relative z-10">AIは「ブースター」</h3>
+                    <div class="w-16 h-1 bg-slate-900/30 mb-6 rounded-full relative z-10"></div>
+                    <p class="text-lg text-slate-900 font-bold leading-loose text-justify relative z-10">AIに作業を任せて時間を浮かせ、その分を「深い理解」に充てる。AIを使い倒してプロジェクトを<span class="bg-slate-900 text-accent px-1">「自分ごと」</span>にする。それが最強の武器になります。</p>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">7. 今回1番お伝えしたいこと</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">16 / 19</div>
+    </section>
+
+    <!-- 17. 本日の復習 -->
+    <section class="slide" id="slide-17">
+        <div class="w-full max-w-[1400px] mx-auto mb-8 border-b-4 border-accent pb-4">
+            <h2 class="font-sans text-xl text-accent font-bold tracking-widest mb-1">本日の復習</h2>
+            <h3 class="font-oswald text-5xl font-bold text-white tracking-wide">明日から始める3つのアクション</h3>
+        </div>
+        <div class="slide-content">
+            <div class="grid grid-cols-3 gap-10">
+                <div class="bg-secondary p-10 rounded-2xl border-t-8 border-yellow-400 flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-yellow-400 text-7xl mb-6"><i class="fas fa-lightbulb"></i></div>
+                    <h3 class="text-3xl font-bold text-white mb-6">1. 「なぜ」を問う</h3>
+                    <p class="text-slate-300 text-xl leading-relaxed">お客様の「速い馬が欲しい」を鵜呑みにせず、その裏にある<span class="font-bold text-white">「真の課題」</span>を深掘りする習慣をつけましょう。</p>
+                </div>
+                <div class="bg-secondary p-10 rounded-2xl border-t-8 border-accent flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-accent text-7xl mb-6"><i class="fas fa-robot"></i></div>
+                    <h3 class="text-3xl font-bold text-white mb-6">2. AIと壁打ちする</h3>
+                    <p class="text-slate-300 text-xl leading-relaxed">知識不足や経験不足はAIで補えます。<span class="font-bold text-white">「事前準備」</span>と<span class="font-bold text-white">「疑似体験」</span>で、自信を持って現場に臨みましょう。</p>
+                </div>
+                <div class="bg-secondary p-10 rounded-2xl border-t-8 border-blue-400 flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-blue-400 text-7xl mb-6"><i class="fas fa-utensils"></i></div>
+                    <h3 class="text-3xl font-bold text-white mb-6">3. 日常で訓練する</h3>
+                    <p class="text-slate-300 text-xl leading-relaxed">ランチ選びも立派な要件定義です。<span class="font-bold text-white">「目的（要件）」</span>と<span class="font-bold text-white">「手段（設計）」</span>を意識的に分ける思考を癖づけましょう。</p>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">本日の復習</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">17 / 19</div>
+    </section>
+
+    <!-- 18. 最後に -->
+    <section class="slide" id="slide-18">
+        <div class="w-full max-w-[1400px] mx-auto mb-12 border-b-4 border-accent pb-4">
+            <h2 class="font-oswald text-6xl font-bold text-white tracking-wide">8. 最後に</h2>
+        </div>
+        <div class="slide-content flex flex-col items-center justify-center">
+            <div class="space-y-16 max-w-6xl w-full text-center">
+                <div class="space-y-6">
+                    <p class="text-4xl text-slate-300 leading-normal">AIはあくまで<span class="text-accent font-bold mx-2">「手段」</span>であり、<span class="text-accent font-bold mx-2">「副操縦士」</span>です。</p>
+                    <p class="text-3xl text-slate-400 leading-relaxed">AIに「作業」を任せて生まれた時間を、<br>人間にしかできない<span class="text-yellow-400 font-bold border-b-2 border-yellow-400 mx-2">「信頼関係の構築」</span>に全力を注いでください。</p>
+                </div>
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-accent to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                    <div class="relative bg-slate-900/90 p-16 rounded-2xl border border-slate-700 shadow-2xl flex flex-col items-center gap-8 backdrop-blur-xl">
+                        <p class="text-4xl font-bold text-white">AIを使いこなし、</p>
+                        <p class="text-4xl md:text-6xl lg:text-7xl font-bold text-highlight drop-shadow-[0_0_15px_rgba(254,240,138,0.3)] tracking-tight my-2 whitespace-nowrap">「あなたと仕事がしたい」</p>
+                        <p class="text-4xl font-bold text-white">と言われるエンジニアになりましょう。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-6 left-20 text-textSub text-sm">8. 最後に</div>
+        <div class="absolute bottom-6 right-20 text-textSub font-bold text-lg font-oswald">18 / 19</div>
+    </section>
+
+    <!-- 19. End -->
+    <section class="slide bg-black" id="slide-19">
+        <div class="slide-content items-center">
+            <h2 class="text-6xl font-bold text-white mb-4">ご清聴ありがとうございました。</h2>
+            <p class="text-slate-500 mt-4">THANK YOU FOR LISTENING</p>
+        </div>
+    </section>
+
+</main>
+
+<!-- Navigation Buttons -->
+<button id="prev-button" class="nav-button fixed bottom-6 left-20 z-50 bg-white/10 text-white w-12 h-12 rounded-full flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"><i class="fas fa-chevron-left"></i></button>
+<button id="next-button" class="nav-button fixed bottom-6 right-20 z-50 bg-white/10 text-white w-12 h-12 rounded-full flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"><i class="fas fa-chevron-right"></i></button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('slide-container');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let currentSlide = 1;
+
+        function goToSlide(slideNumber) {
+            if (slideNumber < 1 || slideNumber > totalSlides) return;
+            const slideWidth = container.clientWidth;
+            container.scrollTo({ left: slideWidth * (slideNumber - 1), behavior: 'smooth' });
+        }
+
+        function updatePaginationAndButtons() {
+            prevButton.disabled = currentSlide === 1;
+            nextButton.disabled = currentSlide === totalSlides;
+        }
+
+        prevButton.addEventListener('click', () => { goToSlide(currentSlide - 1); });
+        nextButton.addEventListener('click', () => { goToSlide(currentSlide + 1); });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goToSlide(currentSlide + 1); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); goToSlide(currentSlide - 1); }
+        });
+
+        let scrollTimer;
+        container.addEventListener('scroll', () => {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                const slideWidth = container.clientWidth;
+                const newSlideIndex = Math.round(container.scrollLeft / slideWidth) + 1;
+                if (newSlideIndex !== currentSlide && newSlideIndex > 0 && newSlideIndex <= totalSlides) {
+                    currentSlide = newSlideIndex;
+                    updatePaginationAndButtons();
+                }
+            }, 100);
+        });
+
+        window.addEventListener('resize', () => { goToSlide(currentSlide); });
+        updatePaginationAndButtons();
+    });
+</script>
+</body>
+</html>
