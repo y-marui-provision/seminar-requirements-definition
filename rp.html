@@ -140,17 +140,32 @@
             border: 2px solid #10B981; /* green-500 */
         }
 
-        /* モック提示スライド用 */
+        /* モック提示スライド用 (v22調整: スライド20のためにさらに詰めるクラスを追加) */
         .mockup-code {
             background-color: #000;
             border: 1px solid #374151;
             color: #A5F3FC; /* text-cyan-200 */
             font-family: monospace;
-            padding: 1.25rem; /* パディング調整 */
+            padding: 0.75rem; 
             border-radius: 0.5rem;
-            font-size: 1.1rem; /* フォントサイズ調整 */
-            line-height: 1.6;
+            font-size: 1rem; 
+            line-height: 1.25; 
             white-space: pre-wrap;
+        }
+        /* さらに詰める用 (スライド20左側) */
+        .mockup-code-tight {
+            background-color: #000;
+            border: 1px solid #374151;
+            color: #A5F3FC;
+            font-family: monospace;
+            padding: 0.5rem; /* パディング縮小 */
+            border-radius: 0.5rem;
+            font-size: 0.9rem; /* フォントサイズ縮小 */
+            line-height: 1.2; /* 行間さらに縮小 */
+            white-space: pre-wrap;
+        }
+        .mockup-code p, .mockup-code-tight p {
+            margin-bottom: 0.1rem; 
         }
 
         /* フローチャート用スタイル */
@@ -222,19 +237,6 @@
         }
         .nav-button#next {
             right: 3vw; /* 画面右端から調整 */
-        }
-        #slide-counter {
-            position: fixed; /* 画面に固定 */
-            bottom: 3.5rem;
-            left: 50%; /* 画面中央 */
-            transform: translateX(-50%); /* 中央揃え */
-            color: #9CA3AF; /* text-gray-400 */
-            font-size: 1.25rem; /* サイズ調整 */
-            font-weight: 500;
-            z-index: 50; /* 最前面に */
-            background-color: rgba(17, 24, 39, 0.9); /* bg-gray-900 透過 */
-            padding: 0.5rem 1.5rem;
-            border-radius: 2rem;
         }
         
         /* チャットUI用スタイル */
@@ -321,7 +323,7 @@
                     <p class="mt-6">私がクライアントとして「架空の案件」をフワッと発注し、AI（を武器とするエンジニア）がどのように要件を固めていったか、その生のやり取りをご覧ください。</p>
                 </div>
             </div>
-            <div class="footer">スライド 2 / 22</div>
+            <div class="footer">スライド 2 / 23</div>
         </section>
 
         <!-- スライド 3: 本日のデモの流れ -->
@@ -359,7 +361,7 @@
                     <div class="flow-step col-span-2 relative"><span class="flow-step-number">5</span>「言い忘れていた」<br>重要機能の<br>発見</div>
                 </div>
             </div>
-            <div class="footer">スライド 3 / 22</div>
+            <div class="footer">スライド 3 / 23</div>
         </section>
 
         <!-- スライド 4: プロジェクトの背景 -->
@@ -388,7 +390,7 @@
                     <p class="text-gray-400 mt-2">「決済方法は？ログイン方式は？サーバーは？DBは？」<span class="arrow">→</span> <span class="font-bold text-red-400">クライアントが発狂する！</span></p>
                 </div>
             </div>
-            <div class="footer">スライド 4 / 22</div>
+            <div class="footer">スライド 4 / 23</div>
         </section>
 
         <!-- スライド 5: AIの役割 -->
@@ -418,7 +420,7 @@
                     <li><span class="arrow">→</span> エンジニアが「では配達は…」と次の論点に進む。</li>
                 </ul>
             </div>
-            <div class="footer">スライド 5 / 22</div>
+            <div class="footer">スライド 5 / 23</div>
         </section>
 
         <!-- スライド 6: 実例 (ログイン) -->
@@ -464,7 +466,7 @@
                     クライアントが「誰に手間をかけたくないか」という<span class="text-white">優先順位</span>を明確にし、シンプルな認証方式を即決。
                 </p>
             </div>
-            <div class="footer">スライド 6 / 22</div>
+            <div class="footer">スライド 6 / 23</div>
         </section>
 
         <!-- スライド 7: 実例（決済） -->
@@ -512,7 +514,7 @@
                     クライアントの「現実的な要望」を引き出し、それを実現する「具体的なシステム機能」に翻訳する。
                 </p>
             </div>
-            <div class="footer">スライド 7 / 22</div>
+            <div class="footer">スライド 7 / 23</div>
         </section>
         
         <!-- スライド 8: 実例 (管理画面) -->
@@ -549,7 +551,7 @@
                     「誰がどこで操作するか」を明確にし、システムの全体像（スライド12）をクライアントと合意する。
                 </p>
             </div>
-            <div class="footer">スライド 8 / 22</div>
+            <div class="footer">スライド 8 / 23</div>
         </section>
         
         <!-- スライド 9: 実例（オペレーション） -->
@@ -591,7 +593,7 @@
                     一つの質問が、クライアントの「現場のリアルな悩み」を引き出し、システムが格段に実用的になる。
                 </p>
             </div>
-            <div class="footer">スライド 9 / 22</div>
+            <div class="footer">スライド 9 / 23</div>
         </section>
 
         <!-- スライド 10: 実例（拡張性）-->
@@ -633,7 +635,7 @@
                     クライアントの「鋭い視点」をエンジニアが即座に仕様に反映し、当初の設計案より優れた設計に進化。
                 </p>
             </div>
-            <div class="footer">スライド 10 / 22</div>
+            <div class="footer">スライド 10 / 23</div>
         </section>
 
         <!-- スライド 11: 実例（カートルール） -->
@@ -675,7 +677,7 @@
                     クライアントの「夢」に対し、エンジニアがAIとの準備で得た「運用課題」を提示し、重要な基本ルールを確定させる。
                 </p>
             </div>
-            <div class="footer">スライド 11 / 22</div>
+            <div class="footer">スライド 11 / 23</div>
         </section>
 
         <!-- スライド 12: フェーズ1概要 -->
@@ -725,7 +727,7 @@
                     </div>
                 </div>
             </div>
-            <div class="footer">スライド 12 / 22</div>
+            <div class="footer">スライド 12 / 23</div>
         </section>
 
         <!-- スライド 13: このプロセスの使い方 -->
@@ -756,7 +758,7 @@
                     AIとの対話ログこそが、エンジニアが主導権を握り、認識齟齬を防ぐ「最強の要件定義書（たたき台）」となる。
                 </p>
             </div>
-            <div class="footer">スライド 13 / 22</div>
+            <div class="footer">スライド 13 / 23</div>
         </section>
 
         <!-- スライド 14: まとめ（仕様一覧） -->
@@ -783,7 +785,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="footer">スライド 14 / 22</div>
+            <div class="footer">スライド 14 / 23</div>
         </section>
 
         <!-- スライド 15: 結論 -->
@@ -807,7 +809,7 @@
                     <span class="text-blue-300">実際の会議でクライアントの要望を即座に理解し、プロとして対応（代替案の提示など）ができる</span>のです。
                 </p>
             </div>
-            <div class="footer">スライド 15 / 22</div>
+            <div class="footer">スライド 15 / 23</div>
         </section>
 
         <!-- スライド 16: 論点抜粋 -->
@@ -841,7 +843,7 @@
                     これらすべてを「武器（選択肢）」として準備して会議に臨むことで、クライアントの「言い忘れ」や「認識ズレ」を最小限にします。
                 </p>
             </div>
-            <div class="footer">スライド 16 / 22</div>
+            <div class="footer">スライド 16 / 23</div>
         </section>
 
         <!-- スライド 17: フェーズ2 区切り -->
@@ -858,7 +860,7 @@
                 <p class="text-xl">フェーズ1で「何を作るか」の大枠（システム概要）は合意できました。</p>
                 <p class="text-xl mt-4">しかし、<span class="font-bold text-red-400">口頭（テキスト）だけの議論</span>では、具体的な画面イメージの認識がズレる危険があります。</p>
                 
-                <div class="flex justify-around items-center mt-12 p-8 bg-gray-700 rounded-xl">
+                <div class="flex justify-around items-center mt-8 p-8 bg-gray-700 rounded-xl">
                     <div class="text-center">
                         <p class="text-2xl font-bold text-white">エンジニア（準備）</p>
                         <p class="text-6xl my-4">👨‍💻→🤖</p>
@@ -871,11 +873,11 @@
                     </div>
                 </div>
 
-                <p class="mt-12 text-2xl font-bold text-center p-6 bg-green-900 text-green-200 rounded-xl border-2 border-green-700 shadow-lg">
+                <p class="mt-8 text-2xl font-bold text-center p-6 bg-green-900 text-green-200 rounded-xl border-2 border-green-700 shadow-lg">
                     エンジニアの強み：AIを使い、<span class="text-white">即座に「視覚的なたたき台（モックアップ）」を生成</span>し、会議の武器とできる。
                 </p>
             </div>
-            <div class="footer">スライド 17 / 22</div>
+            <div class="footer">スライド 17 / 23</div>
         </section>
 
         <!-- スライド 19: モックの提示 -->
@@ -885,6 +887,7 @@
             <div class="content">
                 <p class="text-xl">エンジニアがAIと準備したモックをクライアントと確認し、まず「画面一覧（左帯メニュー）」をFIXさせる。</p>
                 
+                <!-- v22修正: mt-8に戻し、olのspace-yを6に戻す（余裕を持たせる） -->
                 <div class="flex gap-8 mt-8">
                     <div class="flex-1">
                         <p class="font-bold text-white text-xl mb-2">エンジニアの提示（モックの左帯）:</p>
@@ -900,6 +903,7 @@
                     </div>
                     <div class="flex-1">
                         <p class="font-bold text-white text-xl mb-2">クライアントとの対話例:</p>
+                        <!-- v22修正: space-y-6に戻す -->
                         <ol class="list-decimal pl-8 space-y-6 mt-4 text-gray-300 text-lg">
                             <li><span class="font-bold text-blue-300">エンジニア:</span> 「フェーズ1で決めた<span class="highlight">『目安時間』『一時停止』</span>は、最重要なので『設定』ではなく『ダッシュボード』のトップに置く案（モック）にしました。」</li>
                             <li><span class="font-bold">クライアント:</span> 「うん、それが見やすい。あと<span class="text-red-400">『顧客管理』と『商品管理』は逆</span>にして。」</li>
@@ -908,7 +912,7 @@
                     </div>
                 </div>
             </div>
-            <div class="footer">スライド 18 / 22</div>
+            <div class="footer">スライド 18 / 23</div>
         </section>
 
         <!-- スライド 20: 詳細項目（メニュー登録） -->
@@ -921,7 +925,8 @@
                 <div class="flex gap-8 mt-8">
                     <div class="flex-1">
                         <p class="font-bold text-white text-xl mb-2">エンジニアの提示（AIと準備）:</p>
-                        <div class="mockup-code">
+                        <!-- v22修正: さらに詰めたクラスを適用 -->
+                        <div class="mockup-code-tight">
                             <p>【必須項目】</p>
                             <p>・商品名</p>
                             <p>・価格（税込）</p>
@@ -935,6 +940,7 @@
                     </div>
                     <div class="flex-1">
                         <p class="font-bold text-white text-xl mb-2">クライアントとの対話例:</p>
+                        <!-- v22修正: space-y-6に戻す -->
                         <ol class="list-decimal pl-8 space-y-6 mt-4 text-gray-300 text-lg">
                             <li><span class="font-bold text-blue-300">エンジニア:</span> 「『メニュー登録』に必要な項目（たたき台）です。アレルギー情報などもAIが提案していますが、いかがですか？」</li>
                             <li><span class="font-bold">クライアント:</span> 「あ、<span class="text-green-400">オプションは絶対いる。</span>アレルギーは（フェーズ1では）まだいいや。あ、それより<span class="text-red-400">『辛さレベル（0〜5）』</span>を選べるようにしたい。」</li>
@@ -943,7 +949,7 @@
                     </div>
                 </div>
             </div>
-            <div class="footer">スライド 19 / 22</div>
+            <div class="footer">スライド 19 / 23</div>
         </section>
 
         <!-- スライド 21: フェーズ2 結論 -->
@@ -968,7 +974,7 @@
                     <span class="text-green-300">エンジニアが主導する高速な要件定義の武器</span>となる。
                 </p>
             </div>
-            <div class="footer">スライド 20 / 22</div>
+            <div class="footer">スライド 20 / 23</div>
         </section>
 
         <!-- スライド 22: 最終まとめ -->
@@ -994,10 +1000,10 @@
                     <span class="text-blue-300">クライアントの要望の「一歩先を行く」エンジニア</span>になる。
                 </p>
             </div>
-            <div class="footer">スライド 21 / 22</div>
+            <div class="footer">スライド 21 / 23</div>
         </section>
 
-        <!-- スライド 22: 実践編パートの終了 -->
+        <!-- スライド 23: 実践編パートの終了 -->
         <section class="slide">
             <div class="flex-grow flex flex-col justify-center items-center text-center">
                 <h1 class="text-7xl font-extrabold text-white mb-8">実践編（AIとの壁打ち）<br>は以上です</h1>
@@ -1008,14 +1014,13 @@
                 <p class="text-2xl text-gray-400 mt-12">（メインスライドに戻ります）</p>
             </div>
             <div class="footer">
-                スライド 22 / 22
+                スライド 22 / 23
             </div>
         </section>
 
     </div> <!-- slide-container の終了 -->
 
     <!-- ナビゲーション (v4でコンテナの外に移動) -->
-    <span id="slide-counter">1 / 22</span>
     <button id="prev" class="nav-button" onclick="changeSlide(-1)">＜</button>
     <button id="next" class="nav-button" onclick="changeSlide(1)">＞</button>
 
